@@ -1,0 +1,99 @@
+.profile {
+  background: #fafbf9;
+  padding: 1rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 1.5rem;
+  border-bottom: 2px solid #eee;
+}
+
+.tab {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+  padding-bottom: 0.4rem;
+}
+
+.tab.active {
+  border-bottom: 3px solid #ffc107;
+}
+
+.card-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  position: relative;
+}
+
+.card-box .edit-button{
+    border: 1px solid black;
+}
+.edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 3rem;
+  border: none;
+  background: #fffbd2;
+  color: #adb5c2;
+  border-radius: 0 8px 8px 0;
+}
+
+.sub {
+  color: #8c8c8c;
+  font-size: 0.9rem;
+}
+
+.card-box h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 0.3rem;
+}
+
+.btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.btn.black {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 1rem;
+}
+
+.btn.yellow {
+  background: #fffbd2;
+  color: #000;
+  border: none;
+}
+
+.avatar {
+  width: 150px;
+  border-radius: 50%;
+  background: #fffbd2;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .btns {
+    flex-direction: column;
+  }
+}
+
+.changepassword-section .col-md-6:hover{
+  transition: 0.5s;
+    box-shadow: 0px 2px 21px #E8E8E8;
+}

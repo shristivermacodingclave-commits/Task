@@ -1,0 +1,71 @@
+.sidebar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  width: 240px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav .nav-link {
+  position: relative;       /* needed for ::after positioning */
+  padding-right: 1rem;      /* keep some space so text doesn't overlap the bar */
+  overflow: visible;
+}
+
+
+.active-link{
+  border-right: 8px solid #d6bb15;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 10px;
+  overflow: hidden !important;
+}
+
+
+
+/* Large screens — always visible */
+@media (min-width: 992px) {
+  .sidebar {
+    transform: translateX(0);
+  }
+}
+
+/* Small screens — hidden by default */
+@media (max-width: 991px) {
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: none;
+  }
+  .sidebar-overlay.show {
+    display: block;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+  }
+}
+
+.nav .nav-link {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.nav .nav-link:hover,
+.nav .nav-link:focus {
+  text-decoration: none !important;
+  color: #000 !important;
+}
+

@@ -1,0 +1,15 @@
+.bookmark-card{
+     background-color: #ffffff;
+  color: black;
+}
+
+.bookmark-card:hover{
+    transition: 0.5s;
+    box-shadow: 0px 2px 21px #E8E8E8;
+
+} 
+
+.bookmark-card h3{
+  font-size: 1.75rem !important;
+  font-weight: 400 !important;;
+}

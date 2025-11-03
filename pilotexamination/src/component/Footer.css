@@ -1,0 +1,118 @@
+/* footer css */
+
+.pe-footer {
+
+  /* background: linear-gradient(180deg, #fff2c9 0%, #fff0bf 100%); */
+  background: linear-gradient(180deg, #FFEFBA 0%, #FFFCF1 100%);
+  border-radius: 24px 24px 0 0;
+  padding: 40px 0 32px;
+  color: #2b2b2b;
+  font-family: inherit;
+}
+
+.pe-logo {
+  display: block;
+  max-width: 160px;
+  height: auto;
+  color: #000000;
+}
+
+.pe-heading {
+  
+  margin-bottom:1.5rem;
+  color: #000000;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+
+
+.pe-address {
+  font-size: 1rem;
+  color: #000000;
+  font-weight: bold;
+}
+
+
+.pe-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+
+.pe-list li {
+  margin: 8px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2b2b2b;
+}
+
+.pe-list a {
+  text-decoration: none;
+  color: #2b2b2b;
+}
+
+.pe-list a:hover{
+  color: #ffc107 !important;
+}
+
+
+.pe-contact a {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+
+.pe-divider {
+  margin: 28px 0 18px;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+
+.pe-copy {
+  font-weight: 600;
+  color: #2b2b2b;
+}
+
+.pe-disclaimer {
+  max-width: 760px;
+  color: rgba(0, 0, 0, 0.66);
+  line-height: 1.6;
+  font-size: 0.8rem;
+   color: #9aa0a6;
+}
+
+@media (max-width: 991px) {
+  .pe-footer {
+    padding: 28px 0 26px;
+  }
+
+  .pe-disclaimer {
+    max-width: 100%;
+  }
+}
+
+
+/*footer bottom css */
+
+.pe-strip {
+  padding: 15px 12px 25px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.pe-strip__line {
+  margin: 0;
+  color: #9aa0a6;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: .2px;
+}
+
+.pe-strip__brand {
+  color: #9aa0a6;
+}
+

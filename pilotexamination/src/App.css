@@ -1,0 +1,18 @@
+body.modal-open {
+  padding-right: 0 !important;
+  overflow: hidden; /* still prevents scroll */
+}
+
+img{
+  max-width:100%;
+  height: auto;
+  display: block;
+}
+
+body,html{
+  overflow-x: hidden;
+}
+
+:root{
+  --link-color:  #ffc107;
+}

@@ -1,0 +1,48 @@
+
+.contact-section {
+  padding: 2rem 2rem 2rem 2rem;
+
+}
+
+.contact-inner {
+  background: linear-gradient(180deg, #E8E6FF 0%, rgba(237, 236, 255, 0.54) 100%);
+  border-radius: 32px;
+  padding: 2rem 2rem 2rem 2rem;
+  position: relative;
+}
+
+.contact-inner img{
+    position: absolute;
+    top:8%;
+    right:5%;
+    width: 15%;
+}
+
+.contact-inner h2 {
+  /* font-family: 'montserrat-bold', serif; */
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
+@media (max-width: 900px) {
+    .contact-inner h2 {
+        font-size: 1.2rem !important;
+    }
+}
+
+.contact-inner span {
+  font-weight: bold;
+}
+
+.contact-inner h2 a {
+  text-decoration: none;
+  color: black;
+}
+
+.contact-inner p {
+  font-size: 1rem !important;
+  line-height: 1.2rem;
+}
+.contact-section h2 a:hover{
+  color: #ffc107;
+}

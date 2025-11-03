@@ -1,0 +1,102 @@
+.testimonial-section{
+  margin-top: 7rem;
+}
+
+.sub-title-testimonial{
+  font-size: 1rem !important;
+    max-width: 46ch !important;
+    font-weight: 600;
+    color: #212529;
+}
+
+@media (min-width: 700px) {
+    .testimonial-section p {
+        max-width: 46ch !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .testimonial-section .main-title {
+        font-size: 2rem !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .testimonial-section .sub-title {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .testimonial-outer-section {
+        padding: 0rem 2rem 0rem 2rem !important;
+    }
+}
+
+.t-card {
+  border-radius: 18px;
+  padding: 20px 22px 16px;
+  min-height:28rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.t-text {
+  color: #3a3a3a;
+  margin: 0 0 16px 0;
+  line-height: 1.55;
+}
+
+.t-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.t-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 3px #fff3;
+  
+}
+
+.t-name {
+  font-weight: 700;
+  color: #333;
+}
+
+.carousel {
+  padding-bottom: 60px; /* extra space for indicators */
+  position: relative;
+}
+
+/* Move dots outside (below cards) */
+.carousel-indicators {
+  position: absolute;
+  bottom: 0;               /* stick below carousel container */
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  justify-content: center;
+}
+
+/* Style the dots */
+.carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #000;
+  margin: 0 5px;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.carousel-indicators .active {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+

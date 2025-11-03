@@ -1,0 +1,25 @@
+/* .dash-navbar{
+    margin-bottom: 0 !important;
+} */
+
+/* Make sure icons stay in one line on smaller screens */
+/* @media (max-width: 991px) {
+  .custom-nav-icons {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px;
+    margin-top:1rem !important;
+  }
+} */
+
+
+.dashnavbar {
+ padding-left: 3rem;
+ padding-right: 8rem;
+}
+
+@media(max-width:900px){
+  .dashnavbar{
+   padding-right:2rem !important;
+  }  
+}

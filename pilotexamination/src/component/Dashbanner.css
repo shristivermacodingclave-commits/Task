@@ -1,0 +1,42 @@
+.triangle-container {
+  top:2.3rem;
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background: #fffbe6; /* base background color */
+  overflow: hidden;
+}
+
+/* Base style for all triangles */
+.triangle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 40px;
+}
+
+/* Layer 1 (top, brightest yellow) */
+.layer1 {
+  width: 250px;
+  height: 250px;
+  background: #f5e171;
+  top: 90px;
+}
+
+/* Layer 2 (middle, slightly lighter yellow) */
+.layer2 {
+  width: 350px;;
+  height: 350px;
+  background: #f9eb94;
+  top: 60px;
+  opacity: 0.9;
+}
+
+/* Layer 3 (bottom, lightest yellow) */
+.layer3 {
+  width:  450px;
+  height:  450px;
+  background: #fdf5c1;
+  top: 30px;
+  opacity: 0.9;
+}

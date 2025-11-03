@@ -1,0 +1,53 @@
+.pe-strip {
+  padding: 15px 12px 25px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.pe-strip__line {
+  margin: 0;
+  color: #9aa0a6;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: .2px;
+}
+
+.pe-strip__brand {
+  color: #9aa0a6;
+}
+
+
+
+
+/* Default Layout (Desktop) */
+.dashboard-main {
+  margin-left: 250px; /* space for sidebar */
+  margin-top: 60px; /* height of navbar */
+  min-height: calc(100vh - 60px);
+  padding: 1rem;
+  padding-right: 5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  z-index: 1;
+}
+
+
+  @media(max-width:900px){
+    .dashboard-main{
+     padding-right:0 !important;
+    }  
+  }
+
+
+/* Sidebar hidden on smaller screens */
+@media (max-width: 991px) {
+  .sidebar {
+    display: none; /* hide sidebar */
+  }
+
+  .dashboard-main {
+    margin-left: 0 !important; /* remove left gap */
+  }
+}
+
