@@ -11,20 +11,22 @@
 }
 
 .nav .nav-link {
-  position: relative;       /* needed for ::after positioning */
-  padding-right: 1rem;      /* keep some space so text doesn't overlap the bar */
+  position: relative;
+  /* needed for ::after positioning */
+  padding-right: 1rem;
+  /* keep some space so text doesn't overlap the bar */
   overflow: visible;
 }
 
 
-.active-link{
-  border-right: 8px solid #d6bb15;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 10px;
+.active-link {
+  border-right: 4px solid #d6bb15;
   overflow: hidden !important;
+  background-image: url(../assets/images/Rectangle\ 12.svg);
+  background-repeat: no-repeat;
+  background-position: right;
+  padding: 12px !important;
 }
-
-
 
 /* Large screens — always visible */
 @media (min-width: 992px) {
@@ -39,6 +41,7 @@
     transform: translateX(-100%);
     position: fixed;
   }
+
   .sidebar.open {
     transform: translateX(0);
   }
@@ -46,6 +49,7 @@
   .sidebar-overlay {
     display: none;
   }
+
   .sidebar-overlay.show {
     display: block;
     position: fixed;
@@ -66,6 +70,4 @@
 .nav .nav-link:hover,
 .nav .nav-link:focus {
   text-decoration: none !important;
-  color: #000 !important;
 }
-

@@ -2,6 +2,7 @@
   padding: 15px 12px 25px;
   text-align: center;
   background: #ffffff;
+  font-weight: 500;
 }
 
 .pe-strip__line {
@@ -21,7 +22,7 @@
 
 /* Default Layout (Desktop) */
 .dashboard-main {
-  margin-left: 250px; /* space for sidebar */
+  margin-left: 300px; /* space for sidebar */
   margin-top: 60px; /* height of navbar */
   min-height: calc(100vh - 60px);
   padding: 1rem;

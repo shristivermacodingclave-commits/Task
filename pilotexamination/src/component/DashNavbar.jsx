@@ -28,11 +28,14 @@ export default function DashNavbar({ onToggleSidebar }) {
             <FaSearch className="fs-5 text-dark" />
             <div className="position-relative">
               <FaBell className="fs-5 text-dark" />
-              <span className="badge bg-danger position-absolute top-0 start-100 translate-middle p-1">1</span>
+              <span className="badge position-absolute top-0 start-100 translate-middle px-2 ms-1" style={{
+                borderRadius:"50%",
+                backgroundColor:'red'
+              }}>1</span>
             </div>
           </div>
 
-          <div className="position-relative">
+          <div className="position-relative d-none d-lg-block">
             {/* Profile toggle */}
             <div
               onClick={() => setOpen(!open)}

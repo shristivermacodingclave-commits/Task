@@ -10,13 +10,13 @@ function ReportedQuestion() {
 
       {/* Nav Links */}
       <div className="col-md-12 pt-3 pb-3 ps-4 pe-4 mb-4 rounded gap-4 d-flex flex-row results-card">
-        <NavLink to="/results/e-test" className="results-link fw-semibold">
+        <NavLink to="index" className="results-link fw-semibold">
           All
         </NavLink>
-        <NavLink to="/results/practice-test" className="results-link fw-semibold">
+        <NavLink to="resolved" className="results-link fw-semibold">
           Resolved
         </NavLink>
-        <NavLink to="/mock-test/mock-test" className="results-link fw-semibold">
+        <NavLink to="under-review" className="results-link fw-semibold">
           Under Review
         </NavLink>
       </div>

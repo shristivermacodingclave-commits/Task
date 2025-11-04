@@ -6,6 +6,7 @@ import airplane from '../assets/images/airplanflight.png'
 import Button from '../component/Button';
 import './Dashboard.css';
 
+
 function DashboardHome() {
   return (
   
@@ -14,7 +15,7 @@ function DashboardHome() {
           <DashBanner dashtitle={"Hi Ashish Sharma,"} />
 
           {/* related subject */}
-          <div className='related-subjects'> 
+          <div className='related-subjects mt-5'> 
           <h3 className="fw-bold my-2 mb-4">Related Subjects</h3>
           <hr/>
 
@@ -36,6 +37,7 @@ function DashboardHome() {
             </Carousel.Item>
           </Carousel>
           </div>
+          
 
            {/* start exploring */}
 

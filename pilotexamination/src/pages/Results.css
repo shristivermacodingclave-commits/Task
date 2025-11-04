@@ -22,7 +22,7 @@
 
 /* Hover color */
 .results-link:hover {
-  color: var(--link-color);
+  color: black;
 }
 
 /* The underline bar (invisible by default) */
@@ -33,7 +33,8 @@
   bottom: 0; /* bottom of link */
   width: 0%;
   height: 3px;
-  background-color: var(--link-color);
+  bottom: -10px;
+  background-color: black;
   transition: width 0.3s ease;
 }
 
@@ -44,6 +45,6 @@
 
 /* Active link text color */
 .results-link.active {
-  color: var(--link-color, #0d6efd);
+  color: black;
   font-weight: 600;
 }

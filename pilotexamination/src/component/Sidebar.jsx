@@ -43,7 +43,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     position: "fixed",
     top: "60px",               // slide begins below navbar
     left: 0,
-    width: "240px",
+    width: "300px",
     height: "calc(100vh - 56px)",
     background: "#fff",
     zIndex: 2100,
@@ -59,7 +59,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       <div
         className="bg-white position-fixed start-0 d-none d-lg-flex flex-column"
         style={{
-          width: "250px",
+          width: "300px",
           height: "100vh",
           top: "60px",
           overflowY: "auto",
@@ -90,7 +90,6 @@ const Sidebar = ({ isOpen, onClose }) => {
           ))}
         </ul>
       </div>
-
       {/* Mobile overlay (covers content but starts below navbar) */}
       <div
         style={mobileOverlayStyle}

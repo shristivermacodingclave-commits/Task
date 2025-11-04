@@ -13,3 +13,15 @@
   font-size: 1.75rem !important;
   font-weight: 400 !important;;
 }
+
+.results-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0; /* bottom of link */
+  width: 0%;
+  height: 3px;
+  bottom: -10px;
+  background-color: black;
+  transition: width 0.3s ease;
+}

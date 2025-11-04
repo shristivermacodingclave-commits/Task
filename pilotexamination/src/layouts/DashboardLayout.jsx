@@ -60,7 +60,7 @@ const DashboardLayout = () => {
         <Outlet context={{ setSubBreadcrumb }} /> {/* ✅ pass setter to child */}
       </main>
 
-      <div className="pe-strip p-4">
+      <div className="pe-strip p-5">
         <p className="pe-strip__line">
           {year} ©{" "}
           <span className="pe-strip__brand">PilotExaminations.com</span> | All Rights Reserved

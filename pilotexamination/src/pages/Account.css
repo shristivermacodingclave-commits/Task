@@ -93,7 +93,12 @@
   }
 }
 
-.changepassword-section .col-md-6:hover{
+.changepassword-section .col-md-8:hover{
   transition: 0.5s;
     box-shadow: 0px 2px 21px #E8E8E8;
 }
+
+.changepassword-section .col-md-8{
+  background-color: #ffffff;
+}
+

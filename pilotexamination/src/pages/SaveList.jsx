@@ -7,12 +7,12 @@ function SaveList() {
    <div className="container-fluid">
       <h3 className="fw-bold my-2 mb-4 mt-4">SaveList</h3>
       <hr />
-      <div className="col-md-12 pt-4 pb-4 ps-4 pe-4 mb-4 rounded gap-4 d-flex flex-row results-card">
-        <NavLink to="/results/e-test" className="results-link fw-semibold">
+      <div className="col-md-12 ps-4 pe-4 mb-4 rounded gap-4 d-flex flex-row results-card" style={{padding:"2.2rem 0rem 2.2em 0rem"}}>
+        <NavLink to="savelist" className="results-link fs-5 " style={{fontWeight:"400"}}>
           All
         </NavLink>
-        <NavLink to="/results/practice-test" className="results-link fw-semibold">
-          No List
+        <NavLink to="savelist" className="results-link "  style={{ top:"-8px"}} >
+          <span> No List</span>
         </NavLink>
         
       </div>

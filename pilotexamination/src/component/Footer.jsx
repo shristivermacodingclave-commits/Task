@@ -82,11 +82,11 @@ function Footer() {
 
             {/* footer bottom */}
 
-            <div className="pe-strip p-4">
+            <div className="pe-strip p-5">
                 <p className="pe-strip__line">
                     {year} © <span className="pe-strip__brand">PilotExaminations.com</span> | All Rights Reserved
                 </p>
-                <p className="pe-strip__line">Powered by <span className="pe-strip__brand">PilotExaminations</span></p>
+                <p className="pe-strip__line ">Powered by <span className="pe-strip__brand">PilotExaminations</span></p>
             </div>
         </>
     )
