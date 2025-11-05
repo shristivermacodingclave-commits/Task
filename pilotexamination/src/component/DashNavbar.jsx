@@ -11,7 +11,7 @@ export default function DashNavbar({ onToggleSidebar }) {
   return (
     <Navbar
       bg="white"
-      className="px-3  py-0 position-fixed top-0 start-0 w-100"
+      className="px-3  py-0 position-fixed top-0 start-0 w-100 dashnavbar-box"
       style={{ zIndex: 1050, height: "60px" }}
     >
       <Container fluid className="d-flex align-items-center justify-content-between  dashnavbar" >
@@ -25,9 +25,9 @@ export default function DashNavbar({ onToggleSidebar }) {
         {/* Right: icons (always visible) and hamburger at the end (small screens) */}
         <div className="d-flex align-items-center gap-3">
           <div className="d-flex align-items-center gap-3">
-            <FaSearch className="fs-5 text-dark" />
+            <FaSearch className="fs-5 text-dark details-hover" />
             <div className="position-relative">
-              <FaBell className="fs-5 text-dark" />
+              <FaBell className="fs-5 text-dark details-hover" />
               <span className="badge position-absolute top-0 start-100 translate-middle px-2 ms-1" style={{
                 borderRadius:"50%",
                 backgroundColor:'red'
@@ -47,7 +47,7 @@ export default function DashNavbar({ onToggleSidebar }) {
                 alt="user"
                 style={{ height: "1.8rem", width: "1.8rem", marginRight: ".6rem" }}
               />
-              <span className="fw-semibold">Ashish Sharma</span>
+              <span className="fw-semibold details-hover">Ashish Sharma</span>
             </div>
 
             {/* Dropdown */}

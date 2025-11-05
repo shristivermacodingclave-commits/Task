@@ -19,7 +19,7 @@
 }
 
 
-.active-link {
+.active-link{
   border-right: 4px solid #d6bb15;
   overflow: hidden !important;
   background-image: url(../assets/images/Rectangle\ 12.svg);
@@ -70,4 +70,13 @@
 .nav .nav-link:hover,
 .nav .nav-link:focus {
   text-decoration: none !important;
+}
+
+/* here i have added to reduce the active link problem*/
+
+.nav-link,
+.nav-link.active,
+.active-link {
+  border: none !important;
+  border-right: 4px solid transparent;
 }

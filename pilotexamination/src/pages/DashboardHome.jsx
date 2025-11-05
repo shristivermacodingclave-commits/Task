@@ -1,7 +1,7 @@
 import Carousel from 'react-bootstrap/Carousel';
 import DashBanner from '../component/DashBanner'; 
-import Subject from '../component/Subject';
-import ComboSubject from '../component/ComboSubject';
+import DashSubject from '../component/DashSubject';
+import DashComboSubject from '../component/DashComboSubject';
 import airplane from '../assets/images/airplanflight.png'
 import Button from '../component/Button';
 import './Dashboard.css';
@@ -27,13 +27,13 @@ function DashboardHome() {
             className="mt-4"
           >
             <Carousel.Item>
-              <Subject title="Mathematics" showDescription={false} withSpacing={false} />
+              <DashSubject showDescription={false} withSpacing={false}/>
             </Carousel.Item>
             <Carousel.Item>
-              <Subject title="Science" showDescription={false} withSpacing={false} />
+                <DashSubject showDescription={false} withSpacing={false}/>
             </Carousel.Item>
             <Carousel.Item>
-              <Subject title="English" showDescription={false} withSpacing={false} />
+                <DashSubject showDescription={false} withSpacing={false}/>
             </Carousel.Item>
           </Carousel>
           </div>
@@ -48,10 +48,7 @@ function DashboardHome() {
                <div className="row">
                 <div className="col-sm-4 col-md-4 text-center"></div>
                 <div className="col-sm-4 col-md-4 text-center">
-                  {/* <button  className='btn btn-dark text-white p-2 btn-lg'>
-                 Start Exploring
-               </button> */}
-                <Button name="Start Exploring" className="btn-dark btn-lg px-5" />
+                <Button name="Start Exploring" className="btn-dark btn-lg fs-6 subscribe-button "/>
                 </div>
                 <div className="col-sm-4 col-md-4 text-center">
                    <img src={airplane} alt="airplane"  style={{marginTop:"-25px"}}/>
@@ -66,7 +63,7 @@ function DashboardHome() {
              <h3 className="fw-bold my-2 mb-4">Combo Subjects</h3>
              <hr />
 
-             <ComboSubject withSpacing={false}/>
+             <DashComboSubject withSpacing={false}/>
            </div>
         </div>
 

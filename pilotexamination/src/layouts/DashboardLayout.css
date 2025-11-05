@@ -1,4 +1,4 @@
-.pe-strip {
+/* .pe-strip {
   padding: 15px 12px 25px;
   text-align: center;
   background: #ffffff;
@@ -19,12 +19,10 @@
 
 
 
-
-/* Default Layout (Desktop) */
 .dashboard-main {
-  margin-left: 300px; /* space for sidebar */
-  margin-top: 60px; /* height of navbar */
-  min-height: calc(100vh - 60px);
+  margin-left: 300px; 
+  margin-top: 60px; 
+  min-height: 100%;
   padding: 1rem;
   padding-right: 5rem;
   overflow-x: hidden;
@@ -41,14 +39,94 @@
   }
 
 
-/* Sidebar hidden on smaller screens */
 @media (max-width: 991px) {
   .sidebar {
-    display: none; /* hide sidebar */
+    display: none;
   }
 
   .dashboard-main {
-    margin-left: 0 !important; /* remove left gap */
+    margin-left: 0 !important; 
   }
 }
+ */
 
+/* Layout wrapper */
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Scrollable section */
+.dashboard-body {
+  display: flex;
+  flex: 1;
+  margin-top: 60px; /* navbar height */
+  overflow-y: auto; /* scroll both sidebar + main */
+  overflow-x: hidden;
+  background-color: #f8f9fa;
+}
+
+/* Sidebar column */
+.sidebar {
+  width: 300px;          /* fixed width */
+  flex: 0 0 300px;       /* prevent shrinking or growing */
+  background: #fff;
+  border-right: 1px solid #dee2e6;
+  position: relative;     /* ensure it sits in normal flow */
+  z-index: 2;
+}
+
+/* Main content column */
+.dashboard-main {
+   margin-left: 300px; 
+  margin-top: 60px; 
+  flex: 1;               /* take remaining space */
+  min-width: 0;          /* crucial: prevents flex overflow pushing sidebar */
+  padding: 1rem ;
+  padding-right: 5rem;
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Footer */
+.pe-strip {
+  background: #fff;
+  text-align: center;
+  padding: 15px 12px 25px;
+  font-weight: 500;
+}
+
+.pe-strip__line {
+  margin: 0;
+  color: #9aa0a6;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+}
+
+.pe-strip__brand {
+  color: #9aa0a6;
+}
+
+/* Responsive */
+
+
+ @media(max-width:900px){
+    .dashboard-main{
+     padding-right:0 !important;
+    }  
+  }
+
+
+@media (max-width: 991px) {
+  .sidebar {
+    display: none;
+  }
+
+  .dashboard-main {
+    margin-left: 0 !important; 
+  }
+}

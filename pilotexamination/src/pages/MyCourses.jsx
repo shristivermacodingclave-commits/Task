@@ -1,4 +1,4 @@
-import Subject from "../component/Subject";
+import DashSubject from "../component/DashSubject";
 import Carousel from 'react-bootstrap/Carousel';
 import Button from '../component/Button';
 import airplane from '../assets/images/airplanflight.png'
@@ -17,13 +17,13 @@ function MyCourses() {
             className="mt-4"
           >
             <Carousel.Item>
-              <Subject title="Mathematics" showDescription={false} withSpacing={false} />
+              <DashSubject showDescription={false} withSpacing={false}/>
             </Carousel.Item>
             <Carousel.Item>
-              <Subject title="Science" showDescription={false} withSpacing={false} />
+              <DashSubject showDescription={false} withSpacing={false}/>
             </Carousel.Item>
             <Carousel.Item>
-              <Subject title="English" showDescription={false} withSpacing={false} />
+              <DashSubject showDescription={false} withSpacing={false}/>
             </Carousel.Item>
           </Carousel>
           </div>
@@ -36,7 +36,7 @@ function MyCourses() {
                <div className="row">
                 <div className="col-sm-4 col-md-4 text-center"></div>
                 <div className="col-sm-4 col-md-4 text-center">
-                <Button name="Start Exploring" className="btn-dark btn-lg px-5" />
+                <Button name="Start Exploring" className="btn-dark fs-6 btn-lg subscribe-button" />
                 </div>
                 <div className="col-sm-4 col-md-4 text-center">
                    <img src={airplane} alt="airplane"  style={{marginTop:"-25px"}}/>

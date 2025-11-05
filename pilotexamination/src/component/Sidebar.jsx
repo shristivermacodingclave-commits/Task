@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import userProfile from '../assets/images/default.svg';
 import logout from '../assets/images/logout.svg';
 import {
@@ -7,13 +7,14 @@ import {
   FaUser,
   FaClipboardList,
   FaExclamationTriangle,
-  FaUserCircle,
 } from "react-icons/fa";
 import { MdShoppingBag } from "react-icons/md";
 import { BsBookmarkFill } from "react-icons/bs";
 import "./Sidebar.css";
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const location = useLocation();
+
   const menuItems = [
     { name: "Home", path: "/dashboard", icon: <FaHome /> },
     { name: "My Courses", path: "/dashboard/my-courses", icon: <FaBookOpen /> },
@@ -25,10 +26,17 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: "My Account", path: "/dashboard/my-account", icon: <FaUser /> },
   ];
 
+  // ✅ Proper active check for both index + nested routes
+  const isMenuItemActive = (path) => {
+    if (path === "/dashboard") {
+      return location.pathname === "/dashboard";
+    }
+    return location.pathname === path || location.pathname.startsWith(path + "/");
+  };
 
   const mobileOverlayStyle = {
     position: "fixed",
-    top: "60px",               // start below navbar so navbar remains visible
+    top: "60px",
     left: 0,
     right: 0,
     bottom: 0,
@@ -41,7 +49,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const mobileSidebarWrapper = {
     position: "fixed",
-    top: "60px",               // slide begins below navbar
+    top: "60px",
     left: 0,
     width: "300px",
     height: "calc(100vh - 56px)",
@@ -50,12 +58,11 @@ const Sidebar = ({ isOpen, onClose }) => {
     transform: isOpen ? "translateX(0)" : "translateX(-100%)",
     transition: "transform 300ms cubic-bezier(.2,.9,.2,1)",
     overflowY: "auto",
-    boxShadow: "2px 0 10px rgba(0,0,0,0.08)",
   };
 
   return (
     <>
-      {/* Desktop sidebar (unchanged) */}
+      {/* Desktop sidebar */}
       <div
         className="bg-white position-fixed start-0 d-none d-lg-flex flex-column"
         style={{
@@ -64,40 +71,43 @@ const Sidebar = ({ isOpen, onClose }) => {
           top: "60px",
           overflowY: "auto",
           zIndex: 1,
-          paddingLeft: 1.2 + 'rem',
+          paddingLeft: "1.2rem",
         }}
       >
         <ul className="nav flex-column py-3">
-          {menuItems.map((item) => (
-            <li key={item.name} className="nav-item py-2">
-              <NavLink
-                to={item.path}
-                end
-                className={({ isActive }) =>
-                  `nav-link d-flex align-items-center gap-2 px-4 py-2 ${isActive
-                    ? "bg-light fw-semibold rounded-top-start rounded-bottom-start active-link"
-                    : "text-dark"
-                  }`
-                }
-                style={({ isActive }) => ({
-                  fontSize: "15px"
-                })}
-              >
-                <span style={{ fontSize: "18px" }}>{item.icon}</span>
-                <span>{item.name}</span>
-              </NavLink>
-            </li>
-          ))}
+          {menuItems.map((item) => {
+            const active = isMenuItemActive(item.path);
+
+            return (
+              <li key={item.name} className="nav-item py-2 details-hover">
+                <NavLink
+                  to={item.path}
+                  // ✅ 'end' only for Home route
+                  end={item.path === "/dashboard"}
+                  className={`nav-link d-flex align-items-center gap-2 px-4 py-2 ${
+                    active
+                      ? "bg-light fw-semibold rounded-top-start rounded-bottom-start active-link"
+                      : "text-dark"
+                  }`}
+                  style={{ fontSize: "15px" }}
+                >
+                  <span style={{ fontSize: "18px" }}>{item.icon}</span>
+                  <span>{item.name}</span>
+                </NavLink>
+              </li>
+            );
+          })}
         </ul>
       </div>
-      {/* Mobile overlay (covers content but starts below navbar) */}
+
+      {/* Mobile overlay */}
       <div
         style={mobileOverlayStyle}
         onClick={onClose}
         aria-hidden={!isOpen}
       />
 
-      {/* Mobile sliding sidebar container */}
+      {/* Mobile sidebar */}
       <div
         className="d-lg-none"
         style={mobileSidebarWrapper}
@@ -105,7 +115,6 @@ const Sidebar = ({ isOpen, onClose }) => {
         aria-hidden={!isOpen}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* close button (keeps your styling) */}
         <button
           type="button"
           className="btn-close ms-auto me-2 mt-2"
@@ -114,26 +123,29 @@ const Sidebar = ({ isOpen, onClose }) => {
         />
 
         <ul className="nav flex-column py-3">
-          {menuItems.map((item) => (
-            <li key={item.name} className="nav-item py-2">
-              <NavLink
-                to={item.path}
-                end
-                onClick={onClose}
-                className={({ isActive }) =>
-                  `nav-link d-flex align-items-center gap-2 px-3 py-2 ${isActive ? "fw-semibold text-warning active-link" : "text-dark"
-                  }`
-                }
-                style={{ fontSize: "15px" }}
-              >
-                <span style={{ fontSize: "18px" }}>{item.icon}</span>
-                <span>{item.name}</span>
-              </NavLink>
-            </li>
-          ))}
+          {menuItems.map((item) => {
+            const active = isMenuItemActive(item.path);
+
+            return (
+              <li key={item.name} className="nav-item py-2">
+                <NavLink
+                  to={item.path}
+                  end={item.path === "/dashboard"}
+                  onClick={onClose}
+                  className={`nav-link d-flex align-items-center gap-2 px-3 py-2 ${
+                    active ? "fw-semibold text-warning active-link" : "text-dark"
+                  }`}
+                  style={{ fontSize: "15px" }}
+                >
+                  <span style={{ fontSize: "18px" }}>{item.icon}</span>
+                  <span>{item.name}</span>
+                </NavLink>
+              </li>
+            );
+          })}
         </ul>
 
-        {/* Profile at bottom (mobile only) */}
+        {/* Profile + Logout */}
         <div
           style={{
             marginTop: "auto",
@@ -150,13 +162,9 @@ const Sidebar = ({ isOpen, onClose }) => {
             <span className="fw-semibold">Ashish Sharma</span>
           </div>
 
-          {/* Logout button */}
           <button
             className="btn btn-outline-dark btn-md mt-3 w-100 d-flex align-items-center justify-content-center gap-2"
-            onClick={() => {
-              // handle logout logic here
-              onClose();
-            }}
+            onClick={onClose}
           >
             <img
               src={logout}
@@ -166,12 +174,9 @@ const Sidebar = ({ isOpen, onClose }) => {
             Logout
           </button>
         </div>
-
-
       </div>
     </>
   );
 };
 
 export default Sidebar;
-

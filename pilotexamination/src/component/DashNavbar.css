@@ -10,3 +10,11 @@
    padding-right:2rem !important;
   }  
 }
+
+.dashnavbar-box{
+  background-color: white !important;
+}
+
+.details-hover:hover{
+  color: #ffc107 !important;
+}
