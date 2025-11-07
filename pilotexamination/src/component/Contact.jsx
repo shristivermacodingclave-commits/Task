@@ -3,7 +3,7 @@ import './Contact.css'
 import headset from '../assets/images/headset.svg'
 function Contact() {
     return (
-        <div className="contact-section mt-5 mb-3 container">
+        <div className="contact-section mt-5 mb-3 container mx-auto px-3 px-sm-4 px-md-5 px-lg-6 px-xl-8 px-xxl-10">
             <div className="row" >
                 <div className="col-md-12 col-sm-12 contact-inner">
                     <span>Contact Details</span>

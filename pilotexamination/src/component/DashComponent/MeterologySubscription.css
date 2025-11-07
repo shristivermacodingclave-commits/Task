@@ -1,0 +1,75 @@
+.plan-card {
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  transition: all 0.3s ease;
+  min-height: 130px;
+}
+
+.plan-card:hover {
+  border-color: #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.plan-card.active{
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.short-card {
+  min-height: 100px !important;
+}
+
+/* Radio styling */
+.plan-radio {
+  width: 20px;
+  height: 20px;
+  accent-color: #000;
+}
+
+/* Coupon input/button alignment */
+.coupon-row {
+  display: flex;
+  align-items: center;
+}
+
+.coupon-input {
+  border: 1px solid #000 !important;
+  padding: 0.7rem !important;
+}
+
+.coupon-btn {
+  padding: 0.7rem !important;
+}
+
+@media (max-width: 768px) {
+  .coupon-row {
+    flex-wrap: nowrap;
+  }
+
+  .coupon-input,
+  .coupon-btn {
+    font-size: 0.9rem;
+  }
+}
+
+.plan-wrapper {
+  position: relative;
+}
+
+/* Recommended badge */
+.recommended-badge {
+  position: absolute;
+  top: -14px;
+  left: 40%;
+  border:1px solid black;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  z-index:1;
+  background-color: #ffffff;
+}
+.coupon-card:hover{
+    transition: 0.5s;
+    box-shadow: 0px 2px 21px #E8E8E8;
+}

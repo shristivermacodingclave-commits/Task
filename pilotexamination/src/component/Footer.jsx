@@ -1,8 +1,9 @@
 import React from 'react'
 import './Footer.css'
 import footerlogo from '../assets/images/footer-logo.svg'
+import SubFooter from './SubFooter';
 function Footer() {
-     const year = new Date().getFullYear();
+    
     return (
         <>
             <footer className="pe-footer">
@@ -79,15 +80,8 @@ function Footer() {
                     </div>
                 </div>
             </footer>
-
-            {/* footer bottom */}
-
-            <div className="pe-strip p-5">
-                <p className="pe-strip__line">
-                    {year} © <span className="pe-strip__brand">PilotExaminations.com</span> | All Rights Reserved
-                </p>
-                <p className="pe-strip__line ">Powered by <span className="pe-strip__brand">PilotExaminations</span></p>
-            </div>
+        <SubFooter/>
+           
         </>
     )
 }

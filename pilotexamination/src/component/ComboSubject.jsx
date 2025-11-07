@@ -7,7 +7,7 @@ function ComboSubject({title , withSpacing = true}) {
     const [showLogin, setShowLogin] = useState(false);
     return (
         <>
-        <div className={`${withSpacing ? "container combo-subject-section " : "container-fluid combo-subject-section mt-0 pt-0"}`}>
+        <div className={`${withSpacing ? "container mx-auto px-3 px-sm-4 px-md-5 px-lg-6 px-xl-8 px-xxl-10 combo-subject-section " : "container-fluid combo-subject-section mt-0 pt-0"}`}>
             {title && <h1 className='fw-bold main-title '>{title}</h1>}
             <div className="combo-subjects green-border mt-5">
                 <div className="green-bg">
@@ -31,7 +31,7 @@ function ComboSubject({title , withSpacing = true}) {
                     </div>
                 </div>
                 {/* combosubject data */}
-                <div className='row inner-combo-section'>
+                <div className='row  inner-combo-section'>
                     <div className="">
                         <div className="row">
                             {subjectCards.map((subject) => (

@@ -5,11 +5,19 @@ import { DashSubjects } from '../assets/DashSubjects';
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
 import Button from '../component/Button';
+import { useNavigate } from 'react-router-dom';
 
 function Subject({ title, subtitle, showDescription = true, withSpacing = true }) {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const toggleModal = () => setShowRegister(!showRegister);
+
+  const navigate = useNavigate();
+
+  const goToPlans = (path) => {
+    navigate(path); 
+  };
+
     return (
         <>
             <div className={`${withSpacing ? "container subject-section " : "container-fluid subject-section mt-0 pt-0"}`}>
@@ -55,7 +63,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                     ⚡ Prices Starting at just ₹{subject.price}
                                 </p>
 
-                                <Button name="Enroll Now" className='btn-dark fs-6 form-control mb-2 subscribe-button' />
+                                <Button name="Enroll Now" className='btn-dark fs-6 form-control mb-2 subscribe-button' onClick={()=>goToPlans(subject.planPath)}/>
                                 <button className="btn btn-link w-100 details-hover"
                                   onClick={()=>setShowLogin(true)} style={{color:"black" , fontWeight:"500"}}>Take Demo MockTest</button>
                                 </div>
