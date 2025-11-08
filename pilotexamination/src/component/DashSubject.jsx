@@ -6,6 +6,7 @@ import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
 import Button from '../component/Button';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Subject({ title, subtitle, showDescription = true, withSpacing = true }) {
     const [showLogin, setShowLogin] = useState(false);
@@ -48,7 +49,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                     <div className="subject-topics">
                                         <div className="row mb-2" >
                                             <div className="col-md-6"><h6>Topic Covered</h6></div>
-                                            <div className="col-md-6 text-end"><a href="#" style={{ color: "black", fontWeight: "bold" }} className='details-hover'>View Details</a></div>
+                                            <div className="col-md-6 text-end"><Link to="atg-plans" style={{ color: "black", fontWeight: "bold" }} className='details-hover'>View Details</Link></div>
                                         </div>
                                         <ul>
                                             {subject.topics.map((topic, i) => (

@@ -21,7 +21,6 @@ function LoginModal({ show, handleClose }) {
         alert('login successful');
         handleClose();
         navigate('/home');
-      
      
     } catch (error) {
       console.error('Login failed:', error);
@@ -80,10 +79,7 @@ function LoginModal({ show, handleClose }) {
             </a>
             <br />
             <br />
-            {/* <button className="btn btn-dark me-md-2 p-2" type="submit">
-              Login
-            </button> */}
-            
+      
             <Button name="Login" className="btn-dark text-light"/>
 
           </form>

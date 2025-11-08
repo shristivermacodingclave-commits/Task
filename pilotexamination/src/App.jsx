@@ -15,9 +15,10 @@ import Account from './pages/Account.jsx';
 import MeteorologySubscription from './component/DashComponent/MeterologySubscription.jsx';
 import RegulationSubscription from './component/DashComponent/RegulationSubscription.jsx';
 import NavigationSubscription from './component/DashComponent/NavigationSubscription.jsx';
-import SubFooter from './component/SubFooter.jsx';
 import info from './assets/images/info.svg';
 import MainLayout from './layouts/MainLayout.jsx';
+import AtgPlan from './component/MyCourseCoponent/AtgPlan.jsx';
+import MyCourseLayout from './layouts/MyCourseLayout.jsx';
 
 
 function InfoText({ title, text }) {
@@ -62,7 +63,16 @@ function App() {
         {/* ---------- Dashboard Routes ---------- */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardHome />} />
-          <Route path="my-courses" element={<MyCourses />} />
+          {/* <Route path="my-courses" element={<MyCourses />} >
+            <Route index element={<Navigate to="atg-plans" replace />} />
+            <Route path="atg-plans" element={<AtgPlan />} />
+          </Route> */}
+
+          <Route path="my-courses" element={<MyCourseLayout />}>
+            <Route index element={<MyCourses />} />
+            <Route path="atg-plans" element={<AtgPlan />} />
+          </Route>
+
           <Route path="my-orders" element={<MyOrders />} />
           <Route path="explore-courses" element={<ExploreCourses />} />
 
@@ -118,15 +128,12 @@ function App() {
 
         {/* ---------- Subscription Route ---------- */}
 
-        <Route path='/plans' element={<MainLayout/>}>
-        <Route path="meterologyplans" element={<MeteorologySubscription />} />
-        <Route path="regulationplans" element={<RegulationSubscription />} />
-        <Route path="navigationplans" element={<NavigationSubscription />} />
+        <Route path='/plans' element={<MainLayout />}>
+          <Route path="meterologyplans" element={<MeteorologySubscription />} />
+          <Route path="regulationplans" element={<RegulationSubscription />} />
+          <Route path="navigationplans" element={<NavigationSubscription />} />
         </Route>
       </Routes>
-
-      {/* Footer (disabled for now) */}
-      {/* {!hideFooter && <SubFooter />} */}
     </>
   );
 }
