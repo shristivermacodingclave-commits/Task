@@ -3,12 +3,12 @@ import './AtgPlan.css'
 import Button from '../../component/Button'
 import lock from '../../assets/images/lock.svg'
 import lockpad from '../../assets/images/lock-pad.svg'
-import ATGlogo from '../../assets/images/ATGLogo.png'
+import RegLogo from '../../assets/images/AirReg.svg'
 
 const COURSE = {
-    title: "Aircraft Technical General (ATG)",
+    title: "Air Regulation",
     description:
-        "Technical General is important to help you understand the mechanics of flying. The principles of flight are one of the most important topics that every student should know. The subject of Technical General is moreover, important to understand the workings of flying.",
+        "Air Regulation",
     stats: [
         { label: "Topics Covered", value: 59 },
         { label: "Questions", value: 3692 },
@@ -27,7 +27,7 @@ const COURSE = {
     })),
 };
 
-export default function AtgPlan() {
+export default function RegulationPlan() {
     const [activeTab, setActiveTab] = useState(0);
     const tabItems = useMemo(() => COURSE.tabs, []);
 
@@ -38,13 +38,13 @@ export default function AtgPlan() {
             <div className="container-fluid pb-3">
                 <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
                     {/* === Top Row === */}
-                    <div className="py-4" style={{ backgroundColor: "#bcd6ff" }}>
+                    <div className="py-4" style={{ backgroundColor: "#fefff2" }}>
                         <div className="container-fluid">
                             <div className="row align-items-center">
                                 {/* Left Column (Logo) */}
                                 <div className="col-md-2 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
                                     <img
-                                        src={ATGlogo}
+                                        src={RegLogo}
                                         alt="ATGlogo"
                                         style={{ height: "100px", width: "200px", objectFit: "contain" }}
                                     />
@@ -60,7 +60,7 @@ export default function AtgPlan() {
                     </div>
 
                     {/* === Bottom Row === */}
-                    <div className="py-4" style={{ backgroundColor: "#e1e7fd", minHeight: "130px" }}>
+                    <div className="py-4" style={{ backgroundColor: "#f5f6e2", minHeight: "130px" }}>
                         <div className="container-fluid">
                             <div className="row align-items-center">
                                 {/* Left Column (Empty) */}
@@ -176,7 +176,7 @@ export default function AtgPlan() {
                 </div>
             </div>
 
-            <div className="container my-5">
+            <div className="container-fluid my-5">
 
                 <div className="card border-0 mb-4 atg-plans-card">
                     <div className="card-body d-flex flex-column justify-content-center align-items-center text-center py-4">

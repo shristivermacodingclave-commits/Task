@@ -1,3 +1,4 @@
+
 export const DashSubjects = [
   {
     id: 1,
@@ -5,7 +6,8 @@ export const DashSubjects = [
     icon: "https://cdn-icons-png.flaticon.com/512/414/414974.png",
     bg_color: "#F1EDFF",
     color: "#ebe6ff",
-    planPath: "/plans/meterologyplans",
+    viewDetailPath: "/dashboard/my-courses/atg-plans",
+    enrollplanPath: "/plans/meterologyplans",
     topics: ["Atmosphere", "Atmosphere Pressure", "Temperature", "+17 more topics..."],
     price: 799,
   },
@@ -13,9 +15,10 @@ export const DashSubjects = [
     id: 2,
     name: "Air Regulation",
     icon: "https://cdn-icons-png.flaticon.com/512/1792/1792864.png",
-     bg_color: "#FAFBE7",
+    bg_color: "#FAFBE7",
     color: "#e9f7e5",
-    planPath: "/plans/regulationplans",
+    viewDetailPath: "/dashboard/my-courses/reg-plans",
+    enrollplanPath: "/plans/regulationplans",
     topics: ["International Organi", "Aircraft Nationality", "Rules of the Air", "+19 more topics..."],
     price: 799,
   },
@@ -23,11 +26,47 @@ export const DashSubjects = [
     id: 3,
     name: "Air Navigation",
     icon: "https://cdn-icons-png.flaticon.com/512/2933/2933245.png",
-    bg_color: "#FFF3E5", 
+    bg_color: "#FFF3E5",
     color: "#fff1e5",
-    planPath: "/plans/navigationplans",
+    viewDetailPath: "/dashboard/my-courses/neg-plans",
+    enrollplanPath: "/plans/navigationplans",
     topics: ["The Earth & Directio", "Great Circles, Rhumb", "Earth Magnetism", "+55 more topics..."],
     price: 999,
   },
-  
+
+  // ---- New Subjects from the uploaded image ----
+  {
+    id: 4,
+    name: "Aircraft Technical General (ATG)",
+    icon: "https://cdn-icons-png.flaticon.com/512/1127/1127760.png",
+    bg_color: "#EAF0FF",
+    color: "#e1e7ff",
+    viewDetailPath: "/dashboard/my-courses/atg-plans",
+    enrollplanPath: "/plans/atgplans",
+    topics: ["Basic", "Lift", "Drag", "+56 more topics..."],
+    price: 999,
+  },
+  {
+    id: 5,
+    name: "Aircraft Technical Specific",
+    icon: "https://cdn-icons-png.flaticon.com/512/1515/1515350.png",
+    bg_color: "#FFF9ED",
+    color: "#fff6e5",
+    viewDetailPath: "/dashboard/my-courses/specific-plans",
+    enrollplanPath: "/plans/specificplans",
+    topics: ["Cessna 172"],
+    price: 0,
+  },
+  {
+    id: 6,
+    name: "Technical Specific",
+    icon: "https://cdn-icons-png.flaticon.com/512/747/747476.png",
+    bg_color: "#FBEAEA",
+    color: "#fceaea",
+    viewDetailPath: "/dashboard/my-courses/techspecific-plans",
+    enrollplanPath: "/plans/techspecificplans",
+    topics: ["Cessna 172R", "Cessna 152", "Piper Seneca PA-34", "+11 more topics..."],
+    price: 0,
+  },
 ];
+

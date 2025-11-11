@@ -12,4 +12,5 @@
 .signup-button:hover {
         background-color:#ffc107; 
         border-color: #ffc107;
+        color:black !important;
     }

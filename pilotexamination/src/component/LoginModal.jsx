@@ -1,29 +1,43 @@
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
-import Button from '../component/Button'
-
+import { useNavigate } from 'react-router-dom';
+import Button from '../component/Button';
 
 function LoginModal({ show, handleClose }) {
-  //  state for password toggle
   const [showPassword, setShowPassword] = useState(false);
-  
-  // login logic
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:8000/user/login', { email, password });
-        alert('login successful');
+      const response = await axios.post(
+        'https://development.pilotexaminations.com/api/login_1',
+        { email, password }
+      );
+
+      const { error, token, message, data } = response.data;
+
+      if (!error && token) {
+        //Save token in localStorage
+        localStorage.setItem('token', token);
+
+        // (Optional) Save user info for display
+        // localStorage.setItem('user', JSON.stringify(data));
+
+        alert('Login successful!');
         handleClose();
-        navigate('/home');
-     
+
+        // ✅ Redirect to dashboard
+        navigate('/dashboard');
+      } else {
+        alert(message || 'Invalid credentials!');
+      }
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Login failed:', error.response?.data || error.message);
       alert('Invalid credentials!');
     }
   };
@@ -44,8 +58,15 @@ function LoginModal({ show, handleClose }) {
             </a>
           </p>
 
-          <form  onSubmit={handleLogin}>
-            <input type="email" placeholder="Email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} required/>
+          <form onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email"
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
             <br />
 
             {/* Password Input with Toggle */}
@@ -55,7 +76,7 @@ function LoginModal({ show, handleClose }) {
                 placeholder="Password"
                 className="form-control"
                 value={password}
-                onChange={(e)=>setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <i
@@ -79,9 +100,8 @@ function LoginModal({ show, handleClose }) {
             </a>
             <br />
             <br />
-      
-            <Button name="Login" className="btn-dark text-light"/>
 
+            <Button name="Login" className="btn-dark text-light" />
           </form>
         </Modal.Body>
 
@@ -94,10 +114,7 @@ function LoginModal({ show, handleClose }) {
                 pilotexamination@gmail.com
               </a>{' '}
               Or call{' '}
-              <a
-                href="#"
-                style={{ color: 'black', textDecoration: 'none' }}
-              >
+              <a href="#" style={{ color: 'black', textDecoration: 'none' }}>
                 +91-8447814070
               </a>
             </p>
@@ -109,3 +126,4 @@ function LoginModal({ show, handleClose }) {
 }
 
 export default LoginModal;
+

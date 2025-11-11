@@ -38,7 +38,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                         className="subject-header py-4"
                                         style={{ backgroundColor: subject.bg_color }}
                                     >
-                                        <h4 lassName="subject-title">{subject.name}</h4>
+                                        <h4 className="subject-title">{subject.name}</h4>
                                         <img
                                             src={subject.icon}
                                             alt={subject.name}
@@ -49,7 +49,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                     <div className="subject-topics">
                                         <div className="row mb-2" >
                                             <div className="col-md-6"><h6>Topic Covered</h6></div>
-                                            <div className="col-md-6 text-end"><Link to="atg-plans" style={{ color: "black", fontWeight: "bold" }} className='details-hover'>View Details</Link></div>
+                                            <div className="col-md-6 text-end"><Link to={subject.viewDetailPath} style={{ color: "black", fontWeight: "bold" }} className='details-hover'>View Details</Link></div>
                                         </div>
                                         <ul>
                                             {subject.topics.map((topic, i) => (
@@ -64,7 +64,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                     ⚡ Prices Starting at just ₹{subject.price}
                                 </p>
 
-                                <Button name="Enroll Now" className='btn-dark fs-6 form-control mb-2 subscribe-button' onClick={()=>goToPlans(subject.planPath)}/>
+                                <Button name="Enroll Now" className='btn-dark fs-6 form-control mb-2 subscribe-button' onClick={()=>goToPlans(subject.enrollplanPath)}/>
                                 <button className="btn btn-link w-100 details-hover"
                                   onClick={()=>setShowLogin(true)} style={{color:"black" , fontWeight:"500"}}>Take Demo MockTest</button>
                                 </div>

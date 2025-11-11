@@ -18,6 +18,8 @@ import NavigationSubscription from './component/DashComponent/NavigationSubscrip
 import info from './assets/images/info.svg';
 import MainLayout from './layouts/MainLayout.jsx';
 import AtgPlan from './component/MyCourseCoponent/AtgPlan.jsx';
+import NavigationPlan from './component/MyCourseCoponent/NavigationPlan.jsx'
+import RegulationPlan from './component/MyCourseCoponent/RegulationPlan.jsx'
 import MyCourseLayout from './layouts/MyCourseLayout.jsx';
 
 
@@ -70,7 +72,9 @@ function App() {
 
           <Route path="my-courses" element={<MyCourseLayout />}>
             <Route index element={<MyCourses />} />
-            <Route path="atg-plans" element={<AtgPlan />} />
+            <Route path="atg-plans" element={<AtgPlan/>} />
+              <Route path="reg-plans" element={<RegulationPlan/>} />
+               <Route path="neg-plans" element={< NavigationPlan/>} />
           </Route>
 
           <Route path="my-orders" element={<MyOrders />} />
