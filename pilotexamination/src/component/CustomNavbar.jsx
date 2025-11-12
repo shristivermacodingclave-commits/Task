@@ -36,8 +36,8 @@ function CustomNavbar() {
 
           <div className="collapse navbar-collapse" id="mainNav">
             <div className="ms-auto d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-4">
-              <Button name="Login" onClick={()=>{setShow(true);}} className="btn-light text-dark"/>
-              <Button name="Sign Up" onClick={()=>{setShowRegister(true)}} className="btn-dark text-light"/>
+              <Button name="Login" onClick={()=>{setShow(true);}} className="btn-light text-dark fs-6"/>
+              <Button name="Sign Up" onClick={()=>{setShowRegister(true)}} className="btn-dark text-light fs-6"/>
             </div>
           </div>
         </div>

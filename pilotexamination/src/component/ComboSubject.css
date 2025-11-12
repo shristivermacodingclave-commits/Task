@@ -1,9 +1,14 @@
 .main-title {
-  font-size: 3rem !important;
+  font-size: 3rem;
   font-weight: bold;
 }
 
 
+@media (max-width: 900px) {
+  .combo-subject-section .main-title {
+    font-size: 2rem !important;
+  }
+}
 
 .sub-title
 {

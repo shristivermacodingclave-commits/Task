@@ -45,3 +45,19 @@
   color:var(--link-color);
 }
 
+.subject-icon{
+    border-radius: 12px;
+}
+
+.subject-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.subject-footer {
+  margin-top: auto;
+}
+
+

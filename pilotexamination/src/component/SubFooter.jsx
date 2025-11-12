@@ -3,7 +3,7 @@ import './SubFooter.css'
 function SubFooter() {
     const year = new Date().getFullYear();
   return (  
-            <div className="pe-strip p-5">
+            <div className="pe-strip p-4">
                 <p className="pe-strip__line">
                     {year} © <span className="pe-strip__brand">PilotExaminations.com</span> | All Rights Reserved
                 </p>
