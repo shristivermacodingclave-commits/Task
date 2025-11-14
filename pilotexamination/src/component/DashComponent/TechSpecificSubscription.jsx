@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Button from "../../component/Button";
+import Button from "../Button";
 import meterology from "../../assets/images/Meterology.png";
+import regulation from '../../assets/images/Regulations.png'
 import "./MeterologySubscription.css"; // external CSS
 
-function MeteorologySubscription() {
+function RegulationSubscription() {
   const [selected, setSelected] = useState("12");
 
   const plans = [
@@ -66,13 +67,13 @@ function MeteorologySubscription() {
         <div className="col-md-4">
           <div className="card border-0 shadow-sm rounded-4 h-100">
             <img
-              src={meterology}
+              src={regulation}
               className="card-img-top rounded-top-4"
               alt="Air Meteorology"
               style={{ height: "200px" }}
             />
             <div className="card-body">
-              <h3 className="card-title my-3">Air Meteorology</h3>
+              <h3 className="card-title my-3">Air Regulation</h3>
               <ul className="mb-0 ps-3 small fs-5">
                 <li>Atmosphere</li>
                 <li>Atmosphere Pressure</li>
@@ -172,4 +173,4 @@ function MeteorologySubscription() {
   );
 }
 
-export default MeteorologySubscription;
+export default RegulationSubscription;

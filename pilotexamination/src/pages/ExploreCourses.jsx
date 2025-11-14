@@ -1,5 +1,6 @@
 import ComboSubject from "../component/ComboSubject";
 import DashSubject from "../component/DashSubject";
+import DashComboSubject from "../component/DashComboSubject"
 function ExploreCourses() {
   return (
     <div className="container-fluid">
@@ -9,7 +10,8 @@ function ExploreCourses() {
 
       <h3 className="fw-bold my-2 mb-4 mt-4">Combo Subjects</h3>
       <hr />
-      <ComboSubject withSpacing={false} />
+      {/* <ComboSubject withSpacing={false} /> */}
+      <DashComboSubject withSpacing={false}/>
     </div>
   );
 }

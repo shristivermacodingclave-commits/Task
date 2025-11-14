@@ -25,13 +25,13 @@ function LoginModal({ show, handleClose }) {
         //Save token in localStorage
         localStorage.setItem('token', token);
 
-        // (Optional) Save user info for display
-        // localStorage.setItem('user', JSON.stringify(data));
+        //  Save user info for display
+        localStorage.setItem('user', JSON.stringify(data));
 
         alert('Login successful!');
         handleClose();
 
-        // ✅ Redirect to dashboard
+        //Redirect to dashboard
         navigate('/dashboard');
       } else {
         alert(message || 'Invalid credentials!');

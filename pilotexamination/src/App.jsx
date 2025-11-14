@@ -20,6 +20,8 @@ import MainLayout from './layouts/MainLayout.jsx';
 import AtgPlan from './component/MyCourseCoponent/AtgPlan.jsx';
 import NavigationPlan from './component/MyCourseCoponent/NavigationPlan.jsx'
 import RegulationPlan from './component/MyCourseCoponent/RegulationPlan.jsx'
+import ATSPlan from './component/MyCourseCoponent/ATSPlan.jsx'
+import MetereologyPlan from './component/MyCourseCoponent/MetereologyPlan.jsx'
 import MyCourseLayout from './layouts/MyCourseLayout.jsx';
 
 
@@ -41,6 +43,18 @@ function InfoText({ title, text }) {
 
 function App() {
   const location = useLocation();
+
+  //  Block access if user not logged in
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+
+  // if no token or user, only allow home routes
+  if (!token || !user) {
+    // if user tries to open anything other than home -> redirect
+    if (location.pathname !== "/" && location.pathname !== "/home") {
+      return <Navigate to="/home" replace />;
+    }
+  }
 
   const hideNavbar =
     location.pathname === '/' ||
@@ -65,16 +79,13 @@ function App() {
         {/* ---------- Dashboard Routes ---------- */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardHome />} />
-          {/* <Route path="my-courses" element={<MyCourses />} >
-            <Route index element={<Navigate to="atg-plans" replace />} />
-            <Route path="atg-plans" element={<AtgPlan />} />
-          </Route> */}
-
           <Route path="my-courses" element={<MyCourseLayout />}>
             <Route index element={<MyCourses />} />
-            <Route path="atg-plans" element={<AtgPlan/>} />
-              <Route path="reg-plans" element={<RegulationPlan/>} />
-               <Route path="neg-plans" element={< NavigationPlan/>} />
+            <Route path="atg-plans" element={<AtgPlan />} />
+            <Route path="reg-plans" element={<RegulationPlan />} />
+            <Route path="neg-plans" element={<NavigationPlan />} />
+            <Route path="ats-plans" element={<ATSPlan />} />
+            <Route path="metereology-plans" element={<MetereologyPlan />} />
           </Route>
 
           <Route path="my-orders" element={<MyOrders />} />
@@ -112,9 +123,7 @@ function App() {
             />
           </Route>
 
-          {/* ---------- Save List ---------- */}
           <Route path="save-list" element={<SaveList />} />
-
           {/* ---------- Reported Questions ---------- */}
           <Route path="reported-question" element={<ReportedQuestion />}>
             <Route path="index" element={''} />
@@ -122,17 +131,17 @@ function App() {
             <Route path="under-review" element={''} />
           </Route>
 
-          {/* ---------- Account ---------- */}
+
           <Route path="my-account" element={<Account />}>
             <Route index element={<Navigate to="index" replace />} />
             <Route path="index" element={''} />
             <Route path="change-password" element={''} />
           </Route>
+
         </Route>
 
         {/* ---------- Subscription Route ---------- */}
-
-        <Route path='/plans' element={<MainLayout />}>
+        <Route path="/plans" element={<MainLayout />}>
           <Route path="meterologyplans" element={<MeteorologySubscription />} />
           <Route path="regulationplans" element={<RegulationSubscription />} />
           <Route path="navigationplans" element={<NavigationSubscription />} />

@@ -9,7 +9,7 @@ function DashBanner({ dashtitle }) {
         
         {/* Left Column */}
         <div className="col-md-7 col-12 left-content">
-          <p className="user-name mb-2">Hi Ashish Sharma,</p>
+          <p className="user-name mb-2">Hi&nbsp;{dashtitle},</p>
           <h2 className="welcome-text mb-1" style={{ fontWeight: '500' }}>
             Welcome to PilotExaminations
           </h2>

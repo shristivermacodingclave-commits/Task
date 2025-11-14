@@ -352,7 +352,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                             className="subject-header py-4"
                                             style={{ backgroundColor: subject.title_color || '#f9f9f9' }}
                                         >
-                                            <h4 className="subject-title" style={{fontSize: "1.5rem", fontWeight:"normal"}}>{subject.subject_name}</h4>
+                                            <h4 className="subject-title" style={{fontSize: "1.5rem", fontWeight:"normal" , color:"black"}}>{subject.subject_name}</h4>
                                             <img
                                                 src={subject.icon}
                                                 alt={subject.subject_name}
