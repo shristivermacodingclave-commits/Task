@@ -9,13 +9,14 @@ import ExploreCourses from './pages/ExploreCourses';
 import Results from './pages/Results';
 import SaveList from './pages/SaveList';
 import ReportedQuestion from './pages/ReportedQuestion';
-import Sidebar from './component/Sidebar.jsx';
 import DashboardLayout from './layouts/DashboardLayout.jsx';
 import Account from './pages/Account.jsx';
 import MeteorologySubscription from './component/DashComponent/MeterologySubscription.jsx';
 import RegulationSubscription from './component/DashComponent/RegulationSubscription.jsx';
 import NavigationSubscription from './component/DashComponent/NavigationSubscription.jsx';
-import info from './assets/images/info.svg';
+import AtgSubscription from './component/DashComponent/AtgSubscription.jsx';
+import AtsSubscription from './component/DashComponent/AtsSubscription.jsx';
+import ComboSubjectSuscription from './component/DashComponent/ComboSubjectSuscription.jsx';
 import MainLayout from './layouts/MainLayout.jsx';
 import AtgPlan from './component/MyCourseCoponent/AtgPlan.jsx';
 import NavigationPlan from './component/MyCourseCoponent/NavigationPlan.jsx'
@@ -23,23 +24,11 @@ import RegulationPlan from './component/MyCourseCoponent/RegulationPlan.jsx'
 import ATSPlan from './component/MyCourseCoponent/ATSPlan.jsx'
 import MetereologyPlan from './component/MyCourseCoponent/MetereologyPlan.jsx'
 import MyCourseLayout from './layouts/MyCourseLayout.jsx';
-
-
-function InfoText({ title, text }) {
-  return (
-    <div className="col-md-12 ps-4 pb-5 mt-3">
-      <p className="position-relative" style={{ paddingLeft: '2rem' }}>
-        <img
-          src={info}
-          alt="info"
-          className="position-absolute"
-          style={{ left: '0rem' }}
-        />
-        <b>{title}</b>&nbsp;{text}
-      </p>
-    </div>
-  );
-}
+import Etest from './component/ResultComponent/Etest.jsx';
+import PracticeTest from './component/ResultComponent/PracticeTest.jsx';
+import MockTest from './component/ResultComponent/MockTest.jsx';
+import PlanEtest from './pages/PlanEtest.jsx';
+import EtestAttempt from './pages/EtestAttempt.jsx';
 
 function App() {
   const location = useLocation();
@@ -86,6 +75,7 @@ function App() {
             <Route path="neg-plans" element={<NavigationPlan />} />
             <Route path="ats-plans" element={<ATSPlan />} />
             <Route path="metereology-plans" element={<MetereologyPlan />} />
+            <Route path="e-test/:planId" element={<PlanEtest />} />
           </Route>
 
           <Route path="my-orders" element={<MyOrders />} />
@@ -94,33 +84,9 @@ function App() {
           {/* ---------- Results Routes ---------- */}
           <Route path="results" element={<Results />}>
             <Route index element={<Navigate to="index" replace />} />
-            <Route
-              path="index"
-              element={
-                <InfoText
-                  title="E-tests"
-                  text="are topic wise test from each subject"
-                />
-              }
-            />
-            <Route
-              path="practice-test"
-              element={
-                <InfoText
-                  title="Practice Test"
-                  text="are topic wise test from each subject"
-                />
-              }
-            />
-            <Route
-              path="mock-test"
-              element={
-                <InfoText
-                  title="Mock-Test"
-                  text="are topic wise test from each subject"
-                />
-              }
-            />
+            <Route path="index" element={<Etest/>} />
+            <Route path="practice-test" element={<PracticeTest/>} />
+            <Route path="mock-test" element={<MockTest />} />
           </Route>
 
           <Route path="save-list" element={<SaveList />} />
@@ -142,9 +108,17 @@ function App() {
 
         {/* ---------- Subscription Route ---------- */}
         <Route path="/plans" element={<MainLayout />}>
-          <Route path="meterologyplans" element={<MeteorologySubscription />} />
-          <Route path="regulationplans" element={<RegulationSubscription />} />
-          <Route path="navigationplans" element={<NavigationSubscription />} />
+          <Route path="meterology" element={<MeteorologySubscription />} />
+          <Route path="regulation" element={<RegulationSubscription />} />
+          <Route path="navigation" element={<NavigationSubscription />} />
+           <Route path="atg" element={<AtgSubscription />} />
+            <Route path="ats" element={<AtsSubscription />} />
+              <Route path="combo-subject" element={<ComboSubjectSuscription />} />
+        </Route>
+
+        {/* ---------- Public E-Test Attempt Route ---------- */}
+        <Route path="/test_question" element={<MainLayout />}>
+          <Route index element={<EtestAttempt />} />
         </Route>
       </Routes>
     </>

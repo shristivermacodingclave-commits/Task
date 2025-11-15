@@ -5,6 +5,7 @@ import { FaHome } from "react-icons/fa";
 const DashboardHeader = () => {
   const location = useLocation();
   const path = location.pathname.split("/").filter(Boolean);
+  const locationState = location.state || {};
 
   // Helper: format like "my-orders" → "My Orders"
   const formatName = (name) =>
@@ -20,6 +21,29 @@ const DashboardHeader = () => {
     };
   });
 
+  const filteredItems = breadcrumbItems.filter(
+    (b) => b.name.toLowerCase() !== "dashboard"
+  );
+
+  let displayItems = filteredItems;
+
+  const isPlanEtestRoute = location.pathname.includes(
+    "/dashboard/my-courses/e-test"
+  );
+
+  if (isPlanEtestRoute && locationState.subject && locationState.topic) {
+    displayItems = filteredItems.filter((item, index) => {
+      const lower = item.name.toLowerCase();
+      const isLast = index === filteredItems.length - 1;
+      return lower !== "e test" && !isLast;
+    });
+
+    displayItems.push(
+      { name: locationState.subject, path: null },
+      { name: locationState.topic, path: null }
+    );
+  }
+
   return (
     <div className="mb-2 ms-3">
       <div className="d-flex align-items-center text-muted small mb-1">
@@ -32,26 +56,29 @@ const DashboardHeader = () => {
         </Link>
 
         {/* Dynamically render breadcrumb trail */}
-        {breadcrumbItems
-          .filter((b) => b.name.toLowerCase() !== "dashboard") // skip 'dashboard'
-          .map((b, idx) => (
-            <React.Fragment key={b.path}>
+        {displayItems.map((item, idx) => {
+          const isLast = idx === displayItems.length - 1;
+          const isClickable = item.path && !isLast;
+
+          return (
+            <React.Fragment key={`${item.path || item.name}-${idx}`}>
               <span className="mx-1 fs-5">&gt;</span>
-              {idx === breadcrumbItems.length - 2 ? (
-                // Middle levels (clickable)
-                <Link to={b.path} className="text-dark text-decoration-none fs-6">
-                  {b.name}
+              {isClickable ? (
+                <Link
+                  to={item.path}
+                  className="text-dark text-decoration-none fs-6"
+                >
+                  {item.name}
                 </Link>
               ) : (
-                // Last item (not clickable)
-                <span className="fs-6">{b.name}</span>
+                <span className="fs-6">{item.name}</span>
               )}
             </React.Fragment>
-          ))}
+          );
+        })}
       </div>
     </div>
   );
 };
 
 export default DashboardHeader;
-

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './ComboSubject.css';
 import axios from 'axios';
-import LoginModal from './LoginModal';
+import Loader from './Loader';
+import { useNavigate } from 'react-router-dom';
 
 function ComboSubject({ title, withSpacing = true }) {
-    const [showLogin, setShowLogin] = useState(false);
     const [subjects, setSubjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const BASE_URL = 'http://development.pilotexaminations.com/';
 
@@ -27,7 +28,7 @@ function ComboSubject({ title, withSpacing = true }) {
             .finally(() => setLoading(false));
     }, []);
 
-    if (loading) return <p className="text-center py-5">Loading combo subjects...</p>;
+    if (loading) return <Loader message="Loading combo subjects..." />;
     if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
     return (
@@ -53,7 +54,7 @@ function ComboSubject({ title, withSpacing = true }) {
 
                                 <button
                                     className='btn btn-warning black-btn mt-2 form-control'
-                                    onClick={() => setShowLogin(true)}
+                                    onClick={() => navigate("/plans/combo-subject")}
                                 >
                                     Subscribe Now
                                 </button>
@@ -107,8 +108,6 @@ function ComboSubject({ title, withSpacing = true }) {
                 </div>
             </div>
 
-            {/* ===== Modal ===== */}
-            <LoginModal show={showLogin} handleClose={() => setShowLogin(false)} />
         </>
     );
 }

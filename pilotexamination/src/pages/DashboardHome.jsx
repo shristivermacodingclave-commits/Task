@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import axios from "axios";
 import { subjectPaths } from "../assets/subjectPaths";
+import Loader from "../component/Loader";
 
 function DashboardHome() {
   const navigate = useNavigate();
@@ -56,8 +57,7 @@ function DashboardHome() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading)
-    return <p className="text-center py-5">Loading dashboard data...</p>;
+  if (loading) return <Loader message="Loading dashboard data..." />;
 
   // Group subjects 3 per carousel item
   const groupedSubjects = [];

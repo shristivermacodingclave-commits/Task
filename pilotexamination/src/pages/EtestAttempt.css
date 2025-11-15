@@ -1,0 +1,260 @@
+.etest-shell {
+  display: flex;
+  gap: 32px;
+  padding: 32px;
+  min-height: calc(100vh - 200px);
+  background-color: #f8f9f3;
+}
+
+.etest-question-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.etest-question-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  border: 1px solid #f0f0ed;
+}
+
+.etest-question-title h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0;
+  color: #1b1b1b;
+}
+
+.etest-question-label {
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #353535;
+}
+
+.etest-option-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.etest-option-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+  padding: 6px 24px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #000;
+  background: #fff;
+  gap: 8px;
+}
+
+.etest-option-pill input {
+  display: none;
+}
+
+.etest-option-pill::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #bbb;
+  background: #fff;
+}
+
+.etest-option-pill.is-active {
+  box-shadow: inset 0 0 0 2px #000;
+}
+
+.etest-option-pill.is-active::before {
+  border-color: #000;
+  background: #000;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+.etest-reset,
+.etest-confirm {
+  border-radius: 12px;
+  padding: 10px 34px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.etest-reset {
+  background-color: #d9d7d3;
+  color: #1d1d1d;
+}
+
+.etest-confirm {
+  background-color: #111;
+  color: #fff;
+}
+
+.etest-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.etest-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.etest-option-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 16px;
+  background: #f8f9f3;
+  padding: 18px 20px;
+  border: 1px solid transparent;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.etest-option-row.is-selected {
+  border-color: #101010;
+  background-color: #fff;
+}
+
+.etest-option-label {
+  font-weight: 600;
+}
+
+.etest-option-row span:last-child {
+  flex: 1;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.etest-nav-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.etest-next {
+  min-width: 150px;
+  padding: 12px 36px;
+  border-radius: 12px;
+  border: 1px solid #0f0f0f;
+  font-weight: 600;
+  background: #fff;
+  cursor: pointer;
+}
+
+.etest-next:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.etest-sidebar {
+  width: 320px;
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #232323;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.etest-sidebar-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.etest-sidebar-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.etest-sidebar-link {
+  background: none;
+  border: none;
+  font-weight: 700;
+  font-size: 1.02rem;
+  padding: 0;
+  color: #111;
+  cursor: pointer;
+  text-align: left;
+}
+
+.etest-sidebar-link:hover {
+  text-decoration: underline;
+}
+
+.etest-sidebar-subtitle {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
+}
+
+.etest-sidebar-meta {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 4px 0 0;
+}
+
+.etest-submit {
+  border: 1px solid #000;
+  border-radius: 12px;
+  padding: 10px 24px;
+  font-weight: 600;
+  background: #fff;
+  cursor: pointer;
+}
+
+.etest-palette {
+  border-top: 1px solid #232323;
+  padding-top: 16px;
+}
+
+.etest-palette-heading {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.etest-palette-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.etest-palette-btn {
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 10px 0;
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.etest-palette-btn.is-active {
+  border-color: #111;
+}
+
+.etest-palette-btn.is-confirmed {
+  background: #def5d7;
+  border-color: #3c8d34;
+}
+
+@media (max-width: 992px) {
+  .etest-shell {
+    flex-direction: column;
+  }
+
+  .etest-sidebar {
+    width: 100%;
+  }
+}

@@ -286,7 +286,7 @@ export default function DashNavbar({ onToggleSidebar }) {
             <div className="position-relative">
               <FaBell className="fs-5 text-dark details-hover" />
               <span
-                className="badge position-absolute top-0 start-100 translate-middle px-2 ms-1"
+                className="dash-navbar__badge position-absolute top-0 start-100 translate-middle px-2 ms-1 text-white"
                 style={{
                   borderRadius: "50%",
                   backgroundColor: "red",

@@ -5,6 +5,7 @@ import airplane from "../assets/images/airplanflight.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { subjectPaths } from "../assets/subjectPaths";
+import Loader from "../component/Loader";
 
 function MyCourses() {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ function MyCourses() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p className="text-center py-5">Loading subjects...</p>;
+  if (loading) return <Loader message="Loading subjects..." />;
   if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
   // 🔹 Group by 3 for carousel slides

@@ -1,22 +1,22 @@
  export const   subjectPaths = {
     "Air Meteorology": {
-      enrollplanPath: "/plans/meterologyplans",
+      enrollplanPath: "/plans/meterology",
       viewDetailPath: "/dashboard/my-courses/metereology-plans",
     },
     "Air Regulation": {
-      enrollplanPath: "/plans/regulationplans",
+      enrollplanPath: "/plans/regulation",
       viewDetailPath: "/dashboard/my-courses/reg-plans",
     },
     "Air Navigation": {
-      enrollplanPath: "/plans/navigationplans",
+      enrollplanPath: "/plans/navigation",
       viewDetailPath: "/dashboard/my-courses/neg-plans",
     },
     "Aircraft Technical General (ATG)": {
-      enrollplanPath: "/plans/atgplans",
+      enrollplanPath: "/plans/atg",
       viewDetailPath: "/dashboard/my-courses/atg-plans",
     },
     "Aircraft Technical Specific": {
-      enrollplanPath: "/plans/specificplans",
+      enrollplanPath: "/plans/ats",
       viewDetailPath: "/dashboard/my-courses/ats-plans",
     },
     "Navigation Composite": {

@@ -18,3 +18,10 @@
 .details-hover:hover{
   color: #ffc107 !important;
 }
+
+.dash-navbar__badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  background-color: red;
+  color: #fff !important;
+}

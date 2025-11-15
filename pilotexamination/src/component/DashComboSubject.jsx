@@ -154,6 +154,7 @@ import "./ComboSubject.css";
 import axios from "axios";
 import { subjectPaths } from "../assets/subjectPaths";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 function ComboSubject({ title, withSpacing = true }) {
   const [comboSubjects, setComboSubjects] = useState([]);
@@ -177,8 +178,7 @@ function ComboSubject({ title, withSpacing = true }) {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading)
-    return <p className="text-center py-5">Loading combo subjects...</p>;
+  if (loading) return <Loader message="Loading combo subjects..." />;
   if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
   return (
@@ -211,7 +211,7 @@ function ComboSubject({ title, withSpacing = true }) {
 
                 <button
                   className="btn btn-warning black-btn mt-2 form-control"
-                  onClick={() => navigate("/plans/meterologyplans")}
+                  onClick={() => navigate("/plans/combo-subject")}
                 >
                   Subscribe Now
                 </button>

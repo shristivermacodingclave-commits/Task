@@ -1,9 +1,11 @@
 import React, { useMemo, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AtgPlan.css";
 import Button from "../Button";
 import lock from "../../assets/images/lock.svg";
 import lockpad from "../../assets/images/lock-pad.svg";
 import axios from "axios";
+import Loader from "../Loader";
 
 export default function MetereologyPlan() {
     const [subject, setSubject] = useState(null);
@@ -11,6 +13,7 @@ export default function MetereologyPlan() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState(0);
+    const navigate = useNavigate();
 
     // ✅ Fetch API data for Navigation subject
     useEffect(() => {
@@ -40,13 +43,31 @@ export default function MetereologyPlan() {
     );
 
     if (loading)
-        return <p className="text-center py-5">Loading subject details...</p>;
+        return <Loader message="Loading subject details..." />;
     if (error)
         return (
             <p className="text-center text-danger py-5">
                 {error || "Something went wrong"}
             </p>
         );
+
+    const handleAttemptForFree = (topicName, topicId) => {
+        if (!subject) return;
+        const planIdentifier =
+            subject.subject_id ??
+            subject.subject_name?.toLowerCase().replace(/\s+/g, "-") ??
+            "plan";
+        navigate(`/dashboard/my-courses/e-test/${planIdentifier}`, {
+            state: {
+                subject: subject.subject_name,
+                topic: topicName,
+                topicId,
+                subjectId: subject.subject_id,
+                testType: "E-Test",
+                planPath: "/dashboard/my-courses/metereology-plans",
+            },
+        });
+    };
 
     return (
         <div className="bg-light min-vh-100 mt-3">
@@ -204,7 +225,15 @@ export default function MetereologyPlan() {
                                     </div>
 
                                     {isFree ? (
-                                        <button className="btn btn-outline-dark rounded-3 px-4 py-2">
+                                        <button
+                                            className="btn btn-outline-dark rounded-3 px-4 py-2"
+                                            onClick={() =>
+                                                handleAttemptForFree(
+                                                    topic.topic_name,
+                                                    topic.topic_id
+                                                )
+                                            }
+                                        >
                                             Attempt For Free
                                         </button>
                                     ) : (

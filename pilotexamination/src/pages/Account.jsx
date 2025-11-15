@@ -1028,6 +1028,7 @@ import indiaFlag from "../assets/images/india.svg";
 import Button from "../component/Button";
 import { NavLink, useLocation, Outlet } from "react-router-dom";
 import ProfileUpdate from "../component/AccountComponent/ProfieUpdate";
+import Loader from "../component/Loader";
 
 const Account = () => {
   const [edit, setEdit] = useState([]);
@@ -1073,7 +1074,7 @@ const Account = () => {
 
     try {
       const response = await axios.put(
-        `https://development.pilotexaminations.com/api/update-account/${userData.id}`,
+        `https://development.pilotexaminations.com/api/update-user/${userData.id}`,
         { 
           name: formValues.name,
           email: formValues.email,
@@ -1108,11 +1109,7 @@ const Account = () => {
   };
 
   if (!userData) {
-    return (
-      <div className="text-center py-5">
-        <h5>Loading your profile...</h5>
-      </div>
-    );
+    return <Loader message="Loading your profile..." />;
   }
 
   const { name, email, phone, profile_photo_url } = userData;
@@ -1364,5 +1361,4 @@ const Account = () => {
 };
 
 export default Account;
-
 

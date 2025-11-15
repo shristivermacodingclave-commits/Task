@@ -7,6 +7,7 @@ import Button from '../component/Button';
 import { useNavigate, Link } from 'react-router-dom';
 import { subjectPaths } from '../assets/subjectPaths';
 import axios from 'axios';
+import Loader from './Loader';
 
 function Subject({ title, subtitle, showDescription = true, withSpacing = true }) {
     const [showLogin, setShowLogin] = useState(false);
@@ -40,7 +41,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
             .finally(() => setLoading(false));
     }, []);
 
-    if (loading) return <p className="text-center py-5">Loading subjects...</p>;
+    if (loading) return <Loader message="Loading subjects..." />;
     if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
     return (
@@ -167,4 +168,3 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
 }
 
 export default Subject;
-

@@ -89,6 +89,7 @@
 import React, { useEffect, useState } from 'react';
 import './Testimonials.css';
 import axios from 'axios';
+import Loader from './Loader';
 
 function chunk(arr, size) {
     const out = [];
@@ -132,7 +133,7 @@ function Testimonials() {
             .finally(() => setLoading(false));
     }, []);
 
-    if (loading) return <p className="text-center py-5">Loading testimonials...</p>;
+    if (loading) return <Loader message="Loading testimonials..." />;
     if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
     const slides = chunk(testimonials, 3);

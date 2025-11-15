@@ -291,6 +291,7 @@ import axios from 'axios';
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
 import Button from '../component/Button';
+import Loader from './Loader';
 import { useNavigate } from 'react-router-dom';
 
 function Subject({ title, subtitle, showDescription = true, withSpacing = true }) {
@@ -322,7 +323,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
             .finally(() => setLoading(false));
     }, []);
 
-    if (loading) return <p className="text-center py-5">Loading subjects...</p>;
+    if (loading) return <Loader message="Loading subjects..." />;
     if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
     return (

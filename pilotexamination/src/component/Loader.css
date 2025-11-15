@@ -1,0 +1,40 @@
+.pe-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  color: #1d1d1d;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.pe-loader--compact {
+  padding: 8px 0;
+  font-size: 0.95rem;
+  justify-content: flex-start;
+}
+
+.pe-loader__spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #111;
+  animation: pe-spin 0.9s linear infinite;
+}
+
+.pe-loader--compact .pe-loader__spinner {
+  width: 18px;
+  height: 18px;
+}
+
+.pe-loader__text {
+  letter-spacing: 0.4px;
+}
+
+@keyframes pe-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "../../component/Button";
-import regulation from "../../assets/images/Regulations.png";
 import "./MeterologySubscription.css";
 import Loader from "../Loader";
+import comboImage from  '../../assets/images/comboimage.png'
 
-function RegulationSubscription() {
-  const [selected, setSelected] = useState("12");
+const BASE_URL = "https://development.pilotexaminations.com/";
+
+function ComboSubjectSuscription() {
+  const [selected, setSelected] = useState(null);
   const [plans, setPlans] = useState([]);
-  const [topics, setTopics] = useState([]);
+  const [comboInfo, setComboInfo] = useState(null);
+  const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
     fetchPlanData();
@@ -18,63 +21,36 @@ function RegulationSubscription() {
   const fetchPlanData = async () => {
     try {
       const res = await axios.get(
-        "https://development.pilotexaminations.com/api/payment-plans/2"
+        "https://development.pilotexaminations.com/api/combo-3-subject?ids=1,2,3"
       );
 
-      // ⭐ Dynamic Topics
-      if (res.data.topics) {
-        setTopics(res.data.topics);
-      }
-
-      // ⭐ Dynamic Plans
-      if (res.data.plans) {
-        const apiPlans = res.data.plans.map((p) => {
-          const discountPercent = Math.round(
-            ((p.plan_price - p.selling_price) / p.plan_price) * 100
-          );
-
-          return {
-            id: p.months.toString(),
-            duration: p.sub_title,
-            price: p.selling_price,
-            oldPrice: p.plan_price,
-            perMonth:
-              p.months > 1 ? Math.round(p.selling_price / p.months) : null,
-
-            saveText:
-              discountPercent > 0 ? `Save Extra ${discountPercent}%` : null,
-
-            saveBg:
-              p.months === 12
-                ? "#d8ebd1"
-                : p.months === 6
-                ? "#fffbd2"
-                : p.months === 3
-                ? "#fffbd2"
-                : "#fffbd2",
-
-            saveColor:
-              p.months === 12
-                ? "green"
-                : p.months === 6
-                ? "#ecce39"
-                : "#ecce39",
-
-            recommended: p.months === 12,
-            isShort: p.months === 1,
-          };
+      if (!res.data.error) {
+        setComboInfo({
+          name: res.data.combo_name,
+          image: res.data.combo_image,
         });
+        setSubjects(res.data.subjects || []);
 
-        // ⭐ Maintain same order as your UI
-        const order = ["12", "6", "3", "1"];
-        apiPlans.sort(
-          (a, b) => order.indexOf(a.id) - order.indexOf(b.id)
-        );
+        const formattedPlans = (res.data.plans || []).map((plan) => ({
+          id: plan.combo_sub_id.toString(),
+          duration: `${plan.months} Month${plan.months > 1 ? "s" : ""}`,
+          months: plan.months,
+          price: plan.selling_price,
+          oldPrice: plan.plan_price,
+          perMonth: plan.per_month,
+          saveText: plan.discount_text || null,
+          saveBg: "#fffbd2",
+          saveColor: "#ecce39",
+          recommended: plan.recommended,
+          isShort: plan.months === 1,
+        }));
 
-        setPlans(apiPlans);
+        formattedPlans.sort((a, b) => b.months - a.months);
+        setPlans(formattedPlans);
+        setSelected(formattedPlans[0]?.id || null);
       }
     } catch (err) {
-      console.error("Error fetching regulation plans:", err);
+      console.error("Error fetching combo subscription plans:", err);
     }
   };
 
@@ -95,28 +71,34 @@ function RegulationSubscription() {
         {/* LEFT CARD */}
         <div className="col-md-4">
           <div className="card border-0 shadow-sm rounded-4 h-100">
-            <img
-              src={regulation}
-              className="card-img-top rounded-top-4"
-              alt="Air Regulation"
-              style={{ height: "200px" }}
-            />
+            {comboInfo?.image && (
+              <img
+                src={comboImage}
+                className="card-img-top rounded-top-4"
+                alt={comboInfo?.name || "Combo Subjects"}
+                style={{ height: "200px", objectFit: "cover" }}
+              />
+            )}
             <div className="card-body">
-              <h3 className="card-title my-3">Air Regulation</h3>
+              <h3 className="card-title my-3">
+               DGCA - Three Subject Combo
+              </h3>
+              <p className="text-muted mb-3">Consists of 3 Subjects</p>
 
-              <ul className="mb-0 ps-3 small fs-5">
-                {topics.length === 0 ? (
-                  <li>
-                    <Loader message="Loading topics..." compact />
-                  </li>
-                ) : (
-                  topics.slice(0, 4).map((t) => (
-                    <li key={t.topic_id}>{t.topic_name}</li>
-                  ))
-                )}
-
-                {topics.length > 4 && <li>And More...</li>}
-              </ul>
+              {subjects.length === 0 ? (
+                <Loader message="Loading subjects..." compact />
+              ) : (
+                <ul className="mb-0 ps-3 small fs-5">
+                  {subjects.map((subj) => (
+                    <li
+                      key={subj.subject_id}
+                      style={{ marginBottom: "0.5rem" }}
+                    >
+                      {subj.subject_name}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>
@@ -232,4 +214,4 @@ function RegulationSubscription() {
   );
 }
 
-export default RegulationSubscription;
+export default ComboSubjectSuscription;
