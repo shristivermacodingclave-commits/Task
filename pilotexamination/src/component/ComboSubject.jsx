@@ -71,7 +71,7 @@ function ComboSubject({ title, withSpacing = true }) {
                                 const remainingCount = topics.length > 5 ? topics.length - 5 : 0;
 
                                 return (
-                                    <div className="col-md-4 mb-3" key={subject.subject_id}>
+                                    <div className="col-lg-4 col-md-6 mb-3" key={subject.subject_id}>
                                         <div className="subject-card ">
                                             {/* ===== Header ===== */}
                                             <div

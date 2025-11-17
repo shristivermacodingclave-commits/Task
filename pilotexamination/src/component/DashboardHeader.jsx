@@ -7,9 +7,14 @@ const DashboardHeader = () => {
   const path = location.pathname.split("/").filter(Boolean);
   const locationState = location.state || {};
 
-  // Helper: format like "my-orders" → "My Orders"
-  const formatName = (name) =>
-    name.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  // Helper: format segment names and special labels
+  const formatName = (name) => {
+    const lower = name.toLowerCase();
+    if (lower === "results") return "My Results";
+    if (lower === "e-test") return "E-Test";
+    if (lower === "detail") return "Detail";
+    return name.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  };
 
   // Build breadcrumb paths dynamically
   const breadcrumbItems = path.map((segment, index) => {
@@ -21,7 +26,7 @@ const DashboardHeader = () => {
     };
   });
 
-  const filteredItems = breadcrumbItems.filter(
+  let filteredItems = breadcrumbItems.filter(
     (b) => b.name.toLowerCase() !== "dashboard"
   );
 
@@ -42,6 +47,19 @@ const DashboardHeader = () => {
       { name: locationState.subject, path: null },
       { name: locationState.topic, path: null }
     );
+  }
+
+  const isResultDetailRoute = location.pathname.includes("/dashboard/results/detail");
+  if (isResultDetailRoute) {
+    const subjectName = locationState.subject || "Air Navigation";
+    // remove "Detail" placeholder if present
+    displayItems = filteredItems.filter((item) => item.name.toLowerCase() !== "detail");
+    // ensure "E-Test" is present
+    const hasETest = displayItems.some((item) => item.name.toLowerCase() === "e-test");
+    if (!hasETest) {
+      displayItems.push({ name: "E-Test", path: null });
+    }
+    displayItems.push({ name: subjectName, path: null });
   }
 
   return (

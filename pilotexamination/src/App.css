@@ -17,3 +17,10 @@ body,html{
   --link-color:  #ffc107;
 }
 
+/* Global form control focus styling */
+.form-control:focus {
+  background-color: #fff !important;
+  border-color: var(--link-color) !important;
+  box-shadow: 0 0 0 0.15rem rgba(255, 193, 7, 0.2) !important;
+}
+

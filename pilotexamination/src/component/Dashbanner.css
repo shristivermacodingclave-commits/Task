@@ -80,6 +80,12 @@
   padding: 0.8rem 2.5rem;
 }
 
+@media (max-width: 992px) {
+  .subscribe-button {
+    padding: 0.6rem 1.4rem;
+  }
+}
+
 /* Responsive */
 @media (max-width: 767px) {
   .right-graphic {

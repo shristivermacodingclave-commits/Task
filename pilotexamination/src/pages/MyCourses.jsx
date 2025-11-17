@@ -7,12 +7,20 @@ import axios from "axios";
 import { subjectPaths } from "../assets/subjectPaths";
 import Loader from "../component/Loader";
 
+const getItemsPerSlide = (width) => {
+  const w = width ?? (typeof window !== "undefined" ? window.innerWidth : 1200);
+  if (w >= 1200) return 3;      // xl and up: 3 cards
+  if (w >= 700) return 2;       // 700px to 1199px: 2 cards
+  return 1;                     // below 700px: 1 card
+};
+
 function MyCourses() {
   const navigate = useNavigate();
 
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [itemsPerSlide, setItemsPerSlide] = useState(getItemsPerSlide());
 
   const BASE_URL = "http://development.pilotexaminations.com/";
 
@@ -33,13 +41,19 @@ function MyCourses() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => setItemsPerSlide(getItemsPerSlide());
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   if (loading) return <Loader message="Loading subjects..." />;
   if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
-  // 🔹 Group by 3 for carousel slides
+  // 🔹 Group subjects per carousel slides responsively
   const groupedSubjects = [];
-  for (let i = 0; i < subjects.length; i += 3) {
-    groupedSubjects.push(subjects.slice(i, i + 3));
+  for (let i = 0; i < subjects.length; i += itemsPerSlide) {
+    groupedSubjects.push(subjects.slice(i, i + itemsPerSlide));
   }
 
   return (
@@ -73,8 +87,14 @@ function MyCourses() {
                   const topicsToShow = topics.slice(0, 3);
                   const remainingCount = topics.length > 3 ? topics.length - 3 : 0;
 
+                  const columnWidth = `${100 / itemsPerSlide}%`;
+
                   return (
-                    <div className="col-md-4 mb-3" key={subject.subject_id}>
+                    <div
+                      className="col-12 mb-3"
+                      key={subject.subject_id}
+                      style={{ flex: `0 0 ${columnWidth}`, maxWidth: columnWidth }}
+                    >
                       <div className="subject-card h-100 shadow-sm rounded-4">
                         {/* Header */}
                         <div

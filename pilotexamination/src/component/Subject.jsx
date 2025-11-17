@@ -345,7 +345,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                             const remainingCount = totalTopics > 3 ? totalTopics - 3 : 0;
 
                             return (
-                                <div className="col-md-4 mb-3" key={subject.subject_id}>
+                                <div className="col-lg-4 col-md-6 mb-3" key={subject.subject_id}>
                                     <div className="subject-card d-flex flex-column h-100">
                                         
                                         {/* ===== Header ===== */}

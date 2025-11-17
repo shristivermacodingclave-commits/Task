@@ -30,8 +30,8 @@
 
 /* Main content column */
 .dashboard-main {
-   margin-left: 300px; 
-  margin-top: 60px; 
+  margin-left: 300px; 
+  /* margin-top: 60px;  */
   flex: 1;               /* take remaining space */
   min-width: 0;          /* crucial: prevents flex overflow pushing sidebar */
   padding: 1rem ;
@@ -64,13 +64,6 @@
 /* Responsive */
 
 
- @media(max-width:900px){
-    .dashboard-main{
-     padding-right:0 !important;
-    }  
-  }
-
-
 @media (max-width: 991px) {
   .sidebar {
     display: none;
@@ -78,5 +71,6 @@
 
   .dashboard-main {
     margin-left: 0 !important; 
+    padding-right: 1rem !important; /* match left padding when sidebar is hidden */
   }
 }

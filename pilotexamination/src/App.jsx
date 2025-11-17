@@ -29,6 +29,8 @@ import PracticeTest from './component/ResultComponent/PracticeTest.jsx';
 import MockTest from './component/ResultComponent/MockTest.jsx';
 import PlanEtest from './pages/PlanEtest.jsx';
 import EtestAttempt from './pages/EtestAttempt.jsx';
+import ResultSolution from './pages/ResultSolution.jsx';
+import ResultDetail from './pages/ResultDetail.jsx';
 
 function App() {
   const location = useLocation();
@@ -87,6 +89,8 @@ function App() {
             <Route path="index" element={<Etest/>} />
             <Route path="practice-test" element={<PracticeTest/>} />
             <Route path="mock-test" element={<MockTest />} />
+            <Route path="detail" element={<ResultDetail />} />
+            <Route path="solution" element={<ResultSolution />} />
           </Route>
 
           <Route path="save-list" element={<SaveList />} />

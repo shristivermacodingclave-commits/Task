@@ -1,8 +1,10 @@
 import React from "react";
 import InfoText from "../../component/InfoText";
 import Button from '../../component/Button'
+import { useNavigate } from "react-router-dom";
 
 export default function Etest() {
+  const navigate = useNavigate();
   const results = [
     {
       topic: "The Earth & Direction, Latitude and Longitude",
@@ -82,7 +84,21 @@ export default function Etest() {
               </div>
 
               <div className="col-md-3 text-end">
-                <Button name="Result" className="btn-dark fs-6 px-5 w-100"/>
+                <Button
+                  name="Result"
+                  className="btn-dark fs-6 px-5 w-100"
+                  onClick={() =>
+                    navigate("/dashboard/results/detail", {
+                      state: {
+                        subject: item.subject,
+                        topic: item.topic,
+                        percentage: item.percentage,
+                        result: item.result,
+                        examDate: item.examDate,
+                      },
+                    })
+                  }
+                />
               </div>
             </div>
 
@@ -109,7 +125,22 @@ export default function Etest() {
             <p className="fw-semibold mb-1">Exam Date</p>
             <p>{item.examDate}</p>
 
-            <button className="btn btn-dark w-100 my-3">Result</button>
+            <button
+              className="btn btn-dark w-100 my-3"
+              onClick={() =>
+                navigate("/dashboard/results/detail", {
+                  state: {
+                    subject: item.subject,
+                    topic: item.topic,
+                    percentage: item.percentage,
+                    result: item.result,
+                    examDate: item.examDate,
+                  },
+                })
+              }
+            >
+              Result
+            </button>
 
             <hr />
             <p className="text-muted mb-0">Subject: {item.subject}</p>

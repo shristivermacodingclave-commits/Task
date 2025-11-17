@@ -49,10 +49,9 @@
 
 
 .form-control:focus {
-    box-shadow: none !important;
-     background-color:#ffc107 !important;
-  border-color:#ffc107 !important;
-
+  box-shadow: 0 0 0 0.15rem rgba(255, 193, 7, 0.2) !important;
+  background-color: #fff !important;
+  border-color: var(--link-color) !important;
 }
 
 .green-bg-text span {

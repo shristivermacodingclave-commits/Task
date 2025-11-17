@@ -91,6 +91,13 @@ import './Testimonials.css';
 import axios from 'axios';
 import Loader from './Loader';
 
+const getItemsPerSlide = (width) => {
+    const w = width ?? (typeof window !== "undefined" ? window.innerWidth : 1200);
+    if (w >= 1200) return 3;      // xl and up: 3 cards
+    if (w >= 700) return 2;       // 700px to 1199px: 2 cards
+    return 1;                     // below 700px: 1 card
+};
+
 function chunk(arr, size) {
     const out = [];
     for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
@@ -101,6 +108,7 @@ function Testimonials() {
     const [testimonials, setTestimonials] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [itemsPerSlide, setItemsPerSlide] = useState(getItemsPerSlide());
 
     useEffect(() => {
         axios.get('http://development.pilotexaminations.com/api/testimonials')
@@ -133,10 +141,17 @@ function Testimonials() {
             .finally(() => setLoading(false));
     }, []);
 
+    // Responsive slide sizing
+    useEffect(() => {
+        const handleResize = () => setItemsPerSlide(getItemsPerSlide());
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     if (loading) return <Loader message="Loading testimonials..." />;
     if (error) return <p className="text-center text-danger py-5">{error}</p>;
 
-    const slides = chunk(testimonials, 3);
+    const slides = chunk(testimonials, itemsPerSlide);
 
     return (
         <div className='testimonial-outer-section'>
@@ -178,22 +193,29 @@ function Testimonials() {
                     {slides.map((group, i) => (
                         <div className={`carousel-item ${i === 0 ? "active" : ""}`} key={i}>
                             <div className="row g-3">
-                                {group.map((t) => (
-                                    <div className="col-12 col-md-6 col-lg-4" key={t.id}>
-                                        <article className="t-card" style={{
-                                            background: t.bg,
-                                            padding: "1.5rem",
-                                            borderRadius: "32px",
-                                            minHeight: "28rem"
-                                        }}>
-                                            <p className="t-text">{t.text}</p>
-                                            <div className="t-footer">
-                                                <img className="t-avatar" src={t.avatar} alt={t.name} />
-                                                <span className="t-name">{t.name}</span>
-                                            </div>
-                                        </article>
-                                    </div>
-                                ))}
+                                {group.map((t) => {
+                                    const columnWidth = `${100 / itemsPerSlide}%`;
+                                    return (
+                                        <div
+                                            className="col-12"
+                                            key={t.id}
+                                            style={{ flex: `0 0 ${columnWidth}`, maxWidth: columnWidth }}
+                                        >
+                                            <article className="t-card" style={{
+                                                background: t.bg,
+                                                padding: "1.5rem",
+                                                borderRadius: "32px",
+                                                minHeight: "28rem"
+                                            }}>
+                                                <p className="t-text">{t.text}</p>
+                                                <div className="t-footer">
+                                                    <img className="t-avatar" src={t.avatar} alt={t.name} />
+                                                    <span className="t-name">{t.name}</span>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     ))}
