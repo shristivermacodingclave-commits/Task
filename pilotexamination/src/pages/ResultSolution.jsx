@@ -11,8 +11,6 @@ const questions = [
     correct: "Yes",
     explanation:
       "Because GNSS has no continuity of service and prediction of availability is needed on the intended route.",
-    explanation:
-      "Because GNSS has no continuity of service and prediction of availability is needed on the intended route.",
   },
   {
     id: 2,
