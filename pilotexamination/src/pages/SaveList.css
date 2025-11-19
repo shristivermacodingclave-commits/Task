@@ -14,14 +14,26 @@
   font-weight: 400 !important;;
 }
 
+
+.results-link {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 5px;
+  color: #333;
+}
+
 .results-link::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: 0; /* bottom of link */
-  width: 0%;
+  bottom: -8px;       /* underline distance */
+  width: 0%;          /* HIDDEN by default */
   height: 3px;
-  bottom: -10px;
   background-color: black;
   transition: width 0.3s ease;
+}
+
+/* ACTIVE TAB — underline visible */
+.results-link.active-tab::after {
+  width: 100%;
 }
