@@ -1332,7 +1332,7 @@ function ResultDetail() {
           Go to top
         </button>
       </div>
-
+             
     </div>
   );
 }

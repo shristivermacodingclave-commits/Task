@@ -14,7 +14,7 @@
 //         <NavLink to="savelist" className="results-link "  style={{ top:"-8px"}} >
 //           <span> No List</span>
 //         </NavLink>
-        
+
 //       </div>
 
 //       {/* search bar */}
@@ -487,6 +487,7 @@
 // export default SaveList;
 
 
+
 import React, { useEffect, useState } from "react";
 import Button from "../component/Button";
 import { NavLink } from "react-router-dom";
@@ -503,6 +504,49 @@ function SaveList() {
   const token = localStorage.getItem("token");
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const userId = storedUser?.id || "";
+
+  /* ---------------- UNSAVE ---------------- */
+  const handleUnsave = async (saveId, originalQuestionId, listName) => {
+    try {
+      // prefer sending original question id if available, otherwise fall back to save_id
+      const questionIdToSend = originalQuestionId ?? saveId;
+
+      // helpful console note if originalQuestionId is missing
+      if (!originalQuestionId) {
+        console.warn(
+          `Original question_id missing for save_id ${saveId}. Falling back to sending save_id as question_id. Prefer backend field "question_id" in the get-save-list response.`
+        );
+      }
+
+      const res = await axios.post(
+        "https://development.pilotexaminations.com/api/list/unsave",
+        {
+          user_id: userId,
+          list_name: listName ?? "saved",
+          question_id: questionIdToSend,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!res.data.error) {
+        // Remove from UI by save id
+        setSavedQuestions((prev) => prev.filter((q) => q.save_id !== saveId));
+
+        // simple toast - replace with react-toastify if you prefer
+        window.alert("Question unsaved successfully!");
+        // If you want react-toastify:
+        // toast.success("Question unsaved successfully!");
+      } else {
+        console.error("Unsave API returned error:", res.data);
+        window.alert("Unable to unsave. Try again.");
+      }
+    } catch (err) {
+      console.error("Unsave error:", err);
+      window.alert("Failed to unsave. Check console.");
+    }
+  };
 
   /* ---------------- FETCH CATEGORY LIST ---------------- */
   useEffect(() => {
@@ -529,7 +573,7 @@ function SaveList() {
     };
 
     fetchCategoryList();
-  }, [token]);
+  }, [token, userId]);
 
   /* ---------------- FETCH SAVED QUESTIONS ---------------- */
   useEffect(() => {
@@ -541,27 +585,39 @@ function SaveList() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
-            }
+            },
           }
         );
 
         if (!response.data.error) {
+          // map and keep both save_id and original question_id (if present)
           const mapped = response.data.results.map((item) => {
+            // try common possible keys for original question id
+            const originalQuestionId =
+              item.question_id ?? item.questionId ?? item.qid ?? item.question_id_from_api ?? null;
+
             return {
-              id: item.save_id,
+              // keep save_id for UI removal
+              save_id: item.save_id,
+              // original question id needed by unsave API (if backend expects it)
+              question_id: originalQuestionId,
               list_name: item.list_name, // ← category comes from API
               question: item.question,
               options: [
-                `A. ${item.option_a}`,
-                `B. ${item.option_b}`,
-                `C. ${item.option_c}`,
-              ],
+                item.option_a ? `A. ${item.option_a}` : null,
+                item.option_b ? `B. ${item.option_b}` : null,
+                item.option_c ? `C. ${item.option_c}` : null,
+              ].filter(Boolean),
               correct: item.correct_answer,
               explanation: item.explanation,
+              // keep raw item if you need later
+              __raw: item,
             };
           });
 
           setSavedQuestions(mapped);
+        } else {
+          console.error("get-save-list returned error:", response.data);
         }
       } catch (err) {
         console.log("Error fetching saved list:", err);
@@ -637,11 +693,16 @@ function SaveList() {
         <>
           {filteredQuestions.map((item) => (
             <div
-              key={item.id}
+              key={item.save_id}
               className="col-md-12 pt-4 pb-4 px-4 mb-4 rounded bookmark-card"
             >
-              <div className="d-flex justify-content-end mb-2">
-               <BsBookmarkFill className="text-center"/> Unsave
+              <div
+                className="d-flex justify-content-end mb-2"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleUnsave(item.save_id, item.question_id, item.list_name)}
+              >
+                <BsBookmarkFill style={{ fontSize: "18px", marginRight: "6px" }} />
+                Unsave
               </div>
 
               <h5 className="fw-semibold">{item.question}</h5>
