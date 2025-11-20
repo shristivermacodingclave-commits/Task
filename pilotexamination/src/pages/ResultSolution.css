@@ -1,13 +1,158 @@
+/* ================= BASE PAGE STYLING ================= */
+
+.result-detail-page {
+  background: #f7f7f4;
+  padding: 1.5rem;
+}
+
+.result-card {
+  border: 1px solid red !important;
+  background: transparent !important;
+  min-height: 180px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.result-top {
+  background: #ffffff;
+  border-radius: 16px 16px 0 0;
+  gap: 0.75rem;
+}
+
+.result-bottom {
+  background: linear-gradient(90deg, #fff1f1 0%, #f7f7f4 100%);
+  border-radius: 0 0 16px 16px;
+}
+
+/* score wheel, charts, static styling — unchanged */
+.score-wheel {
+  width: 110px;
+}
+.score-fill {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(#f65b61 0deg, #f7d9dd 0deg);
+}
+.score-center {
+  width: 78px;
+  height:78px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#fff;
+  color:#f65b61;
+  font-weight:700;
+  font-size:1rem;
+}
+
+.mini-chart {
+  width: 120px;
+  height: 120px;
+  display: grid;
+  place-items: center;
+}
+
+.mini-chart-fill {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(#7bc29c 0 180deg, #f65b61 180deg 288deg, #d9d9d9 288deg 360deg);
+}
+
+.suggestion-box {
+  background: #f9f3d8;
+  border: 1px solid #f2e5a6;
+  border-radius:0px 16px 16px 16px !important;
+}
+
+.resource-card {
+  border: 1px solid #e7e7e7;
+  background: #fff;
+  min-height: 82px;
+}
+
+.pdf-icon {
+  background: #fdebec;
+  color: #d83a43;
+}
+
+.youtube-icon {
+  background: #ffeceb;
+  color: #e53935;
+  position: relative;
+}
+
+.youtube-icon .triangle {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 12px solid #e53935;
+  margin-left: 2px;
+}
+
+.back-top-btn {
+  width: 30vw;
+  min-width: 200px;
+  max-width: 420px;
+}
+
+.back-top-btn:hover,
+.back-top-btn:focus {
+  background-color: #191919 !important;
+  border-color: #191919 !important;
+}
+
+/* ================== SOLUTION CARD NEW LOGIC ================== */
+
+/* HEADER COLORS - dynamic */
+.solution-header-correct {
+  background-color: #e8f9e8 !important; /* light green */
+}
+
+.solution-header-incorrect {
+  background-color: #fdeaea !important; /* light red */
+}
+
+.solution-header-unanswered {
+  background-color: #f3f3f3 !important; /* light gray */
+}
+
+/* CARD BACKGROUND - always white */
+.solution-card-correct,
+.solution-card-incorrect,
+.solution-card-unanswered {
+  background: #ffffff !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 10px;
+}
+
+/* OPTIONS NEW LOGIC */
+.option-row {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+}
+
+.option-correct {
+  background-color: #e8f9e8 !important;
+}
+
+.option-wrong {
+  background-color: #fdeaea !important;
+}
+
+/* ====================== SAVE MODAL ====================== */
+
 .save-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0,0,0,0.4);
   display: flex;
+  align-items: flex-start;
   justify-content: center;
-  align-items: center;
   z-index: 2000;
 }
 
@@ -29,4 +174,17 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ====================== MEDIA QUERIES ====================== */
+@media (max-width: 992px) {
+  .result-top { flex-direction: column; align-items: flex-start !important; }
+}
+
+@media (max-width: 768px) {
+  .result-detail-page { padding: 1rem; }
+}
+
+@media (max-width: 576px) {
+  .back-top-btn { width: 100%; }
 }

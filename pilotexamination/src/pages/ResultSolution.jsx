@@ -1362,8 +1362,489 @@
 
 // export default ResultSolution;
 
+// import React, { useState, useEffect } from "react";
+// import "./ResultSolution.css";
+// import { useLocation } from "react-router-dom";
+// import axios from "axios";
+// import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
+
+// const badge = (status) =>
+//   status === "correct"
+//     ? { text: "Correct", className: "badge bg-success-subtle text-success fw-semibold" }
+//     : { text: "Incorrect", className: "badge bg-danger-subtle text-danger fw-semibold" };
+
+// function ResultSolution() {
+//   const { state } = useLocation();
+
+//   const testId = state?.testId;
+//   const user = JSON.parse(localStorage.getItem("user"));
+//   const userId = user?.id;
+
+//   const [loading, setLoading] = useState(true);
+//   const [summary, setSummary] = useState(null);
+//   const [questions, setQuestions] = useState([]);
+
+//   /* -------------------- SAVE CATEGORY STATES -------------------- */
+//   const [showModal, setShowModal] = useState(false);
+//   const [showCreateModal, setShowCreateModal] = useState(false);
+//   const [activeQuestion, setActiveQuestion] = useState(null);
+//   const [categoryList, setCategoryList] = useState(["Default", "Hard", "Medium", "Easy"]);
+//   const [selectedCategory, setSelectedCategory] = useState("");
+//   const [newListName, setNewListName] = useState("");
+//   const [savedCategories, setSavedCategories] = useState({});
+//   const [createError, setCreateError] = useState("");
+
+//   /* ---------------------- 3 DOTS POPUP ---------------------- */
+//   const [openMenuFor, setOpenMenuFor] = useState(null);
+//   const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
+
+//   useEffect(() => {
+//     const closePopup = () => setOpenMenuFor(null);
+//     window.addEventListener("click", closePopup);
+//     return () => window.removeEventListener("click", closePopup);
+//   }, []);
+
+//   /* --------------------- FETCH SOLUTION API --------------------- */
+//   useEffect(() => {
+//     if (!testId || !userId) return;
+
+//     const fetchSolution = async () => {
+//       try {
+//         const res = await axios.post(
+//           "https://development.pilotexaminations.com/api/etest/solution",
+//           {
+//             user_id: userId,
+//             test_id: testId,
+//           }
+//         );
+
+//         console.log("API RESPONSE:", res.data);
+
+//         if (!res.data.error) {
+//           setSummary(res.data.summary);
+//           setQuestions(res.data.questions);
+//         }
+
+//         setLoading(false);
+//       } catch (err) {
+//         console.log("API Error:", err);
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchSolution();
+//   }, [testId, userId]);
+
+//   if (loading || !summary) {
+//     return (
+//       <div className="container-fluid text-center mt-4">
+//         <h5>Loading...</h5>
+//       </div>
+//     );
+//   }
+
+
+//   const scrollToTop = () => {
+//     const container = document.querySelector(".dashboard-main");
+//     if (container) {
+//       container.scrollTo({ top: 0, behavior: "smooth" });
+//     } else {
+//       window.scrollTo({ top: 0, behavior: "smooth" });
+//     }
+//   };
+
+//   /* Extract summary values */
+//   const subject = summary.subject_name || "Air Navigation";
+//   const topic = summary.topic_name || "";
+//   const scorePercent = summary.percentage || 0;
+//   const correct = summary.correct || 0;
+//   const incorrect = summary.incorrect || 0;
+//   const unanswered = summary.unanswered || 0;
+//   const resultLabel = summary.result || "Fail";
+
+//   /* ---------------- SAVE - MODAL FUNCTIONS ---------------- */
+//   const openSaveModal = (qid) => {
+//     setActiveQuestion(qid);
+//     setSelectedCategory(savedCategories[qid] || "");
+//     setShowModal(true);
+//   };
+
+//   const closeSaveModal = () => {
+//     setShowModal(false);
+//     setActiveQuestion(null);
+//   };
+
+//   const openCreateModal = () => {
+//     setShowModal(false);
+//     setCreateError("");
+//     setNewListName("");
+//     setShowCreateModal(true);
+//   };
+
+//   const closeCreateModal = () => {
+//     setShowCreateModal(false);
+//     setCreateError("");
+//     setNewListName("");
+//   };
+
+//   const handleSaveCategory = () => {
+//     if (!activeQuestion || !selectedCategory) return;
+
+//     setSavedCategories((prev) => ({
+//       ...prev,
+//       [activeQuestion]: selectedCategory,
+//     }));
+
+//     closeSaveModal();
+//   };
+
+//   const handleCreateList = () => {
+//     const name = newListName.trim();
+//     if (!name) {
+//       setCreateError("List name cannot be empty");
+//       return;
+//     }
+//     if (categoryList.some((c) => c.toLowerCase() === name.toLowerCase())) {
+//       setCreateError("A list with this name already exists");
+//       return;
+//     }
+
+//     setCategoryList([...categoryList, name]);
+//     setSelectedCategory(name);
+//     closeCreateModal();
+//   };
+
+//   const handleDeleteList = (name) => {
+//     if (name === "Default") return;
+//     if (!window.confirm(`Delete list "${name}"?`)) return;
+
+//     setCategoryList(categoryList.filter((c) => c !== name));
+
+//     setSavedCategories((prev) => {
+//       const updated = { ...prev };
+//       Object.keys(updated).forEach((qid) => {
+//         if (updated[qid] === name) delete updated[qid];
+//       });
+//       return updated;
+//     });
+//   };
+
+//   return (
+//     <div className="container-fluid result-detail-page">
+//       {/* ---------------------- SUMMARY CARD ---------------------- */}
+//       <div className="card shadow-sm border-0 mb-4 result-card">
+//         <div className="card-body px-0 pt-0 pb-0">
+//           <div className="result-top d-flex justify-content-between align-items-center flex-wrap gap-3 px-4 py-4">
+//             <div>
+//               <p className="d-block">{subject}</p>
+//               <div className="d-flex align-items-center flex-wrap gap-2">
+//                 <h3 className="mb-0">{topic}</h3>
+//                 <span className="btn btn-light border rounded-pill px-3 py-1">E-Test</span>
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="result-bottom px-4 py-4">
+//             <div className="row g-4 text-center summary-row">
+//               <div className="col-6 col-md-3">
+//                 <p
+//                   className={`fw-bold mb-1 ${resultLabel.toLowerCase() === "fail" ? "text-danger" : "text-success"
+//                     }`}
+//                   style={{ fontSize: "1.6rem" }}
+//                 >
+//                   {resultLabel}
+//                 </p>
+//                 <p className="text-muted small mb-0">Result</p>
+//               </div>
+
+//               <div className="col-6 col-md-3">
+//                 <p className="text-danger fw-bold mb-1" style={{ fontSize: "1.6rem" }}>
+//                   {scorePercent}%
+//                 </p>
+//                 <p className="text-muted small mb-0">Test Score</p>
+//               </div>
+
+//               <div className="col-6 col-md-2">
+//                 <p className="fw-bold mb-1 text-success">{correct}</p>
+//                 <p className="text-muted small mb-0">Correct</p>
+//               </div>
+
+//               <div className="col-6 col-md-2">
+//                 <p className="fw-bold mb-1 text-danger">{incorrect}</p>
+//                 <p className="text-muted small mb-0">In-Correct</p>
+//               </div>
+
+//               <div className="col-12 col-md-2">
+//                 <p className="fw-bold mb-1 text-secondary">{unanswered}</p>
+//                 <p className="text-muted small mb-0">Un-answered</p>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* ---------------------- QUESTIONS LIST ---------------------- */}
+//      {questions.map((q, index) => {
+//   const questionNumber = index + 1;
+
+//   const userAns = q.user_answer;
+//   const correctAns = q.correct_answer;
+
+//   let status = "Unanswered";
+//   if (userAns === correctAns) status = "Correct";
+//   else if (userAns !== "" && userAns !== correctAns) status = "Incorrect";
+
+//   // Dynamic header classes
+//   const headerClass =
+//     status === "Correct"
+//       ? "solution-header-correct"
+//       : status === "Incorrect"
+//       ? "solution-header-incorrect"
+//       : "solution-header-unanswered";
+
+//   return (
+//     <div
+//       key={q.question_id}
+//       className={`card mb-3 border-0 solution-card ${
+//         status === "Correct"
+//           ? "solution-card-correct"
+//           : status === "Incorrect"
+//           ? "solution-card-incorrect"
+//           : "solution-card-unanswered"
+//       }`}
+//     >
+//       <div className={`card-header d-flex justify-content-between align-items-center border-0 ${headerClass}`}>
+//         <div className="d-flex align-items-center gap-2 flex-wrap">
+//           <p className="mb-0 fw-bold">Question {questionNumber}</p>
+
+//           {/* DYNAMIC STATUS LABEL */}
+//           <span
+//             className={`badge fw-semibold ${
+//               status === "Correct"
+//                 ? "bg-success-subtle text-success"
+//                 : status === "Incorrect"
+//                 ? "bg-danger-subtle text-danger"
+//                 : "bg-secondary-subtle text-secondary"
+//             }`}
+//           >
+//             {status}
+//           </span>
+//         </div>
+
+//         {/* SAVE BUTTON (unchanged) */}
+//         <div className="d-flex align-items-center gap-3">
+//           <button
+//             type="button"
+//             className="btn btn-link text-decoration-none text-muted p-0 d-flex align-items-center gap-1"
+//             onClick={() => openSaveModal(q.question_id)}
+//           >
+//             {savedCategories[q.question_id] ? (
+//               <BsBookmarkFill style={{ fontSize: "18px", color: "black" }} />
+//             ) : (
+//               <BsBookmark style={{ fontSize: "18px", color: "black" }} />
+//             )}
+//             <span style={{ fontWeight: savedCategories[q.question_id] ? "600" : "400" }}>
+//               {savedCategories[q.question_id]
+//                 ? `Saved (${savedCategories[q.question_id]})`
+//                 : "Save"}
+//             </span>
+//           </button>
+
+//           <span
+//             className="three-dots"
+//             style={{ cursor: "pointer", fontSize: "22px", userSelect: "none" }}
+//             onClick={(e) => {
+//               e.stopPropagation();
+//               const rect = e.target.getBoundingClientRect();
+//               setPopupPos({
+//                 top: rect.bottom + 8,
+//                 left: rect.right - 180,
+//               });
+//               setOpenMenuFor(q.question_id);
+//             }}
+//           >
+//             ⋯
+//           </span>
+//         </div>
+//       </div>
+
+//       {/* Popup remains unchanged */}
+//                   {openMenuFor === q.question_id && (
+//               <div
+//                 className="popup-menu shadow-sm"
+//                 style={{
+//                   position: "fixed",
+//                   top: popupPos.top,
+//                   left: popupPos.left,
+//                   width: "12rem",
+//                   background: "#fff",
+//                   border: "1px solid #ddd",
+//                   borderRadius: "0px 6px 6px 6px",
+//                   zIndex: 99999,
+//                 }}
+//               >
+//                 <p className="mb-1 fs-6 px-2 py-1">Found some error?</p>
+//                 <div
+//                   className="d-flex align-items-center report-line py-2 px-2"
+//                   style={{ cursor: "pointer" ,  width:"100%",backgroundColor:"#d2d2d2ff",}}
+//                 >
+//                   <span className="fs-6">Report this question</span>
+//                 </div>
+//               </div>
+//             )}
+
+
+//       {/* OPTIONS RENDER WITH DYNAMIC COLOR */}
+//       <div className="card-body">
+//         <p className="mb-3">{q.question}</p>
+
+//         <div className="mb-3 option-list">
+//           {Object.entries(q.options).map(([key, value]) => {
+//             const isUserSelected = key === userAns;
+//             const isCorrectOption = key === correctAns;
+
+//             let optionClass = "";
+//             if (status === "Correct" && isCorrectOption) optionClass = "option-correct";
+//             if (status === "Incorrect") {
+//               if (isUserSelected) optionClass = "option-wrong"; // red
+//               if (isCorrectOption) optionClass = "option-correct"; // green
+//             }
+//             if (status === "Unanswered" && isCorrectOption) optionClass = "option-correct";
+
+//             return (
+//               <div key={key} className={`option-row ${optionClass}`}>
+//                 <span className="me-2 fw-semibold">{key}.</span>
+//                 <span className="fw-semibold">{value}</span>
+//               </div>
+//             );
+//           })}
+//         </div>
+
+//         <div className="fw-semibold mb-1">Correct answer</div>
+//         <p className="mb-3">{correctAns}</p>
+
+//         <div className="fw-semibold mb-1">Explanation</div>
+//         <p className="mb-0">{q.explanation}</p>
+//       </div>
+//     </div>
+//   );
+// })}
+
+
+//       {/* go to top button */}
+//       <div className="text-center mb-4">
+//         <button className="btn btn-dark px-5 back-top-btn py-2" onClick={scrollToTop}>
+//           Go to top
+//         </button>
+//       </div>
+
+//       {/* --------------------------- SAVE MODAL --------------------------- */}
+//       {showModal && (
+//         <div className="save-modal-overlay top-modal" onClick={closeSaveModal}>
+//           <div className="save-modal-box" onClick={(e) => e.stopPropagation()}>
+//             <div className="d-flex justify-content-between align-items-center mb-3">
+//               <h6 className="fw-semibold mb-0">
+//                 Save to a list, Question {activeQuestion}
+//               </h6>
+//               <button className="btn p-0 border-0 bg-transparent fs-4" onClick={closeSaveModal}>
+//                 &times;
+//               </button>
+//             </div>
+
+//             <div className="d-flex flex-column gap-2">
+//               {categoryList.map((cat) => (
+//                 <div key={cat} className="d-flex align-items-center gap-2">
+//                   <input
+//                     type="text"
+//                     readOnly
+//                     value={cat}
+//                     onClick={() => setSelectedCategory(cat)}
+//                     className="form-control"
+//                     style={{
+//                       cursor: "pointer",
+//                       borderColor: selectedCategory === cat ? "#000" : "#ccc",
+//                     }}
+//                   />
+
+//                   {cat !== "Default" && (
+//                     <button
+//                       className="btn btn-sm btn-outline-dark"
+//                       onClick={() => handleDeleteList(cat)}
+//                       style={{ height: "39px" }}
+//                     >
+//                       Delete
+//                     </button>
+//                   )}
+//                 </div>
+//               ))}
+//             </div>
+
+//             <div className="text-center my-3 text-muted">or</div>
+
+//             <input
+//               type="text"
+//               className="form-control"
+//               placeholder="Create"
+//               readOnly
+//               onClick={openCreateModal}
+//             />
+
+//             <div className="d-flex justify-content-end gap-2 mt-4">
+//               <button className="btn btn-light" onClick={closeSaveModal}>
+//                 Cancel
+//               </button>
+//               <button className="btn btn-dark" onClick={handleSaveCategory}>
+//                 Save
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* ------------------------ CREATE LIST MODAL ------------------------ */}
+//       {showCreateModal && (
+//         <div className="save-modal-overlay top-modal" onClick={closeCreateModal}>
+//           <div className="save-modal-box" onClick={(e) => e.stopPropagation()}>
+//             <div className="d-flex justify-content-between align-items-center mb-3">
+//               <h5 className="fw-semibold mb-0">Create List</h5>
+//               <button className="btn p-0 border-0 bg-transparent fs-4" onClick={closeCreateModal}>
+//                 &times;
+//               </button>
+//             </div>
+
+//             <label className="fw-semibold mb-2">List Name</label>
+//             <input
+//               type="text"
+//               className="form-control"
+//               placeholder="Create List Name..."
+//               value={newListName}
+//               onChange={(e) => {
+//                 setNewListName(e.target.value);
+//                 setCreateError("");
+//               }}
+//             />
+
+//             {createError && (
+//               <div className="text-danger small mt-2">{createError}</div>
+//             )}
+
+//             <div className="text-end mt-4">
+//               <button className="btn btn-dark" onClick={handleCreateList}>
+//                 Done
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default ResultSolution;
+
+
 import React, { useState, useEffect } from "react";
-import "./ResultDetail.css";
+import "./ResultSolution.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
@@ -1443,7 +1924,6 @@ function ResultSolution() {
     );
   }
 
-
   const scrollToTop = () => {
     const container = document.querySelector(".dashboard-main");
     if (container) {
@@ -1487,16 +1967,47 @@ function ResultSolution() {
     setNewListName("");
   };
 
-  const handleSaveCategory = () => {
-    if (!activeQuestion || !selectedCategory) return;
+  // const handleSaveCategory = () => {
+  //   if (!activeQuestion || !selectedCategory) return;
 
-    setSavedCategories((prev) => ({
-      ...prev,
-      [activeQuestion]: selectedCategory,
-    }));
+  //   setSavedCategories((prev) => ({
+  //     ...prev,
+  //     [activeQuestion]: selectedCategory,
+  //   }));
 
-    closeSaveModal();
-  };
+  //   closeSaveModal();
+  // };
+
+
+  const handleSaveCategory = async () => {
+  if (!activeQuestion || !selectedCategory) return;
+
+  try {
+    const res = await axios.post(
+      "https://development.pilotexaminations.com/api/list/save",
+      {
+        user_id: userId,
+        question_id: activeQuestion,
+        list_name: selectedCategory,
+      }
+    );
+
+    if (!res.data.error) {
+      // update frontend saved state
+      setSavedCategories((prev) => ({
+        ...prev,
+        [activeQuestion]: selectedCategory,
+      }));
+
+      console.log("Saved successfully", res.data);
+
+      closeSaveModal();
+    }
+  } catch (err) {
+    console.error("Save list error:", err);
+    alert("Failed to save! Try again.");
+  }
+};
 
   const handleCreateList = () => {
     const name = newListName.trim();
@@ -1531,6 +2042,7 @@ function ResultSolution() {
 
   return (
     <div className="container-fluid result-detail-page">
+
       {/* ---------------------- SUMMARY CARD ---------------------- */}
       <div className="card shadow-sm border-0 mb-4 result-card">
         <div className="card-body px-0 pt-0 pb-0">
@@ -1548,8 +2060,7 @@ function ResultSolution() {
             <div className="row g-4 text-center summary-row">
               <div className="col-6 col-md-3">
                 <p
-                  className={`fw-bold mb-1 ${resultLabel.toLowerCase() === "fail" ? "text-danger" : "text-success"
-                    }`}
+                  className={`fw-bold mb-1 ${resultLabel.toLowerCase() === "fail" ? "text-danger" : "text-success"}`}
                   style={{ fontSize: "1.6rem" }}
                 >
                   {resultLabel}
@@ -1585,45 +2096,70 @@ function ResultSolution() {
 
       {/* ---------------------- QUESTIONS LIST ---------------------- */}
       {questions.map((q, index) => {
-        const isCorrect = q.is_correct;
         const questionNumber = index + 1;
+
+        const userAns = q.user_answer;
+        const correctAns = q.correct_answer;
+
+        let status = "Unanswered";
+        if (userAns === correctAns) status = "Correct";
+        else if (userAns !== "" && userAns !== correctAns) status = "Incorrect";
+
+        // Dynamic header classes
+        const headerClass =
+          status === "Correct"
+            ? "solution-header-correct"
+            : status === "Incorrect"
+            ? "solution-header-incorrect"
+            : "solution-header-unanswered";
 
         return (
           <div
             key={q.question_id}
-            className={`card mb-3 border-0 solution-card ${isCorrect ? "solution-card-correct" : "solution-card-incorrect"
-              }`}
+            className={`card mb-3 border-0 solution-card ${
+              status === "Correct"
+                ? "solution-card-correct"
+                : status === "Incorrect"
+                ? "solution-card-incorrect"
+                : "solution-card-unanswered"
+            }`}
           >
-            <div
-              className={`card-header d-flex justify-content-between align-items-center border-0 ${isCorrect ? "solution-header-correct" : "solution-header-incorrect"
-                }`}
-            >
+            <div className={`card-header d-flex justify-content-between align-items-center border-0 ${headerClass}`}>
               <div className="d-flex align-items-center gap-2 flex-wrap">
                 <p className="mb-0 fw-bold">Question {questionNumber}</p>
-                <span className="fw-semibold">{badge(isCorrect ? "correct" : "incorrect").text}</span>
+
+                {/* DYNAMIC STATUS LABEL */}
+                <span
+                  className={`badge fw-semibold ${
+                    status === "Correct"
+                      ? "bg-success-subtle text-success"
+                      : status === "Incorrect"
+                      ? "bg-danger-subtle text-danger"
+                      : "bg-secondary-subtle text-secondary"
+                  }`}
+                >
+                  {status}
+                </span>
               </div>
 
+              {/* SAVE BUTTON */}
               <div className="d-flex align-items-center gap-3">
                 <button
                   type="button"
                   className="btn btn-link text-decoration-none text-muted p-0 d-flex align-items-center gap-1"
                   onClick={() => openSaveModal(q.question_id)}
                 >
-                  {/* Icon changes dynamically */}
                   {savedCategories[q.question_id] ? (
                     <BsBookmarkFill style={{ fontSize: "18px", color: "black" }} />
                   ) : (
                     <BsBookmark style={{ fontSize: "18px", color: "black" }} />
                   )}
-
-                  {/* Text changes dynamically */}
                   <span style={{ fontWeight: savedCategories[q.question_id] ? "600" : "400" }}>
                     {savedCategories[q.question_id]
-                      ? `Saved (${savedCategories[q.question_id]})`
+                      ? `Unsave (${savedCategories[q.question_id]})`
                       : "Save"}
                   </span>
                 </button>
-
 
                 <span
                   className="three-dots"
@@ -1643,6 +2179,7 @@ function ResultSolution() {
               </div>
             </div>
 
+            {/* ---------------- FIXED POPUP CONDITION ---------------- */}
             {openMenuFor === q.question_id && (
               <div
                 className="popup-menu shadow-sm"
@@ -1660,24 +2197,36 @@ function ResultSolution() {
                 <p className="mb-1 fs-6 px-2 py-1">Found some error?</p>
                 <div
                   className="d-flex align-items-center report-line py-2 px-2"
-                  style={{ cursor: "pointer", width: "100%", backgroundColor: "#d2d2d2ff" }}
+                  style={{
+                    cursor: "pointer",
+                    width: "100%",
+                    backgroundColor: "#d2d2d2ff",
+                  }}
                 >
                   <span className="fs-6">Report this question</span>
                 </div>
               </div>
             )}
 
+            {/* ================= OPTIONS ================= */}
             <div className="card-body">
               <p className="mb-3">{q.question}</p>
 
               <div className="mb-3 option-list">
                 {Object.entries(q.options).map(([key, value]) => {
-                  const isAns = key === q.correct_answer;
+                  const isUserSelected = key === userAns;
+                  const isCorrectOption = key === correctAns;
+
+                  let optionClass = "";
+                  if (status === "Correct" && isCorrectOption) optionClass = "option-correct";
+                  if (status === "Incorrect") {
+                    if (isUserSelected) optionClass = "option-wrong"; // red
+                    if (isCorrectOption) optionClass = "option-correct"; // green
+                  }
+                  if (status === "Unanswered" && isCorrectOption) optionClass = "option-correct";
+
                   return (
-                    <div
-                      key={key}
-                      className={`option-row ${isAns ? "option-correct" : ""}`}
-                    >
+                    <div key={key} className={`option-row ${optionClass}`}>
                       <span className="me-2 fw-semibold">{key}.</span>
                       <span className="fw-semibold">{value}</span>
                     </div>
@@ -1686,7 +2235,7 @@ function ResultSolution() {
               </div>
 
               <div className="fw-semibold mb-1">Correct answer</div>
-              <p className="mb-3">{q.correct_answer}</p>
+              <p className="mb-3">{correctAns}</p>
 
               <div className="fw-semibold mb-1">Explanation</div>
               <p className="mb-0">{q.explanation}</p>
