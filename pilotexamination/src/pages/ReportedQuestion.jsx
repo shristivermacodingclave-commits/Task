@@ -66,7 +66,7 @@ import Button from "../component/Button";
 import { NavLink, useLocation } from "react-router-dom";
 import axios from "axios";
 import info from "../assets/images/info.svg";
-
+import Loader from "../component/Loader";
 function ReportedQuestion() {
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]);
@@ -120,14 +120,7 @@ function ReportedQuestion() {
     }
   }, [activeTab, reports]);
 
-  if (loading) {
-    return (
-      <div className="container-fluid text-center mt-4">
-        <h5>Loading...</h5>
-      </div>
-    );
-  }
-
+  if (loading) return <Loader message="Loading Reported questions....." />;
   return (
     <div className="container-fluid">
       <h3 className="fw-bold my-2 mb-4 mt-4">Reported Question</h3>

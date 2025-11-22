@@ -30,7 +30,9 @@ import MockTest from './component/ResultComponent/MockTest.jsx';
 import PlanEtest from './pages/PlanEtest.jsx';
 import EtestAttempt from './pages/EtestAttempt.jsx';
 import ResultSolution from './pages/ResultSolution.jsx';
-import ResultDetail from './pages/ResultDetail.jsx';
+import EtestResultDetail from './pages/EtestResultDetail.jsx';
+import MockResultDetail from './pages/MockResultDetail.jsx'
+import MockResultSolution from './pages/MockResultSolution.jsx';
 
 function App() {
   const location = useLocation();
@@ -86,11 +88,13 @@ function App() {
           {/* ---------- Results Routes ---------- */}
           <Route path="results" element={<Results />}>
             <Route index element={<Navigate to="index" replace />} />
-            <Route path="index" element={<Etest/>} />
-            <Route path="practice-test" element={<PracticeTest/>} />
+            <Route path="index" element={<Etest />} />
+            <Route path="practice-test" element={<PracticeTest />} />
             <Route path="mock-test" element={<MockTest />} />
-            <Route path="detail" element={<ResultDetail />} />
+            <Route path="etest-detail" element={<EtestResultDetail />} />
+            <Route path="mocktest-detail" element={<MockResultDetail />} />
             <Route path="solution" element={<ResultSolution />} />
+              <Route path="mocktest-solution-" element={<MockResultSolution/>} />
           </Route>
 
           <Route path="save-list" element={<SaveList />} />
@@ -115,9 +119,9 @@ function App() {
           <Route path="meterology" element={<MeteorologySubscription />} />
           <Route path="regulation" element={<RegulationSubscription />} />
           <Route path="navigation" element={<NavigationSubscription />} />
-           <Route path="atg" element={<AtgSubscription />} />
-            <Route path="ats" element={<AtsSubscription />} />
-              <Route path="combo-subject" element={<ComboSubjectSuscription />} />
+          <Route path="atg" element={<AtgSubscription />} />
+          <Route path="ats" element={<AtsSubscription />} />
+          <Route path="combo-subject" element={<ComboSubjectSuscription />} />
         </Route>
 
         {/* ---------- Public E-Test Attempt Route ---------- */}

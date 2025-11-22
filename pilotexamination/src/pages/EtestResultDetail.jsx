@@ -922,6 +922,7 @@ import Button from "../component/Button";
 import axios from "axios";
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Loader from "../component/Loader";
 
 function ResultDetail() {
   const { state } = useLocation();
@@ -988,9 +989,7 @@ function ResultDetail() {
     fetchRanking();
   }, [userId]);
 
-  if (!testData) {
-    return <div className="text-center mt-4"><h5>Loading...</h5></div>;
-  }
+   if (!testData) return <Loader message="Loading....." />;
 
   // dynamic fields
   const subject = testData.subject_name || "";

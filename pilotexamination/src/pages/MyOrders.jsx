@@ -270,6 +270,10 @@ import React, { useEffect, useState } from "react";
 import "./MyOrders.css";
 import Button from "../component/Button";
 import axios from "axios";
+import Loader from "../component/Loader";
+import { subjectPaths } from "../assets/subjectPaths";
+import { useNavigate } from "react-router-dom";
+
 
 export default function MyOrders() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -278,13 +282,16 @@ export default function MyOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+
+
   /* -------- FETCH ORDERS API -------- */
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const res = await axios.get(
           `https://development.pilotexaminations.com/api/my-orders/${userId}`,
-          
+
         );
 
         console.log("ORDERS API:", res.data);
@@ -302,13 +309,19 @@ export default function MyOrders() {
     fetchOrders();
   }, [userId]);
 
-  if (loading) {
-    return (
-      <div className="container-fluid my-4 text-center">
-        <h5>Loading Orders...</h5>
-      </div>
-    );
-  }
+
+  const handleRenew = (title) => {
+    const subject = subjectPaths[title];
+
+    if (!subject) {
+      console.error("No enroll plan found for:", title);
+      return;
+    }
+
+    navigate(subject.enrollplanPath);
+  };
+
+  if (loading) return <Loader message="Loading Orders....." />;
 
   return (
     <div className="container-fluid my-4">
@@ -348,15 +361,24 @@ export default function MyOrders() {
                 <p className="mb-0">{item.valid_till}</p>
               </div>
 
+
               <div className="col-md-2">
                 <p className="fw-semibold mb-1">Status</p>
                 <span
                   className="badge px-3 py-2"
-                  style={{ backgroundColor: "#e6e6e6", color: "#000" }}
+                  style={{
+                    backgroundColor: item.status === "Active" ? "#B3E7C7" : "#e6e6e6",
+                    color:
+                      item.status === "Active"
+                        ? "#00b046ff"
+                        : "#000000",
+
+                  }}
                 >
                   {item.status}
                 </span>
               </div>
+
 
               <div className="col-md-2 text-start">
                 <p className="fw-semibold mb-1">Total</p>
@@ -371,9 +393,16 @@ export default function MyOrders() {
                 Valid till : {item.valid_till}
               </p>
 
-              {item.renew_available && (
-                <Button name="Renew Now" className="btn-dark fs-6 px-5" />
-              )}
+              
+              {
+                item.renew_available && (
+                  <Button
+                    name="Renew Now"
+                    className="btn-dark fs-6 px-5"
+                    onClick={() => handleRenew(item.title)}
+                  />
+                )
+              }
             </div>
           </div>
 
@@ -397,7 +426,14 @@ export default function MyOrders() {
                 <p className="fw-semibold mb-1">Status</p>
                 <span
                   className="badge px-3 py-2"
-                  style={{ backgroundColor: "#e6e6e6", color: "#000" }}
+                  style={{
+                    backgroundColor: item.status === "Active" ? "#B3E7C7" : "#e6e6e6",
+                    color:
+                      item.status === "Active"
+                        ? "#00b046ff"
+                        : "#000000",
+
+                  }}
                 >
                   {item.status}
                 </span>
@@ -411,9 +447,17 @@ export default function MyOrders() {
 
             <hr />
 
-            {item.renew_available && (
-              <button className="btn btn-dark w-100 mb-3">Renew Now</button>
-            )}
+              {
+                item.renew_available && (
+                  <Button
+                    name="Renew Now"
+                    className="btn-dark fs-6 px-5"
+                    onClick={() => handleRenew(item.title)}
+                  />
+                )
+              }
+
+            
 
             <p className="text-danger text-center fw-semibold">
               Valid till : {item.valid_till}

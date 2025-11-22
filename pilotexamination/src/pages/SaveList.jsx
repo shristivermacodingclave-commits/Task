@@ -494,6 +494,7 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import "./SaveList.css";
 import { BsBookmarkFill } from "react-icons/bs";
+import Loader from "../component/Loader";
 
 function SaveList() {
   const [savedQuestions, setSavedQuestions] = useState([]);
@@ -629,13 +630,7 @@ function SaveList() {
     fetchSavedList();
   }, [userId, token]);
 
-  if (loading) {
-    return (
-      <div className="container-fluid text-center mt-4">
-        <h5>Loading saved questions...</h5>
-      </div>
-    );
-  }
+    if (loading) return <Loader message="Loading savelist....." />;
 
   /* ---------------- FILTER BY ACTIVE CATEGORY ---------------- */
   const filteredQuestions =

@@ -158,6 +158,7 @@ import InfoText from "../../component/InfoText";
 import Button from "../../component/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 
 export default function Etest() {
   const navigate = useNavigate();
@@ -167,7 +168,7 @@ export default function Etest() {
   const token = localStorage.getItem("token");
   const storedUser = localStorage.getItem("user");
   const userId = storedUser ? JSON.parse(storedUser).id : null;
-  console.log(userId);
+
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -218,13 +219,15 @@ export default function Etest() {
     return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
   };
 
-  if (loading) {
-    return (
-      <div className="container-fluid mt-4 text-center">
-        <h5>Loading results...</h5>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="container-fluid mt-4 text-center">
+  //       <h5>Loading results...</h5>
+  //     </div>
+  //   );
+  // }
+
+   if (loading) return <Loader message="Loading e-test results....." />;
 
   return (
     <div className="container-fluid mt-4">
@@ -278,7 +281,7 @@ export default function Etest() {
                   name="Result"
                   className="btn-dark fs-6 px-5 w-100"
                   onClick={() =>
-                    navigate("/dashboard/results/detail", {
+                    navigate("/dashboard/results/etest-detail", {
                       state: {
                         testId: item.testId,
                         subject: item.subject,
@@ -319,7 +322,7 @@ export default function Etest() {
             <button
               className="btn btn-dark w-100 my-3"
               onClick={() =>
-                navigate("/dashboard/results/detail", {
+                navigate("/dashboard/results/etest-detail", {
                   state: {
                     subject: item.subject,
                     topic: item.topic,

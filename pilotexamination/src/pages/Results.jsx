@@ -27,8 +27,6 @@ function Results() {
           </div>
         </>
       )}
-
-
      {/* dynamic content */}
       <Outlet/>
 

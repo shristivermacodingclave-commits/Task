@@ -1,3 +1,4 @@
+/* PLAN CARD */
 .plan-card {
   background-color: #ffffff;
   border: 1px solid #ffffff;
@@ -11,7 +12,7 @@
   transform: translateY(-3px);
 }
 
-.plan-card.active{
+.plan-card.active {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
 }
 
@@ -19,57 +20,73 @@
   min-height: 100px !important;
 }
 
-/* Radio styling */
+/* RADIO */
 .plan-radio {
   width: 20px;
   height: 20px;
   accent-color: #000;
 }
 
-/* Coupon input/button alignment */
-.coupon-row {
-  display: flex;
-  align-items: center;
+/* WRAPPER */
+.plan-wrapper {
+  position: relative;
 }
 
+/* RECOMMENDED BADGE */
+.recommended-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid black;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  z-index: 1;
+  background-color: #ffffff;
+}
+
+/* COUPON CARD HOVER */
+.coupon-card:hover {
+  transition: 0.5s;
+  box-shadow: 0px 2px 21px #E8E8E8;
+}
+
+/* COUPON ROW — FIXED */
+.coupon-row {
+  display: flex;
+  flex-wrap: wrap; /* required for md and sm screens */
+  width: 100%;
+}
+
+/* INPUT + BUTTON */
 .coupon-input {
   border: 1px solid #000 !important;
   padding: 0.7rem !important;
 }
 
 .coupon-btn {
-  padding: 0.7rem !important;
+  padding: 0.8rem !important;
 }
 
-@media (max-width: 768px) {
-  .coupon-row {
-    flex-wrap: nowrap;
-  }
+/* ERROR TEXT FIX */
+.invalid-text {
+  white-space: normal;
+  word-wrap: break-word;
+}
 
-  .coupon-input,
-  .coupon-btn {
+/* Only Mobile */
+@media (max-width: 576px) {
+  .coupon-input {
     font-size: 0.9rem;
   }
-}
 
-.plan-wrapper {
-  position: relative;
-}
+  .coupon-btn {
+    padding: 0.8rem !important;
+  }
 
-/* Recommended badge */
-.recommended-badge {
-  position: absolute;
-  top: -14px;
-  left: 40%;
-  border:1px solid black;
-  padding: 4px 10px;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: 600;
-  z-index:1;
-  background-color: #ffffff;
-}
-.coupon-card:hover{
-    transition: 0.5s;
-    box-shadow: 0px 2px 21px #E8E8E8;
+  .invalid-text {
+    font-size: 0.8rem !important;
+  }
 }
