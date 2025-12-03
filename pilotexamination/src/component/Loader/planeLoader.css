@@ -1,0 +1,52 @@
+#loading {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  display: flex;
+  background: #ffffff;
+  z-index: 9000;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+#loading h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 26px;
+  line-height: 34px;
+  text-align: center;
+  letter-spacing: 0.001em;
+  color: #000000;
+  margin-top: -3rem;
+  z-index: 99;
+}
+
+#loading p {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px !important;
+  text-align: center;
+  letter-spacing: 0.001em;
+  color: #000000;
+  z-index: 99;
+}
+
+#loader {
+  position: relative;
+  width: 12rem;
+  margin-top: -2rem;
+  height: auto;
+  min-width: 10rem;
+  background-color: #fff;
+}
+
+@media (max-width: 650px) {
+  #loader {
+    margin-top: -5rem;
+  }
+}

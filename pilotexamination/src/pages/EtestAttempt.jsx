@@ -2519,7 +2519,7 @@ export default function EtestAttempt() {
         // --- fetch saved answers ---
         const getAttemptRes = await axios.post(
           "https://development.pilotexaminations.com/api/get-attempt",
-          { attempt_id: attemptId }
+          { attempt_id: attemptId , user_id:userID }
         );
 
         if (
@@ -2680,7 +2680,7 @@ export default function EtestAttempt() {
     try {
       const res = await axios.post(
         "https://development.pilotexaminations.com/api/etest/submit-test",
-        { attempt_id: attemptId }
+        { attempt_id: attemptId , user_id:userId}
       );
 
       showToast("Test submitted!");
