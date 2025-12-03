@@ -146,7 +146,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                             {/* ✅ Take Demo MockTest (same path as Enroll) */}
                                             <button
                                                 className="btn btn-link w-100 details-hover"
-                                                onClick={() => goToPlans(paths.enrollplanPath)}
+                                                onClick={() => goToPlans(paths.viewDetailPath)}
                                                 style={{ color: 'black', fontWeight: '500' }}
                                             >
                                                 Take Demo MockTest

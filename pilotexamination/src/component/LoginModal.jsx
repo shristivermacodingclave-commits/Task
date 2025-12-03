@@ -19,6 +19,8 @@ function LoginModal({ show, handleClose }) {
         { email, password }
       );
 
+      console.log('Login response:', response.data);
+
       const { error, token, message, data } = response.data;
 
       if (!error && token) {

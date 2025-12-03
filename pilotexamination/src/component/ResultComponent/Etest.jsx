@@ -219,13 +219,7 @@ export default function Etest() {
     return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="container-fluid mt-4 text-center">
-  //       <h5>Loading results...</h5>
-  //     </div>
-  //   );
-  // }
+
 
    if (loading) return <Loader message="Loading e-test results....." />;
 
