@@ -1,0 +1,101 @@
+.mock-view {
+  display: flex;
+  justify-content: center;
+}
+
+.mock-card {
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.mock-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mock-tag {
+  background: #000;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.mock-instructions li {
+  margin-bottom: 15px;
+}
+
+.mock-legend {
+  margin-top: 10px;
+  display: flex;
+  gap: 20px;
+}
+
+.mock-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mock-legend-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: inline-block;
+  border: 1px solid #ccc;
+}
+
+.mock-legend-attempted .mock-legend-swatch {
+  background: #a7f3a7;
+}
+
+.mock-legend-unattempted .mock-legend-swatch {
+  background: #ffeaa7;
+}
+
+.mock-legend-unvisited .mock-legend-swatch {
+  background: #ffffff;
+}
+
+.mock-info-box {
+  margin: 20px 0;
+  display: flex;
+  gap: 40px;
+}
+
+.mock-info-item {
+  background: #f4f4f4;
+  padding: 15px 20px;
+  border-radius: 8px;
+}
+
+.mock-timer-section {
+  background: #fff1d6;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.mock-timer-icon {
+  font-size: 50px;
+}
+
+.mock-start-btn {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+.mock-start-btn:disabled {
+  background: #999;
+}

@@ -2438,6 +2438,482 @@
 
 
 
+// import React, { useEffect, useMemo, useState } from "react";
+// import axios from "axios";
+// import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+// import "./EtestAttempt.css";
+
+// const OPTION_LABELS = ["A", "B", "C"];
+
+// export default function EtestAttempt() {
+//   const [searchParams] = useSearchParams();
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   // -------- get meta data --------
+//   const testMeta = location.state || {};
+//   const userId = testMeta.userId || 10;
+
+//   // ---- attempt_id: URL > state > localStorage ----
+//   const attemptId =
+//     searchParams.get("attempt_id") ||
+//     testMeta.attemptId ||
+//     localStorage.getItem("attempt_id");
+
+//   // ------------------------------------------------
+//   // SAFE: Load questions from state OR localStorage
+//   // ------------------------------------------------
+//   const initialQuestions =
+//     testMeta.questions ||
+//     JSON.parse(localStorage.getItem("questions") || "[]");
+
+//   // ------------------------------------------------
+//   // FORMAT QUESTIONS (VERY IMPORTANT FOR UI)
+//   // ------------------------------------------------
+//   const formattedQuestions = Array.isArray(initialQuestions)
+//     ? initialQuestions.map((q) => ({
+//         id: q.quest_id,
+//         question: q.question,
+//         options: [
+//           q.option_a || "N/A",
+//           q.option_b || "N/A",
+//           q.option_c || "N/A",
+//         ],
+//         correct: q.correct_answer,
+//         explanation: q.explanation,
+//       }))
+//     : [];
+
+//   const [questions, setQuestions] = useState(formattedQuestions);
+//   const [answers, setAnswers] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const [showSubmitModal, setShowSubmitModal] = useState(false);
+//   const [message, setMessage] = useState("");
+
+//   // -------------------------------------------------------
+//   //  LOAD saved answers using get-attempt (NOT start-test)
+//   // -------------------------------------------------------
+//   useEffect(() => {
+//     (async function init() {
+//       setLoading(true);
+
+//       try {
+//         if (!Array.isArray(questions) || questions.length === 0) {
+//           console.warn("No questions received");
+//           setQuestions([]);
+//           setAnswers([]);
+//           setLoading(false);
+//           return;
+//         }
+
+//         // Format empty local answer state
+//         const inicial = questions.map(() => ({
+//           selected: null,
+//           confirmed: false,
+//           visited: false,
+//         }));
+//         setAnswers(inicial);
+
+//         // --- fetch saved answers ---
+//         const getAttemptRes = await axios.post(
+//           "https://development.pilotexaminations.com/api/get-attempt",
+//           { attempt_id: attemptId , user_id:userId }
+//         );
+
+//         if (
+//           getAttemptRes?.data &&
+//           !getAttemptRes.data.error &&
+//           Array.isArray(getAttemptRes.data.questions)
+//         ) {
+//           const savedMap = new Map();
+
+//           getAttemptRes.data.questions.forEach((s) => {
+//             savedMap.set(Number(s.question_id), {
+//               saved_answer: s.saved_answer ?? "",
+//               status: s.status ?? "",
+//             });
+//           });
+
+//           const merged = questions.map((q) => {
+//             const entry = savedMap.get(Number(q.id));
+//             if (!entry)
+//               return { selected: null, confirmed: false, visited: false };
+
+//             const saved = entry.saved_answer || "";
+//             const selected =
+//               saved === "" ? null : OPTION_LABELS.indexOf(saved);
+//             const confirmed = saved !== "";
+//             const visited = ["viewed", "answered"].includes(
+//               (entry.status || "").toLowerCase()
+//             );
+
+//             return { selected, confirmed, visited };
+//           });
+
+//           setAnswers(merged);
+//         }
+//       } catch (err) {
+//         console.warn("get-attempt", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     })();
+//   }, [attemptId, questions]);
+
+//   // -----------------
+//   // SAME LOGIC BELOW
+//   // -----------------
+
+//   const paletteInfo = useMemo(
+//     () =>
+//       answers.map((entry, idx) => ({
+//         index: idx,
+//         selected: entry?.selected ?? null,
+//         confirmed: entry?.confirmed ?? false,
+//         visited: entry?.visited ?? false,
+//       })),
+//     [answers]
+//   );
+
+//   const showToast = (txt, ms = 1500) => {
+//     setMessage(txt);
+//     setTimeout(() => setMessage(""), ms);
+//   };
+
+//   const handleSelectOption = (optionIndex) => {
+//     setAnswers((prev) =>
+//       prev.map((entry, idx) =>
+//         idx === currentIndex ? { ...entry, selected: optionIndex } : entry
+//       )
+//     );
+//   };
+
+//   const handleReset = async () => {
+//     if (!questions[currentIndex]) return;
+
+//     const qid = questions[currentIndex].id;
+
+//     setAnswers((prev) =>
+//       prev.map((entry, idx) =>
+//         idx === currentIndex
+//           ? { ...entry, selected: null, confirmed: false }
+//           : entry
+//       )
+//     );
+
+//     try {
+//       await axios.post(
+//         "https://development.pilotexaminations.com/api/reset-answer",
+//         { quest_id: qid }
+//       );
+//       showToast("Answer reset!");
+//     } catch {
+//       showToast("Reset failed");
+//     }
+//   };
+
+//   const handleConfirm = async () => {
+//     const sel = answers[currentIndex]?.selected;
+//     if (sel === null) return;
+
+//     const qid = questions[currentIndex].id;
+//     const answerLetter = OPTION_LABELS[sel];
+
+//     setAnswers((prev) =>
+//       prev.map((entry, idx) =>
+//         idx === currentIndex
+//           ? { ...entry, confirmed: true, visited: true }
+//           : entry
+//       )
+//     );
+
+//     try {
+//       await axios.post(
+//         "https://development.pilotexaminations.com/api/etest/save-answer",
+//         {
+//           quest_id: qid,
+//           answer: answerLetter,
+//         }
+//       );
+//       showToast("Answer saved!");
+//     } catch {
+//       showToast("Save failed");
+//     }
+
+//     if (currentIndex < questions.length - 1) {
+//       goToQuestion(currentIndex + 1);
+//     }
+//   };
+
+//   const goToQuestion = (idx) => {
+//     setAnswers((prev) =>
+//       prev.map((a, i) =>
+//         i === idx || i === currentIndex ? { ...a, visited: true } : a
+//       )
+//     );
+//     setCurrentIndex(idx);
+//   };
+
+//   const goPrev = () => {
+//     if (currentIndex > 0) goToQuestion(currentIndex - 1);
+//   };
+
+//   const goNext = () => {
+//     if (currentIndex < questions.length - 1)
+//       goToQuestion(currentIndex + 1);
+//   };
+
+//   const handleGoToPlan = () => {
+//     if (testMeta.planPath) navigate(testMeta.planPath);
+//     else navigate("/dashboard/my-courses");
+//   };
+
+//   const attemptedCount = answers.filter((a) => a.confirmed).length;
+//   const unvisitedCount = answers.filter(
+//     (a) => a.visited && !a.confirmed && a.selected === null
+//   ).length;
+//   const unattemptedCount = answers.filter((a) => !a.visited).length;
+
+//   const submitFinalTest = async () => {
+//     try {
+//       const res = await axios.post(
+//         "https://development.pilotexaminations.com/api/etest/submit-test",
+//         { attempt_id: attemptId ,user_id: userId }
+//       );
+
+//       showToast("Test submitted!");
+
+//       setTimeout(() => {
+//         navigate(`/dashboard/test_result?attempt_id=${attemptId}`, {
+//           state: { ...res.data, attempt_id: attemptId },
+//         });
+//       }, 800);
+//     } catch {
+//       showToast("Submit failed");
+//     }
+//   };
+
+//   const handleSubmit = () => setShowSubmitModal(true);
+
+//   // ---- loading guard ----
+//   if (loading) {
+//     return (
+//       <div className="etest-shell">
+//         <p className="loading-text">Loading Test Questions...</p>
+//       </div>
+//     );
+//   }
+
+//   // -------------------------------------
+//   // SAFE GUARD: Prevent undefined.map() crash
+//   // -------------------------------------
+//   if (!Array.isArray(questions)) {
+//     return (
+//       <div className="etest-shell">
+//         <div className="etest-question-card">
+//           <p>Questions failed to load. Please go back and start the test again.</p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   if (questions.length === 0) {
+//     return (
+//       <div className="etest-shell">
+//         <div className="etest-question-card">
+//           <p>No questions available.</p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   const paletteBtnClass = (item) => {
+//     if (item.confirmed) return "status-attempted";
+//     if (item.visited) return "status-unvisited";
+//     return "status-unattempted";
+//   };
+
+//   // ----------------------------------------------------------
+//   //                      FULL JSX UI (UNCHANGED)
+//   // ----------------------------------------------------------
+//   return (
+//     <div className="etest-shell">
+//       {/* toast */}
+//       {message && <div className="etest-msg">{message}</div>}
+
+//       <div className="etest-question-panel">
+//         <div className="etest-question-card">
+//           <div className="etest-question-title">
+//             <p className="etest-question-label">Question {currentIndex + 1}</p>
+//             <h3>{questions[currentIndex].question}</h3>
+//           </div>
+
+//           <div className="etest-option-controls">
+//             {Array.isArray(questions[currentIndex].options) &&
+//               questions[currentIndex].options.map((opt, idx) => (
+//                 <label
+//                   key={idx}
+//                   className={`etest-option-pill ${
+//                     answers[currentIndex]?.selected === idx ? "is-active" : ""
+//                   }`}
+//                 >
+//                   <input
+//                     type="radio"
+//                     name={`q-${questions[currentIndex].id}`}
+//                     checked={answers[currentIndex]?.selected === idx}
+//                     onChange={() => handleSelectOption(idx)}
+//                   />
+//                   {OPTION_LABELS[idx]}
+//                 </label>
+//               ))}
+
+//             <button className="etest-reset" onClick={handleReset}>
+//               Reset
+//             </button>
+//             <button
+//               className="etest-confirm"
+//               onClick={handleConfirm}
+//               disabled={answers[currentIndex]?.selected === null}
+//             >
+//               Confirm
+//             </button>
+//           </div>
+
+//           <div className="etest-options-list">
+//             {Array.isArray(questions[currentIndex].options) &&
+//               questions[currentIndex].options.map((opt, idx) => (
+//                 <button
+//                   key={idx}
+//                   className={`etest-option-row ${
+//                     answers[currentIndex]?.selected === idx ? "is-selected" : ""
+//                   }`}
+//                   onClick={() => handleSelectOption(idx)}
+//                 >
+//                   <span className="etest-option-label">
+//                     {OPTION_LABELS[idx]}.
+//                   </span>
+//                   <span>{opt}</span>
+//                 </button>
+//               ))}
+//           </div>
+//         </div>
+
+//         <div className="etest-nav-controls">
+//           <button
+//             className="etest-prev"
+//             onClick={goPrev}
+//             disabled={currentIndex === 0}
+//           >
+//             &lt; Previous
+//           </button>
+
+//           <button
+//             className="etest-next"
+//             onClick={goNext}
+//             disabled={currentIndex === questions.length - 1}
+//           >
+//             Next &gt;
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* SIDEBAR */}
+//       <aside className="etest-sidebar">
+//         <div className="etest-sidebar-header">
+//           <div>
+//             <button className="etest-sidebar-link" onClick={handleGoToPlan}>
+//               E-Test
+//             </button>
+//             {testMeta.topic && (
+//               <p className="etest-sidebar-subtitle">{testMeta.topic}</p>
+//             )}
+//             <p className="etest-sidebar-meta">Attempt ID: {attemptId}</p>
+//           </div>
+
+//           <button className="etest-submit" onClick={handleSubmit}>
+//             Submit Test
+//           </button>
+//         </div>
+
+//         <div className="etest-palette">
+//           <p className="etest-palette-heading">Questions</p>
+
+//           <div className="etest-palette-scroll">
+//             <div className="etest-palette-grid">
+//               {paletteInfo.map((item) => (
+//                 <button
+//                   key={item.index}
+//                   className={`etest-palette-btn ${
+//                     item.index === currentIndex ? "is-active" : ""
+//                   } ${paletteBtnClass(item)}`}
+//                   onClick={() => goToQuestion(item.index)}
+//                 >
+//                   {item.index + 1}
+//                 </button>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+//       </aside>
+
+//       {/* SUBMIT MODAL */}
+//       {showSubmitModal && (
+//         <div className="etest-modal-overlay">
+//           <div className="etest-modal">
+//             <div className="etest-modal-header">
+//               <h4>Confirm Test Submission</h4>
+//               <button
+//                 className="modal-close"
+//                 onClick={() => setShowSubmitModal(false)}
+//               >
+//                 ✕
+//               </button>
+//             </div>
+
+//             <div className="etest-modal-body">
+//               <p className="summary-title">Test Summary</p>
+
+//               <div className="summary-row">
+//                 <div className="summary-item">
+//                   <span className="summary-box attempted-box"></span>
+//                   Attempted ({attemptedCount})
+//                 </div>
+
+//                 <div className="summary-item">
+//                   <span className="summary-box unvisited-box"></span>
+//                   Unvisited ({unvisitedCount})
+//                 </div>
+
+//                 <div className="summary-item">
+//                   <span className="summary-box unattempted-box"></span>
+//                   Unattempted ({unattemptedCount})
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="etest-modal-footer">
+//               <button className="end-test-btn" onClick={submitFinalTest}>
+//                 End Test
+//               </button>
+
+//               <button
+//                 className="review-test-btn"
+//                 onClick={() => setShowSubmitModal(false)}
+//               >
+//                 Review Test
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+
+
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
@@ -2468,19 +2944,19 @@ export default function EtestAttempt() {
     JSON.parse(localStorage.getItem("questions") || "[]");
 
   // ------------------------------------------------
-  // FORMAT QUESTIONS (VERY IMPORTANT FOR UI)
+  // FORMAT QUESTIONS (UPDATED to include tq_id)
   // ------------------------------------------------
   const formattedQuestions = Array.isArray(initialQuestions)
     ? initialQuestions.map((q) => ({
+        tq_id: q.tq_id,                  // ⭐ ADDED
         id: q.quest_id,
+        question_id: q.question_id,      // optional but kept
         question: q.question,
         options: [
           q.option_a || "N/A",
           q.option_b || "N/A",
           q.option_c || "N/A",
-        ],
-        correct: q.correct_answer,
-        explanation: q.explanation,
+        ]
       }))
     : [];
 
@@ -2493,7 +2969,7 @@ export default function EtestAttempt() {
   const [message, setMessage] = useState("");
 
   // -------------------------------------------------------
-  //  LOAD saved answers using get-attempt (NOT start-test)
+  //  LOAD saved answers using get-attempt (NOW USING tq_id)
   // -------------------------------------------------------
   useEffect(() => {
     (async function init() {
@@ -2519,7 +2995,7 @@ export default function EtestAttempt() {
         // --- fetch saved answers ---
         const getAttemptRes = await axios.post(
           "https://development.pilotexaminations.com/api/get-attempt",
-          { attempt_id: attemptId , user_id:userID }
+          { attempt_id: attemptId, user_id: userId }
         );
 
         if (
@@ -2529,15 +3005,18 @@ export default function EtestAttempt() {
         ) {
           const savedMap = new Map();
 
+          // ⭐ CHANGE 1: create map by tq_id
           getAttemptRes.data.questions.forEach((s) => {
-            savedMap.set(Number(s.question_id), {
+            savedMap.set(Number(s.tq_id), {
               saved_answer: s.saved_answer ?? "",
               status: s.status ?? "",
             });
           });
 
+          // ⭐ CHANGE 2: merge using tq_id instead of question_id
           const merged = questions.map((q) => {
-            const entry = savedMap.get(Number(q.id));
+            const entry = savedMap.get(Number(q.tq_id));
+
             if (!entry)
               return { selected: null, confirmed: false, visited: false };
 
@@ -2590,10 +3069,13 @@ export default function EtestAttempt() {
     );
   };
 
+  // ----------------------------------------------------
+  // RESET ANSWER API UPDATED to use tq_id
+  // ----------------------------------------------------
   const handleReset = async () => {
     if (!questions[currentIndex]) return;
 
-    const qid = questions[currentIndex].id;
+    const tqid = questions[currentIndex].tq_id; // ⭐ UPDATED
 
     setAnswers((prev) =>
       prev.map((entry, idx) =>
@@ -2606,7 +3088,7 @@ export default function EtestAttempt() {
     try {
       await axios.post(
         "https://development.pilotexaminations.com/api/reset-answer",
-        { quest_id: qid }
+        { tq_id: tqid , answer: answerLetter, } // ⭐ UPDATED
       );
       showToast("Answer reset!");
     } catch {
@@ -2614,11 +3096,14 @@ export default function EtestAttempt() {
     }
   };
 
+  // ----------------------------------------------------
+  // CONFIRM / SAVE ANSWER API UPDATED to use tq_id
+  // ----------------------------------------------------
   const handleConfirm = async () => {
     const sel = answers[currentIndex]?.selected;
     if (sel === null) return;
 
-    const qid = questions[currentIndex].id;
+    const tqid = questions[currentIndex].tq_id; // ⭐ UPDATED
     const answerLetter = OPTION_LABELS[sel];
 
     setAnswers((prev) =>
@@ -2633,7 +3118,7 @@ export default function EtestAttempt() {
       await axios.post(
         "https://development.pilotexaminations.com/api/etest/save-answer",
         {
-          quest_id: qid,
+          tq_id: tqid,        // ⭐ UPDATED
           answer: answerLetter,
         }
       );
@@ -2680,13 +3165,13 @@ export default function EtestAttempt() {
     try {
       const res = await axios.post(
         "https://development.pilotexaminations.com/api/etest/submit-test",
-        { attempt_id: attemptId , user_id:userId}
+        { attempt_id: attemptId, user_id: userId }
       );
 
       showToast("Test submitted!");
 
       setTimeout(() => {
-        navigate("/dashboard/results", {
+        navigate(`/dashboard/test_result?attempt_id=${attemptId}`, {
           state: { ...res.data, attempt_id: attemptId },
         });
       }, 800);
@@ -2706,9 +3191,6 @@ export default function EtestAttempt() {
     );
   }
 
-  // -------------------------------------
-  // SAFE GUARD: Prevent undefined.map() crash
-  // -------------------------------------
   if (!Array.isArray(questions)) {
     return (
       <div className="etest-shell">
@@ -2735,9 +3217,6 @@ export default function EtestAttempt() {
     return "status-unattempted";
   };
 
-  // ----------------------------------------------------------
-  //                      FULL JSX UI (UNCHANGED)
-  // ----------------------------------------------------------
   return (
     <div className="etest-shell">
       {/* toast */}
@@ -2761,7 +3240,7 @@ export default function EtestAttempt() {
                 >
                   <input
                     type="radio"
-                    name={`q-${questions[currentIndex].id}`}
+                    name={`q-${questions[currentIndex].tq_id}`}
                     checked={answers[currentIndex]?.selected === idx}
                     onChange={() => handleSelectOption(idx)}
                   />

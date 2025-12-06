@@ -28,12 +28,12 @@
   }
 }
 
-
+/* 
 @media (max-width: 900px) {
   .subject-section {
     padding: 0rem 2rem 0rem 2rem !important;
   }
-}
+} */
 
 .subject-section .container .btn-dark:hover {
   background-color: #ffc107;

@@ -92,7 +92,7 @@
 //             <Route path="ats-plans" element={<ATSPlan />} />
 //             <Route path="metereology-plans" element={<MetereologyPlan />} />
 //             <Route path="e-test/:planId" element={<PlanEtest />} />
-          
+
 //           </Route>
 
 //           <Route path="my-orders" element={<MyOrders />} />
@@ -185,12 +185,17 @@ import MyCourseLayout from './layouts/MyCourseLayout.jsx';
 import Etest from './component/ResultComponent/Etest.jsx';
 import PracticeTest from './component/ResultComponent/PracticeTest.jsx';
 import MockTest from './component/ResultComponent/MockTest.jsx';
+import EtestMyResult from './component/ResultComponent/EtestMyResult.jsx';
 import PlanEtest from './pages/PlanEtest.jsx';
 import EtestAttempt from './pages/EtestAttempt.jsx';
 import ResultSolution from './pages/ResultSolution.jsx';
 import EtestResultDetail from './pages/EtestResultDetail.jsx';
 import MockResultDetail from './pages/MockResultDetail.jsx';
 import MockResultSolution from './pages/MockResultSolution.jsx';
+import PlanMocktest from './pages/PlanMocktest.jsx';
+import Review from './pages/Review.jsx';
+
+
 
 // Loader files
 import { LoaderProvider } from "./component/Loader/LoaderContext.jsx";
@@ -248,6 +253,8 @@ function App() {
           {/* ---------- Dashboard Routes ---------- */}
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
+            <Route path="test_result" element={<EtestMyResult />} />
+            <Route path="review" element={<Review/>} />
             <Route path="my-courses" element={<MyCourseLayout />}>
               <Route index element={<MyCourses />} />
               <Route path="atg-plans" element={<AtgPlan />} />
@@ -256,7 +263,7 @@ function App() {
               <Route path="ats-plans" element={<ATSPlan />} />
               <Route path="metereology-plans" element={<MetereologyPlan />} />
               <Route path="e-test/:planId" element={<PlanEtest />} />
-
+              <Route path="mock-test/:planId" element={<PlanMocktest />} />
             </Route>
 
             <Route path="my-orders" element={<MyOrders />} />
@@ -271,7 +278,7 @@ function App() {
               <Route path="etest-detail" element={<EtestResultDetail />} />
               <Route path="mocktest-detail" element={<MockResultDetail />} />
               <Route path="solution" element={<ResultSolution />} />
-              <Route path="mocktest-solution-" element={<MockResultSolution />} />
+              <Route path="mocktest-solution" element={<MockResultSolution />} />
             </Route>
 
             <Route path="save-list" element={<SaveList />} />
@@ -291,6 +298,9 @@ function App() {
 
           </Route>
 
+
+
+
           {/* ---------- Subscription Route ---------- */}
           <Route path="/plans" element={<MainLayout />}>
             <Route path="meterology" element={<MeteorologySubscription />} />
@@ -304,6 +314,7 @@ function App() {
           {/* ---------- Public E-Test Attempt Route ---------- */}
           <Route path="/test_question" element={<MainLayout />}>
             <Route index element={<EtestAttempt />} />
+
           </Route>
 
         </Routes>

@@ -24,16 +24,10 @@ function LoginModal({ show, handleClose }) {
       const { error, token, message, data } = response.data;
 
       if (!error && token) {
-        //Save token in localStorage
         localStorage.setItem('token', token);
-
-        //  Save user info for display
         localStorage.setItem('user', JSON.stringify(data));
-
-        alert('Login successful!');
         handleClose();
 
-        //Redirect to dashboard
         navigate('/dashboard');
       } else {
         alert(message || 'Invalid credentials!');
