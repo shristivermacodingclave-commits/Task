@@ -585,8 +585,8 @@ function MyCourses() {
     <div className="container-fluid">
       <RecentPurchase />
 
-      <div className="related-subjects">
-        <h3 className="fw-bold my-2 mb-4 mt-4">Related Subjects</h3>
+      <div className="related-subjects mt-5">
+        <h3 className="fw-bold my-2 mb-4">Related Subjects</h3>
         <hr />
 
         <Carousel
@@ -606,20 +606,17 @@ function MyCourses() {
                       viewDetailPath: "/dashboard/my-courses",
                     };
 
-                  const topics = subject.description
-                    ? subject.description
-                        .split("/")
-                        .map((t) => t.trim())
-                        .filter(Boolean)
+                  // FIXED — use new API topics[]
+                  const topics = Array.isArray(subject.topics)
+                    ? subject.topics
                     : [];
 
                   const topicsToShow = topics.slice(0, 3);
                   const remainingCount =
                     topics.length > 3 ? topics.length - 3 : 0;
 
-                  const purchased = isPurchased(subject.subject_id);
-
                   const columnWidth = `${100 / itemsPerSlide}%`;
+                  const purchased = isPurchased(subject.subject_name);
 
                   return (
                     <div
@@ -636,7 +633,7 @@ function MyCourses() {
                         <div
                           className="subject-header py-4 text-center rounded-top-4"
                           style={{
-                            backgroundColor: subject.title_color || "#f9f9f9",
+                            backgroundColor: subject.title_color || "#F9F9F9",
                           }}
                         >
                           <h4
@@ -651,15 +648,12 @@ function MyCourses() {
                           </h4>
 
                           <img
-                            src={
-                              subject.icon?.startsWith("http")
-                                ? subject.icon
-                                : BASE_URL + subject.icon
-                            }
+                            src={subject.icon}
                             alt={subject.subject_name}
+                            className="subject-icon mt-2"
                             width="50"
+                            height="50"
                             onError={(e) => (e.target.style.display = "none")}
-                            style={{ height: "50px", width: "50px" }}
                           />
                         </div>
 
@@ -671,11 +665,8 @@ function MyCourses() {
                             </div>
                             <div className="col-6 text-end">
                               <Link
-                                to={paths.viewDetailPath}
-                                style={{
-                                  color: "black",
-                                  fontWeight: "bold",
-                                }}
+                                to={`/dashboard/my-courses/plan/${subject.subject_id}`}
+                                style={{ color: "black", fontWeight: "bold" }}
                                 className="details-hover"
                               >
                                 View Details
@@ -699,27 +690,33 @@ function MyCourses() {
 
                         <hr className="m-0" />
 
-                        {/* Footer → Purchased / Not Purchased */}
+                        {/* Footer */}
                         <div className="text-center p-3">
-
                           {!purchased && (
-                            <p className="mt-3 fw-semibold" style={{ color: "#20ba5c" }}>
-                              ⚡ Prices Starting at just ₹{subject.starting_price || 0}
+                            <p
+                              className="mt-3 fw-bold"
+                              style={{ color: "#20ba5c" }}
+                            >
+                              ⚡ Prices Starting at just ₹
+                              {subject.starting_price || 0}
                             </p>
                           )}
 
                           {purchased ? (
                             <>
                               <Button
-                                name="View / Attempt Test"
+                                name="View/Attempt Test"
                                 className="btn-dark fs-6 form-control mb-2"
-                                 onClick={() => goTo(paths.viewDetailPath)}
+                                 onClick={() => goTo(`/dashboard/my-courses/plan/${subject.subject_id}`)}
                               />
 
                               <button
                                 className="btn btn-link w-100 details-hover"
-                                style={{ color: "black", fontWeight: "500" }}
-                                onClick={() => goTo(paths.enrollplanPath)}
+                                style={{
+                                  color: "black",
+                                  fontWeight: "500",
+                                }}
+                                 onClick={() => goTo(paths.enrollplanPath)}
                               >
                                 Extend Subscription
                               </button>
@@ -734,14 +731,16 @@ function MyCourses() {
 
                               <button
                                 className="btn btn-link w-100 details-hover"
-                                onClick={() => goTo(paths.viewDetailPath)}
-                                style={{ color: "black", fontWeight: "500" }}
+                                style={{
+                                  color: "black",
+                                  fontWeight: "500",
+                                }}
+                                onClick={() => goTo(`/dashboard/my-courses/plan/${subject.subject_id}`)}
                               >
                                 Take Demo MockTest
                               </button>
                             </>
                           )}
-
                         </div>
 
                       </div>

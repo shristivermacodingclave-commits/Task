@@ -213,10 +213,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                     <div className="row">
 
                         {subjects.map((subject) => {
-                            const topics = subject.description
-                                ? subject.description.split('/').map(t => t.trim()).filter(Boolean)
-                                : [];
-
+                          const topics = Array.isArray(subject.topics) ? subject.topics : [];
                             const topicsToShow = topics.slice(0, 3);
                             const remainingCount = topics.length > 3 ? topics.length - 3 : 0;
 

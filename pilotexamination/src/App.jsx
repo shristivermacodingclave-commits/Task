@@ -150,12 +150,6 @@
 // export default App;
 
 
-
-
-
-
-
-
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import './App.css';
@@ -186,6 +180,7 @@ import Etest from './component/ResultComponent/Etest.jsx';
 import PracticeTest from './component/ResultComponent/PracticeTest.jsx';
 import MockTest from './component/ResultComponent/MockTest.jsx';
 import EtestMyResult from './component/ResultComponent/EtestMyResult.jsx';
+import MockTestMyResult from './component/ResultComponent/MockMyResult.jsx';
 import PlanEtest from './pages/PlanEtest.jsx';
 import EtestAttempt from './pages/EtestAttempt.jsx';
 import ResultSolution from './pages/ResultSolution.jsx';
@@ -193,7 +188,10 @@ import EtestResultDetail from './pages/EtestResultDetail.jsx';
 import MockResultDetail from './pages/MockResultDetail.jsx';
 import MockResultSolution from './pages/MockResultSolution.jsx';
 import PlanMocktest from './pages/PlanMocktest.jsx';
+import MockTestAttempt from './pages/MockTestAttempt.jsx';
 import Review from './pages/Review.jsx';
+
+import PlanPage from './component/MyCourseCoponent/PlanPage.jsx';
 
 
 
@@ -254,14 +252,16 @@ function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
             <Route path="test_result" element={<EtestMyResult />} />
-            <Route path="review" element={<Review/>} />
+            <Route path="test_result_mock" element={<MockTestMyResult/>} />
+            <Route path="review" element={<Review />} />
             <Route path="my-courses" element={<MyCourseLayout />}>
               <Route index element={<MyCourses />} />
-              <Route path="atg-plans" element={<AtgPlan />} />
+              {/* <Route path="atg-plans" element={<AtgPlan />} />
               <Route path="reg-plans" element={<RegulationPlan />} />
               <Route path="neg-plans" element={<NavigationPlan />} />
               <Route path="ats-plans" element={<ATSPlan />} />
-              <Route path="metereology-plans" element={<MetereologyPlan />} />
+              <Route path="metereology-plans" element={<MetereologyPlan />} /> */}
+              <Route path="plan/:subjectId" element={<PlanPage />} />
               <Route path="e-test/:planId" element={<PlanEtest />} />
               <Route path="mock-test/:planId" element={<PlanMocktest />} />
             </Route>
@@ -314,9 +314,8 @@ function App() {
           {/* ---------- Public E-Test Attempt Route ---------- */}
           <Route path="/test_question" element={<MainLayout />}>
             <Route index element={<EtestAttempt />} />
-
+            <Route path="mock_test" element={<MockTestAttempt />}/>
           </Route>
-
         </Routes>
       </LoaderProvider>
 

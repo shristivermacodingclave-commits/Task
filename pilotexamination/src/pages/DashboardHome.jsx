@@ -479,7 +479,7 @@ function DashboardHome() {
                             </div>
                             <div className="col-6 text-end">
                               <Link
-                                to={paths.viewDetailPath}
+                                to={`/dashboard/my-courses/plan/${subject.subject_id}`}
                                 style={{ color: "black", fontWeight: "bold" }}
                                 className="details-hover"
                               >
@@ -521,7 +521,7 @@ function DashboardHome() {
                               <Button
                                 name="View/Attempt Test"
                                 className="btn-dark fs-6 form-control mb-2"
-                                 onClick={() => goTo(paths.viewDetailPath)}
+                                 onClick={() => goTo(`/dashboard/my-courses/plan/${subject.subject_id}`)}
                               />
 
                               <button
@@ -549,7 +549,7 @@ function DashboardHome() {
                                   color: "black",
                                   fontWeight: "500",
                                 }}
-                                onClick={() => goTo(paths.viewDetailPath)}
+                                onClick={() => goTo(`/dashboard/my-courses/plan/${subject.subject_id}`)}
                               >
                                 Take Demo MockTest
                               </button>

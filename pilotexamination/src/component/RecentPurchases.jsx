@@ -445,91 +445,110 @@ function RecentPurchases({ onData }) {
       <div className="row py-2 ">
         {purchasedSubjects.map((subject) => {
 
-  const topics = subject.topics?.map((t) => t.topic_name) || [];
-  const topicsToShow = topics.slice(0, 3);
-  const remainingCount = topics.length > 3 ? topics.length - 3 : 0;
+          const topics = subject.topics?.map((t) => t.topic_name) || [];
+          const topicsToShow = topics.slice(0, 3);
+          const remainingCount = topics.length > 3 ? topics.length - 3 : 0;
 
-  // GET SUBJECT PATHS BASED ON NAME
-  const paths =
-    subjectPaths[subject.subject_name] || {
-      viewDetailPath: "/dashboard/my-courses",
-    };
+          // GET SUBJECT PATHS BASED ON NAME
+          const paths =
+            subjectPaths[subject.subject_name] || {
+              viewDetailPath: "/dashboard/my-courses",
+            };
 
-  return (
-    <div
-      className="col-lg-4 col-md-6 col-sm-12 mb-3"
-      key={subject.subject_id}
-    >
-      <div className="subject-card">
+          return (
+            <div
+              className="col-lg-4 col-md-6 col-sm-12 mb-3"
+              key={subject.subject_id}
+            >
+              <div className="subject-card">
 
-        {/* Header */}
-        <div
-          className="subject-header py-4"
-          style={{ backgroundColor: subject.title_color || "#f9f9f9" }}
-        >
-          <h4 className="subject-title" style={{ fontSize: "1.5rem", color: "black" }}>
-            {subject.subject_name}
-          </h4>
+                {/* Header */}
+                <div
+                  className="subject-header py-4"
+                  style={{ backgroundColor: subject.title_color || "#f9f9f9" }}
+                >
+                  <h4 className="subject-title" style={{ fontSize: "1.5rem", color: "black" }}>
+                    {subject.subject_name}
+                  </h4>
 
-          <img
-            src={`https://development.pilotexaminations.com/${subject.icon}`}
-            alt={subject.subject_name}
-            className="subject-icon"
-            onError={(e) => (e.target.style.display = "none")}
-            style={{ height: "50px", width: "50px" }}
-          />
-        </div>
+                  <img
+                    src={`https://development.pilotexaminations.com/${subject.icon}`}
+                    alt={subject.subject_name}
+                    className="subject-icon"
+                    onError={(e) => (e.target.style.display = "none")}
+                    style={{ height: "50px", width: "50px" }}
+                  />
+                </div>
 
-        {/* Topics */}
-        <div className="subject-topics">
-          <div className="row mb-2">
-            <div className="col-md-6">
-              <h6>{subject.topics_covered_text}</h6>
-            </div>
+                {/* Topics */}
+                <div className="subject-topics">
+                  <div className="row mb-2">
+                    <div className="col-md-6">
+                      <h6>{subject.topics_covered_text}</h6>
+                    </div>
 
-            <div className="col-md-6 text-end">
+                    {/* <div className="col-md-6 text-end">
               <Link
-                to={paths.viewDetailPath}
+                to={`/dashboard/my-courses/plan/${subject.subject_id}`}
                 className="details-hover"
                 style={{ color: "black", fontWeight: "bold" }}
               >
                 {subject.view_details_button}
               </Link>
+            </div> */}
+
+
+                    <div className="col-md-6 text-end">
+                      <Link
+                        to={`/dashboard/my-courses/plan/${subject.subject_id}`}
+                        state={{ from: "details" }}
+                        className="details-hover"
+                        style={{ color: "black", fontWeight: "bold" }}
+                      >
+                        {subject.view_details_button}
+                      </Link>
+
+                    </div>
+
+                  </div>
+
+                  <ul>
+                    {topicsToShow.length > 0 ? (
+                      topicsToShow.map((topic, i) => (
+                        <li key={i}><h6>{topic}</h6></li>
+                      ))
+                    ) : (
+                      <li className="text-muted">No Topics Available</li>
+                    )}
+
+                    {remainingCount > 0 && (
+                      <li className="text-muted">
+                        +{remainingCount} more topics...
+                      </li>
+                    )}
+                  </ul>
+                </div>
+
+                <hr />
+
+                {/* Footer */}
+                <div className="text-center" style={{ padding: "1rem" }}>
+                  <Button
+                    name={subject.test_button}
+                    className="btn-dark fs-6 form-control mb-2 subscribe-button"
+                    onClick={() =>
+                      navigate(`/dashboard/my-courses/plan/${subject.subject_id}`, {
+                        state: { from: "test" }
+                      })
+                    }
+                  />
+
+                </div>
+
+              </div>
             </div>
-          </div>
-
-          <ul>
-            {topicsToShow.length > 0 ? (
-              topicsToShow.map((topic, i) => (
-                <li key={i}><h6>{topic}</h6></li>
-              ))
-            ) : (
-              <li className="text-muted">No Topics Available</li>
-            )}
-
-            {remainingCount > 0 && (
-              <li className="text-muted">
-                +{remainingCount} more topics...
-              </li>
-            )}
-          </ul>
-        </div>
-
-        <hr />
-
-        {/* Footer */}
-        <div className="text-center" style={{ padding: "1rem" }}>
-          <Button
-            name={subject.test_button}
-            className="btn-dark fs-6 form-control mb-2 subscribe-button"
-            onClick={() => navigate(paths.viewDetailPath)}
-          />
-        </div>
-
-      </div>
-    </div>
-  );
-})}
+          );
+        })}
 
       </div>
     </div>

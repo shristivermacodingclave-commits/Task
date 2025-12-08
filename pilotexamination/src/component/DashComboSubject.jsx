@@ -468,7 +468,7 @@ function ComboSubject({ title, withSpacing = true }) {
 
                             <div className="col-md-6 text-end">
                               <a
-                                onClick={() => navigate(viewPath)}
+                                onClick={() => navigate(`/dashboard/my-courses/plan/${subject.subject_id}`)}
                                 style={{
                                   color: "black",
                                   fontWeight: "bold",

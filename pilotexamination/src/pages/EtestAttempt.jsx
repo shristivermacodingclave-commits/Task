@@ -3390,3 +3390,491 @@ export default function EtestAttempt() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useEffect, useMemo, useState } from "react";
+// import axios from "axios";
+// import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+// import "./EtestAttempt.css";
+
+// const OPTION_LABELS = ["A", "B", "C"];
+
+// export default function EtestAttempt() {
+//   const [searchParams] = useSearchParams();
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   // -----------------------------
+//   // GET TEST TYPE (E-Test or Mock-Test)
+//   // -----------------------------
+//   const testMeta = location.state || {};
+//   const isMockTest = testMeta.testType === "Mock-Test";
+
+//   const userId = testMeta.userId || 10;
+
+//   // attempt id
+//   const attemptId =
+//     searchParams.get("attempt_id") ||
+//     testMeta.attemptId ||
+//     localStorage.getItem("attempt_id") ||
+//     localStorage.getItem("mock_attempt_id"); // mocktest support
+
+//   // -------------------------------------------
+//   // LOAD QUESTIONS (STATE > LocalStorage)
+//   // -------------------------------------------
+//   const initialQuestions =
+//     testMeta.questions ||
+//     JSON.parse(localStorage.getItem("questions") || "[]") ||
+//     JSON.parse(localStorage.getItem("mock_questions") || "[]");
+
+//   const formattedQuestions = Array.isArray(initialQuestions)
+//     ? initialQuestions.map((q) => ({
+//         tq_id: q.tq_id,
+//         id: q.quest_id,
+//         question_id: q.question_id,
+//         question: q.question,
+//         options: [
+//           q.option_a || "N/A",
+//           q.option_b || "N/A",
+//           q.option_c || "N/A",
+//         ],
+//       }))
+//     : [];
+
+//   const [questions, setQuestions] = useState(formattedQuestions);
+//   const [answers, setAnswers] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const [showSubmitModal, setShowSubmitModal] = useState(false);
+//   const [message, setMessage] = useState("");
+
+//   // ============================================
+//   // LOAD ATTEMPT ANSWERS ONLY FOR E-TEST
+//   // ============================================
+//   useEffect(() => {
+//     (async () => {
+//       setLoading(true);
+
+//       if (!questions.length) {
+//         setLoading(false);
+//         return;
+//       }
+
+//       // initialize empty answers
+//       let emptyAnswers = questions.map(() => ({
+//         selected: null,
+//         confirmed: false,
+//         visited: false,
+//       }));
+//       setAnswers(emptyAnswers);
+
+//       // ⭐ MOCKTEST HAS NO GET-SAVED API
+//       if (isMockTest) {
+//         setLoading(false);
+//         return;
+//       }
+
+//       // ⭐ E-TEST: GET SAVED ANSWERS
+//       try {
+//         const res = await axios.post(
+//           "https://development.pilotexaminations.com/api/get-attempt",
+//           { attempt_id: attemptId, user_id: userId }
+//         );
+
+//         if (!res.data.error && Array.isArray(res.data.questions)) {
+//           const savedMap = new Map();
+//           res.data.questions.forEach((s) => {
+//             savedMap.set(Number(s.tq_id), {
+//               saved_answer: s.saved_answer ?? "",
+//               status: s.status ?? "",
+//             });
+//           });
+
+//           const merged = questions.map((q) => {
+//             const entry = savedMap.get(Number(q.tq_id));
+//             if (!entry) return { selected: null, confirmed: false, visited: false };
+
+//             const selected =
+//               entry.saved_answer === "" ? null : OPTION_LABELS.indexOf(entry.saved_answer);
+//             const confirmed = selected !== null;
+//             const visited = ["viewed", "answered"].includes(entry.status?.toLowerCase());
+
+//             return { selected, confirmed, visited };
+//           });
+
+//           setAnswers(merged);
+//         }
+//       } catch (err) {
+//         console.log("Load attempt failed", err);
+//       }
+
+//       setLoading(false);
+//     })();
+//   }, [isMockTest, questions, attemptId]);
+
+//   // ============================================
+//   // PALETTE INFO
+//   // ============================================
+//   const paletteInfo = useMemo(
+//     () =>
+//       answers.map((entry, idx) => ({
+//         index: idx,
+//         selected: entry?.selected ?? null,
+//         confirmed: entry?.confirmed ?? false,
+//         visited: entry?.visited ?? false,
+//       })),
+//     [answers]
+//   );
+
+//   const showToast = (msg, ms = 1500) => {
+//     setMessage(msg);
+//     setTimeout(() => setMessage(""), ms);
+//   };
+
+//   // ============================================
+//   // SELECT OPTION
+//   // ============================================
+//   const handleSelectOption = (optionIndex) => {
+//     setAnswers((prev) =>
+//       prev.map((entry, idx) =>
+//         idx === currentIndex ? { ...entry, selected: optionIndex } : entry
+//       )
+//     );
+//   };
+
+//   // ============================================
+//   // RESET ANSWER
+//   // ============================================
+//   const handleReset = async () => {
+//     const tqid = questions[currentIndex]?.tq_id;
+//     if (!tqid) return;
+
+//     // update UI
+//     setAnswers((prev) =>
+//       prev.map((entry, idx) =>
+//         idx === currentIndex ? { ...entry, selected: null, confirmed: false } : entry
+//       )
+//     );
+
+//     // ⭐ MOCKTEST has NO reset API → skip
+//     if (isMockTest) {
+//       showToast("Reset locally!");
+//       return;
+//     }
+
+//     // E-TEST reset API
+//     try {
+//       await axios.post(
+//         "https://development.pilotexaminations.com/api/reset-answer",
+//         { tq_id: tqid }
+//       );
+//       showToast("Answer reset!");
+//     } catch {
+//       showToast("Reset failed");
+//     }
+//   };
+
+//   // ============================================
+//   // CONFIRM ANSWER
+//   // ============================================
+//   const handleConfirm = async () => {
+//     const sel = answers[currentIndex]?.selected;
+//     if (sel === null) return;
+
+//     const tqid = questions[currentIndex]?.tq_id;
+//     const answerLetter = OPTION_LABELS[sel];
+
+//     // Update UI
+//     setAnswers((prev) =>
+//       prev.map((entry, idx) =>
+//         idx === currentIndex
+//           ? { ...entry, confirmed: true, visited: true }
+//           : entry
+//       )
+//     );
+
+//     // ⭐ MOCKTEST: NO save-answer API
+//     if (isMockTest) {
+//       showToast("Saved locally!");
+//       goNext();
+//       return;
+//     }
+
+//     // E-TEST save API
+//     try {
+//       await axios.post(
+//         "https://development.pilotexaminations.com/api/etest/save-answer",
+//         { tq_id: tqid, answer: answerLetter }
+//       );
+//       showToast("Answer saved!");
+//     } catch {
+//       showToast("Save failed");
+//     }
+
+//     goNext();
+//   };
+
+//   const goToQuestion = (idx) => {
+//     setAnswers((prev) =>
+//       prev.map((a, i) =>
+//         i === idx || i === currentIndex ? { ...a, visited: true } : a
+//       )
+//     );
+//     setCurrentIndex(idx);
+//   };
+
+//   const goPrev = () => currentIndex > 0 && goToQuestion(currentIndex - 1);
+//   const goNext = () =>
+//     currentIndex < questions.length - 1 && goToQuestion(currentIndex + 1);
+
+//   // ============================================
+//   // SUBMIT TEST
+//   // ============================================
+//   const submitFinalTest = async () => {
+//     // ⭐ MOCKTEST has NO submit API → only show summary page
+//     if (isMockTest) {
+//       showToast("MockTest Submitted!");
+//       setTimeout(() => {
+//         navigate(`/dashboard/test_result?attempt_id=${attemptId}`, {
+//           state: {
+//             attempt_id: attemptId,
+//             mock: true,
+//             questions,
+//             answers,
+//           },
+//         });
+//       }, 800);
+//       return;
+//     }
+
+//     // E-TEST submit API
+//     try {
+//       const res = await axios.post(
+//         "https://development.pilotexaminations.com/api/etest/submit-test",
+//         { attempt_id: attemptId, user_id: userId }
+//       );
+//       showToast("Test submitted!");
+//       setTimeout(() => {
+//         navigate(`/dashboard/test_result?attempt_id=${attemptId}`, {
+//           state: { ...res.data, attempt_id: attemptId },
+//         });
+//       }, 800);
+//     } catch {
+//       showToast("Submit failed");
+//     }
+//   };
+
+//   const handleSubmit = () => setShowSubmitModal(true);
+
+//   // ============================================
+//   // LOADING UI
+//   // ============================================
+//   if (loading) {
+//     return (
+//       <div className="etest-shell">
+//         <p className="loading-text">Loading Questions...</p>
+//       </div>
+//     );
+//   }
+
+//   if (!questions.length) {
+//     return (
+//       <div className="etest-shell">
+//         <p>No questions available.</p>
+//       </div>
+//     );
+//   }
+
+//   // COUNTS
+//   const attemptedCount = answers.filter((a) => a.confirmed).length;
+//   const unvisitedCount = answers.filter((a) => !a.visited).length;
+//   const unattemptedCount = answers.length - attemptedCount - unvisitedCount;
+
+//   const paletteBtnClass = (item) => {
+//     if (item.confirmed) return "status-attempted";
+//     if (item.visited) return "status-unvisited";
+//     return "status-unattempted";
+//   };
+
+//   // ============================================
+//   // MAIN UI
+//   // ============================================
+//   return (
+//     <div className="etest-shell">
+//       {message && <div className="etest-msg">{message}</div>}
+
+//       {/* =====================
+//           QUESTION PANEL
+//       ====================== */}
+//       <div className="etest-question-panel">
+//         <div className="etest-question-card">
+//           <p className="etest-question-label">Question {currentIndex + 1}</p>
+//           <h3>{questions[currentIndex].question}</h3>
+
+//           <div className="etest-option-controls">
+//             {questions[currentIndex].options.map((opt, idx) => (
+//               <label
+//                 key={idx}
+//                 className={`etest-option-pill ${
+//                   answers[currentIndex]?.selected === idx ? "is-active" : ""
+//                 }`}
+//               >
+//                 <input
+//                   type="radio"
+//                   checked={answers[currentIndex]?.selected === idx}
+//                   onChange={() => handleSelectOption(idx)}
+//                 />
+//                 {OPTION_LABELS[idx]}
+//               </label>
+//             ))}
+
+//             <button className="etest-reset" onClick={handleReset}>
+//               Reset
+//             </button>
+
+//             <button
+//               className="etest-confirm"
+//               onClick={handleConfirm}
+//               disabled={answers[currentIndex]?.selected === null}
+//             >
+//               Confirm
+//             </button>
+//           </div>
+
+//           <div className="etest-options-list">
+//             {questions[currentIndex].options.map((opt, idx) => (
+//               <button
+//                 key={idx}
+//                 className={`etest-option-row ${
+//                   answers[currentIndex]?.selected === idx ? "is-selected" : ""
+//                 }`}
+//                 onClick={() => handleSelectOption(idx)}
+//               >
+//                 <span className="etest-option-label">{OPTION_LABELS[idx]}.</span>
+//                 <span>{opt}</span>
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+
+//         <div className="etest-nav-controls">
+//           <button onClick={goPrev} disabled={currentIndex === 0}>
+//             &lt; Previous
+//           </button>
+//           <button
+//             onClick={goNext}
+//             disabled={currentIndex === questions.length - 1}
+//           >
+//             Next &gt;
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* =====================
+//           SIDEBAR
+//       ====================== */}
+//       <aside className="etest-sidebar">
+//         <div className="etest-sidebar-header">
+//           <div>
+//             <button className="etest-sidebar-link">
+//               {isMockTest ? "MockTest" : "E-Test"}
+//             </button>
+//             <p className="etest-sidebar-meta">Attempt ID: {attemptId}</p>
+//           </div>
+
+//           <button className="etest-submit" onClick={handleSubmit}>
+//             Submit Test
+//           </button>
+//         </div>
+
+//         <div className="etest-palette">
+//           <p className="etest-palette-heading">Questions</p>
+//           <div className="etest-palette-grid">
+//             {paletteInfo.map((item) => (
+//               <button
+//                 key={item.index}
+//                 className={`etest-palette-btn 
+//                   ${item.index === currentIndex ? "is-active" : ""} 
+//                   ${paletteBtnClass(item)}
+//                 `}
+//                 onClick={() => goToQuestion(item.index)}
+//               >
+//                 {item.index + 1}
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+//       </aside>
+
+//       {/* =====================
+//           SUBMIT MODAL
+//       ====================== */}
+//       {showSubmitModal && (
+//         <div className="etest-modal-overlay">
+//           <div className="etest-modal">
+//             <h4>Confirm Test Submission</h4>
+
+//             <div className="summary-row">
+//               <p>Attempted: {attemptedCount}</p>
+//               <p>Unvisited: {unvisitedCount}</p>
+//               <p>Unattempted: {unattemptedCount}</p>
+//             </div>
+
+//             <button className="end-test-btn" onClick={submitFinalTest}>
+//               End Test
+//             </button>
+//             <button
+//               className="review-test-btn"
+//               onClick={() => setShowSubmitModal(false)}
+//             >
+//               Review Test
+//             </button>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }

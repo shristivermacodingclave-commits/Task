@@ -544,7 +544,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                                     <Button
                                                         name="View / Attempt Test"
                                                         className="btn-dark fs-6 form-control mb-2 subscribe-button"
-                                                        onClick={() => goToPlans(paths.viewDetailPath)}
+                                                        onClick={() => goToPlans(`/dashboard/my-courses/plan/${subject.subject_id}`)}
                                                     />
 
                                                     <button
@@ -565,7 +565,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
 
                                                     <button
                                                         className="btn btn-link w-100 details-hover"
-                                                        onClick={() => goToPlans(paths.viewDetailPath)}
+                                                        onClick={() => goToPlans(`/dashboard/my-courses/plan/${subject.subject_id}`)}
                                                         style={{ color: "black", fontWeight: "500" }}
                                                     >
                                                         Take Demo MockTest
