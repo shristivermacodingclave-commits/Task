@@ -99,3 +99,77 @@
 .mock-start-btn:disabled {
   background: #999;
 }
+
+
+
+/* Time + Total Questions Row */
+.view-details__info-row {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  margin-top: 24px;
+  margin-left: 4px;
+}
+
+.view-details__info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.view-details__info-label {
+  font-weight: 600;
+  color: #2e2e2e;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.view-details__info-value {
+  font-weight: 700;
+  margin-left: 26px;
+}
+
+/* TIMER BOX */
+.view-details__timer-box {
+  margin-top: 26px;
+  display: flex;
+  gap: 20px;
+  padding: 26px;
+  background: #ffeed4;
+  border-radius: 12px;
+}
+
+.view-details__timer-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.view-details__timer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.view-details__timer-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2e2e2e;
+  margin: 0;
+}
+
+.view-details__timer-options {
+  display: flex;
+  gap: 30px;
+  margin-top: 6px;
+}
+
+.view-details__timer-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #2e2e2e;
+}

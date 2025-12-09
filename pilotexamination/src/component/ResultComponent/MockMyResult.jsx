@@ -96,7 +96,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./EtestMyResult.css";
 import Button from "../../component/Button";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams , useNavigate } from "react-router-dom";
 
 export default function MockTestMyResult() {
   const [searchParams] = useSearchParams();
@@ -106,6 +106,25 @@ export default function MockTestMyResult() {
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+
+
+  const navigate = useNavigate();
+
+
+
+
+   const handleReAttempt = () => {
+    if (data?.subject_id) {
+      navigate(`/dashboard/my-courses/mock-test/${data.subject_id}`, {
+        state: {
+          subject: data.subject_name,
+          subjectId: data.subject_id,
+          testType: "MockTest",
+          planPath: `/dashboard/my-courses/${data.subject_id}/plans`,
+        },
+      });
+    }
+  };
 
   // -------------------------------------
   // FETCH MOCK TEST RESULT USING API
@@ -182,7 +201,12 @@ export default function MockTestMyResult() {
         </div>
 
         <div className="etest-result-right">
-          <button className="etest-reattempt-btn">Re-attempt Mock Test</button>
+          <button 
+            className="etest-reattempt-btn"
+            onClick={handleReAttempt}
+          >
+            Re-attempt
+          </button>
           <p className="etest-result-date">{submitted_at}</p>
         </div>
       </div>

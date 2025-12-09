@@ -805,3 +805,19 @@
 
 
 
+.exam-main-timer {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ff5a00;
+  margin-bottom: 10px;
+}
+
+.question-timer-pill {
+  background: #ffe9d6;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-weight: 700;
+  color: #d35400;
+  border: 1px solid #ffb07d;
+}

@@ -341,16 +341,33 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./EtestMyResult.css";
 import Button from "../../component/Button";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams , useNavigate } from "react-router-dom";
 
 export default function EtestMyResult() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const attemptId =
     searchParams.get("attempt_id") ||
     localStorage.getItem("attempt_id");
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+
+
+  const handleReAttempt = () => {
+  navigate(`/dashboard/my-courses/e-test/${data.topic_id}`, {
+    state: {
+      subjectId: data.subject_id,
+      topicId: data.topic_id,
+      subject: data.subject_name,
+      topic: data.topic_name,
+      testType: "E-Test",
+      userId: data.user_id,  // optional
+      planPath: `/dashboard/my-courses/plan/${data.subject_id}` // for back button
+    }
+  });
+};
+
 
   // ------------------------------
   // FETCH RESULT DATA
@@ -424,7 +441,9 @@ export default function EtestMyResult() {
         </div>
 
         <div className="etest-result-right">
-          <button className="etest-reattempt-btn">Re-attempt</button>
+           <button className="etest-reattempt-btn" onClick={handleReAttempt}>
+            Re-attempt
+          </button>
           <p className="etest-result-date">{date}</p>
         </div>
       </div>
