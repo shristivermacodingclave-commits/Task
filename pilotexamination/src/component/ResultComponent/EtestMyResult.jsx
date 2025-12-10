@@ -337,48 +337,270 @@
 
 
 
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import "./EtestMyResult.css";
+// import Button from "../../component/Button";
+// import { useSearchParams , useNavigate } from "react-router-dom";
+
+// export default function EtestMyResult() {
+//   const [searchParams] = useSearchParams();
+//   const navigate = useNavigate();
+//   const attemptId =
+//     searchParams.get("attempt_id") ||
+//     localStorage.getItem("attempt_id");
+
+//   const [loading, setLoading] = useState(true);
+//   const [data, setData] = useState(null);
+
+
+//   const handleReAttempt = () => {
+//   navigate(`/dashboard/my-courses/e-test/${data.topic_id}`, {
+//     state: {
+//       subjectId: data.subject_id,
+//       topicId: data.topic_id,
+//       subject: data.subject_name,
+//       topic: data.topic_name,
+//       testType: "E-Test",
+//       userId: data.user_id,  // optional
+//       planPath: `/dashboard/my-courses/plan/${data.subject_id}` // for back button
+//     }
+//   });
+// };
+
+
+//   // ------------------------------
+//   // FETCH RESULT DATA
+//   // ------------------------------
+//   useEffect(() => {
+//     async function fetchResult() {
+//       try {
+//         const res = await axios.post(
+//           "https://development.pilotexaminations.com/api/etest/result",
+//           { attempt_id: attemptId }
+//         );
+
+//         if (!res.data.error) {
+//           setData(res.data);
+//         }
+//       } catch (err) {
+//         console.error("Result fetch failed", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     }
+
+//     if (attemptId) fetchResult();
+//   }, [attemptId]);
+
+//   // ------------------------------
+//   // LOADING UI
+//   // ------------------------------
+//   if (loading) {
+//     return (
+//       <div className="etest-result-container mt-4">
+//         <p>Loading Result...</p>
+//       </div>
+//     );
+//   }
+
+//   if (!data) {
+//     return (
+//       <div className="etest-result-container mt-4">
+//         <p>Failed to load result.</p>
+//       </div>
+//     );
+//   }
+
+//   // ------------------------------
+//   // EXTRACT VALUES FROM API
+//   // ------------------------------
+//   const {
+//     subject_name,
+//     topic_name,
+//     result,
+//     percentage,
+//     correct,
+//     incorrect,
+//     unanswered,
+//     passing_criteria,
+//     date,
+//     message,
+//   } = data;
+
+//   const isPass = result?.toLowerCase() === "pass";
+
+//   return (
+//     <div className="etest-result-container mt-4">
+
+//       {/* HEADER */}
+//       <div className="etest-result-header">
+//         <div className="etest-result-left">
+//           <p className="etest-result-subject">{subject_name}</p>
+//           <h2 className="etest-result-topic">{topic_name}</h2>
+//         </div>
+
+//         <div className="etest-result-right">
+//            <button className="etest-reattempt-btn" onClick={handleReAttempt}>
+//             Re-attempt
+//           </button>
+//           <p className="etest-result-date">{date}</p>
+//         </div>
+//       </div>
+
+//       {/* SUMMARY BOX */}
+//       <div className="etest-summary-box">
+//         <div className="etest-summary-left">
+//           <h3 className="etest-result-heading">Result</h3>
+
+//           <h2 className={isPass ? "etest-result-pass" : "etest-result-fail"}>
+//             {result}
+//           </h2>
+
+//           <p className="etest-result-message">{message}</p>
+//         </div>
+
+//         <div className="etest-summary-right">
+//           <h4 className="etest-percentage-label">Percentage</h4>
+//           <h2 className="etest-percentage-value">{percentage}%</h2>
+
+//           <p className="etest-passing-info">
+//             Passing Criteria : {passing_criteria}
+//           </p>
+
+//           <div className="etest-sad-icon">
+//             {isPass ? "😊" : "☹️"}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* STATS BOX */}
+//       <div className="etest-stats-wrapper">
+//         <div className="etest-stats-card">
+//           <p className="etest-stats-title">Correct</p>
+//           <p className="etest-stats-green">{correct}</p>
+//         </div>
+
+//         <div className="etest-stats-card">
+//           <p className="etest-stats-title">Incorrect</p>
+//           <p className="etest-stats-red">{incorrect}</p>
+//         </div>
+
+//         <div className="etest-stats-card">
+//           <p className="etest-stats-title">Unanswered</p>
+//           <p className="etest-stats-orange">{unanswered}</p>
+//         </div>
+
+//         <Button name="View Solution" className="btn-dark fs-6 px-5" />
+//       </div>
+
+//       <hr className="etest-divider" />
+
+//       {/* REVIEW SECTION */}
+//       <div className="etest-review-box">
+//         <h3 className="etest-review-heading">How was your test experience?</h3>
+//         <p className="etest-review-subtext">
+//           Your feedback will help us improve your test experience
+//         </p>
+
+//         <textarea
+//           className="etest-review-input"
+//           placeholder="Write Your Review"
+//         ></textarea>
+
+//         <div className="etest-rating-stars">★★★★★</div>
+
+//         <Button name="Send Review" className="btn-dark fs-6" />
+//       </div>
+
+//     </div>
+//   );
+// }
+
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./EtestMyResult.css";
 import Button from "../../component/Button";
-import { useSearchParams , useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 
 export default function EtestMyResult() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // ⭐ Coming from attempt page (etest OR practice-test)
+  const testMeta = location.state || {};
+  const type = testMeta.type || "etest";
+
+  // ⭐ E-TEST
   const attemptId =
     searchParams.get("attempt_id") ||
+    testMeta.attempt_id ||
     localStorage.getItem("attempt_id");
+
+  // ⭐ PRACTICE TEST
+  const testId =
+    searchParams.get("test_id") ||
+    testMeta.test_id ||
+    localStorage.getItem("practice_test_id");
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
-
+  // ------------------------------
+  // ⭐ UNIVERSAL RE-ATTEMPT BUTTON
+  // ------------------------------
   const handleReAttempt = () => {
-  navigate(`/dashboard/my-courses/e-test/${data.topic_id}`, {
-    state: {
-      subjectId: data.subject_id,
-      topicId: data.topic_id,
-      subject: data.subject_name,
-      topic: data.topic_name,
-      testType: "E-Test",
-      userId: data.user_id,  // optional
-      planPath: `/dashboard/my-courses/plan/${data.subject_id}` // for back button
+    if (type === "practice-test") {
+      // PRACTICE re-attempt
+      navigate(`/dashboard/my-courses/e-test/${testMeta.subjectId || 1}`, {
+        state: {
+          type: "practice-test",
+          miniSubjectId: testMeta.miniSubjectId || 1,
+          subject: data.subject_name || "Practice Test",
+          topic: "Practice Test",
+          testType: "Practice Test",
+          planPath: testMeta.planPath,
+        },
+      });
+    } else {
+      // NORMAL E-TEST re-attempt
+      navigate(`/dashboard/my-courses/e-test/${data.topic_id}`, {
+        state: {
+          subjectId: data.subject_id,
+          topicId: data.topic_id,
+          subject: data.subject_name,
+          topic: data.topic_name,
+          testType: "E-Test",
+          userId: data.user_id,
+          planPath: `/dashboard/my-courses/plan/${data.subject_id}`,
+        },
+      });
     }
-  });
-};
-
+  };
 
   // ------------------------------
-  // FETCH RESULT DATA
+  // ⭐ FETCH RESULT (E-TEST OR PRACTICE)
   // ------------------------------
   useEffect(() => {
     async function fetchResult() {
       try {
-        const res = await axios.post(
-          "https://development.pilotexaminations.com/api/etest/result",
-          { attempt_id: attemptId }
-        );
+        let res;
+
+        if (type === "practice-test") {
+          // ⭐ PRACTICE RESULT API
+          res = await axios.post(
+            "https://development.pilotexaminations.com/api/practice/submit",
+            { test_id: testId }
+          );
+        } else {
+          // ⭐ E-TEST RESULT API
+          res = await axios.post(
+            "https://development.pilotexaminations.com/api/etest/result",
+            { attempt_id: attemptId }
+          );
+        }
 
         if (!res.data.error) {
           setData(res.data);
@@ -390,8 +612,8 @@ export default function EtestMyResult() {
       }
     }
 
-    if (attemptId) fetchResult();
-  }, [attemptId]);
+    if (attemptId || testId) fetchResult();
+  }, [attemptId, testId, type]);
 
   // ------------------------------
   // LOADING UI
@@ -413,19 +635,19 @@ export default function EtestMyResult() {
   }
 
   // ------------------------------
-  // EXTRACT VALUES FROM API
+  // NORMALIZED FIELDS
   // ------------------------------
   const {
-    subject_name,
-    topic_name,
+    subject_name = "Practice Test",
+    topic_name = "Practice Test",
     result,
     percentage,
     correct,
     incorrect,
     unanswered,
-    passing_criteria,
-    date,
-    message,
+    passing_criteria = "N/A",
+    date = "",
+    message = "",
   } = data;
 
   const isPass = result?.toLowerCase() === "pass";
@@ -437,14 +659,16 @@ export default function EtestMyResult() {
       <div className="etest-result-header">
         <div className="etest-result-left">
           <p className="etest-result-subject">{subject_name}</p>
-          <h2 className="etest-result-topic">{topic_name}</h2>
+          <h2 className="etest-result-topic">
+            {type === "practice-test" ? "Practice Test Result" : topic_name}
+          </h2>
         </div>
 
         <div className="etest-result-right">
-           <button className="etest-reattempt-btn" onClick={handleReAttempt}>
+          <button className="etest-reattempt-btn" onClick={handleReAttempt}>
             Re-attempt
           </button>
-          <p className="etest-result-date">{date}</p>
+          {date && <p className="etest-result-date">{date}</p>}
         </div>
       </div>
 
@@ -464,9 +688,11 @@ export default function EtestMyResult() {
           <h4 className="etest-percentage-label">Percentage</h4>
           <h2 className="etest-percentage-value">{percentage}%</h2>
 
-          <p className="etest-passing-info">
-            Passing Criteria : {passing_criteria}
-          </p>
+          {type !== "practice-test" && (
+            <p className="etest-passing-info">
+              Passing Criteria : {passing_criteria}
+            </p>
+          )}
 
           <div className="etest-sad-icon">
             {isPass ? "😊" : "☹️"}

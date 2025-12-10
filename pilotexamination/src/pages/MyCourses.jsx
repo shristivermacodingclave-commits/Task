@@ -585,173 +585,175 @@ function MyCourses() {
     <div className="container-fluid">
       <RecentPurchase />
 
-      <div className="related-subjects mt-5">
-        <h3 className="fw-bold my-2 mb-4">Related Subjects</h3>
-        <hr />
+     {/* related subject */}
 
-        <Carousel
-          indicators={true}
-          controls={false}
-          interval={3500}
-          pause="hover"
-          className="mt-4 subject-carousel"
-        >
-          {groupedSubjects.map((group, index) => (
-            <Carousel.Item key={index}>
-              <div className="row justify-content-center">
-                {group.map((subject) => {
-                  const paths =
-                    subjectPaths[subject.subject_name] || {
-                      enrollplanPath: "/plans",
-                      viewDetailPath: "/dashboard/my-courses",
-                    };
-
-                  // FIXED — use new API topics[]
-                  const topics = Array.isArray(subject.topics)
-                    ? subject.topics
-                    : [];
-
-                  const topicsToShow = topics.slice(0, 3);
-                  const remainingCount =
-                    topics.length > 3 ? topics.length - 3 : 0;
-
-                  const columnWidth = `${100 / itemsPerSlide}%`;
-                  const purchased = isPurchased(subject.subject_name);
-
-                  return (
-                    <div
-                      className="col-12 mb-3"
-                      key={subject.subject_id}
-                      style={{
-                        flex: `0 0 ${columnWidth}`,
-                        maxWidth: columnWidth,
-                      }}
-                    >
-                      <div className="subject-card h-100 shadow-sm rounded-4">
-
-                        {/* Header */}
-                        <div
-                          className="subject-header py-4 text-center rounded-top-4"
-                          style={{
-                            backgroundColor: subject.title_color || "#F9F9F9",
-                          }}
-                        >
-                          <h4
-                            className="subject-title"
-                            style={{
-                              fontSize: "1.5rem",
-                              fontWeight: "normal",
-                              color: "black",
-                            }}
-                          >
-                            {subject.subject_name}
-                          </h4>
-
-                          <img
-                            src={subject.icon}
-                            alt={subject.subject_name}
-                            className="subject-icon mt-2"
-                            width="50"
-                            height="50"
-                            onError={(e) => (e.target.style.display = "none")}
-                          />
-                        </div>
-
-                        {/* Topics */}
-                        <div className="subject-topics p-3">
-                          <div className="row mb-2">
-                            <div className="col-6">
-                              <h6>Topics Covered</h6>
-                            </div>
-                            <div className="col-6 text-end">
-                              <Link
-                                to={`/dashboard/my-courses/plan/${subject.subject_id}`}
-                                style={{ color: "black", fontWeight: "bold" }}
-                                className="details-hover"
-                              >
-                                View Details
-                              </Link>
-                            </div>
-                          </div>
-
-                          <ul className="ps-3">
-                            {topicsToShow.map((topic, i) => (
-                              <li key={i}>
-                                <h6>{topic}</h6>
-                              </li>
-                            ))}
-                            {remainingCount > 0 && (
-                              <li className="text-muted">
-                                +{remainingCount} more topics...
-                              </li>
-                            )}
-                          </ul>
-                        </div>
-
-                        <hr className="m-0" />
-
-                        {/* Footer */}
-                        <div className="text-center p-3">
-                          {!purchased && (
-                            <p
-                              className="mt-3 fw-bold"
-                              style={{ color: "#20ba5c" }}
-                            >
-                              ⚡ Prices Starting at just ₹
-                              {subject.starting_price || 0}
-                            </p>
-                          )}
-
-                          {purchased ? (
-                            <>
-                              <Button
-                                name="View/Attempt Test"
-                                className="btn-dark fs-6 form-control mb-2"
-                                 onClick={() => goTo(`/dashboard/my-courses/plan/${subject.subject_id}`)}
-                              />
-
-                              <button
-                                className="btn btn-link w-100 details-hover"
-                                style={{
-                                  color: "black",
-                                  fontWeight: "500",
-                                }}
-                                 onClick={() => goTo(paths.enrollplanPath)}
-                              >
-                                Extend Subscription
-                              </button>
-                            </>
-                          ) : (
-                            <>
-                              <Button
-                                name="Enroll Now"
-                                className="btn-dark fs-6 form-control mb-2 subscribe-button"
-                                onClick={() => goTo(paths.enrollplanPath)}
-                              />
-
-                              <button
-                                className="btn btn-link w-100 details-hover"
-                                style={{
-                                  color: "black",
-                                  fontWeight: "500",
-                                }}
-                                onClick={() => goTo(`/dashboard/my-courses/plan/${subject.subject_id}`)}
-                              >
-                                Take Demo MockTest
-                              </button>
-                            </>
-                          )}
-                        </div>
-
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </Carousel.Item>
-          ))}
-        </Carousel>
-      </div>
+     <div className="related-subjects mt-5">
+             <h3 className="fw-bold my-2 mb-4">Related Subjects</h3>
+             <hr />
+     
+             <Carousel
+               indicators={true}
+               controls={false}
+               interval={3500}
+               pause="hover"
+               className="mt-4 subject-carousel"
+             >
+               {groupedSubjects.map((group, index) => (
+                 <Carousel.Item key={index}>
+                   <div className="row justify-content-center">
+                     {group.map((subject) => {
+                       const paths =
+                         subjectPaths[subject.subject_name] || {
+                           enrollplanPath: "/plans",
+                           viewDetailPath: "/dashboard/my-courses",
+                         };
+     
+                       // FIXED — use new API topics[]
+                       const topics = Array.isArray(subject.topics)
+                         ? subject.topics
+                         : [];
+     
+                       const topicsToShow = topics.slice(0, 3);
+                       const remainingCount =
+                         topics.length > 3 ? topics.length - 3 : 0;
+     
+                       const columnWidth = `${100 / itemsPerSlide}%`;
+                       const purchased = isPurchased(subject.subject_id);
+     
+                       return (
+                         <div
+                           className="col-12 mb-3"
+                           key={subject.subject_id}
+                           style={{
+                             flex: `0 0 ${columnWidth}`,
+                             maxWidth: columnWidth,
+                           }}
+                         >
+                           <div className="subject-card h-100 shadow-sm rounded-4">
+     
+                             {/* Header */}
+                             <div
+                               className="subject-header py-4 text-center rounded-top-4"
+                               style={{
+                                 backgroundColor: subject.title_color || "#F9F9F9",
+                               }}
+                             >
+                               <h4
+                                 className="subject-title"
+                                 style={{
+                                   fontSize: "1.5rem",
+                                   fontWeight: "normal",
+                                   color: "black",
+                                 }}
+                               >
+                                 {subject.subject_name}
+                               </h4>
+     
+                               <img
+                                 src={subject.icon}
+                                 alt={subject.subject_name}
+                                 className="subject-icon mt-2"
+                                 width="50"
+                                 height="50"
+                                 onError={(e) => (e.target.style.display = "none")}
+                               />
+                             </div>
+     
+                             {/* Topics */}
+                             <div className="subject-topics p-3">
+                               <div className="row mb-2">
+                                 <div className="col-6">
+                                   <h6>Topics Covered</h6>
+                                 </div>
+                                 <div className="col-6 text-end">
+                                   <Link
+                                     to={`/dashboard/my-courses/plan/${subject.subject_id}`}
+                                     style={{ color: "black", fontWeight: "bold" }}
+                                     className="details-hover"
+                                   >
+                                     View Details
+                                   </Link>
+                                 </div>
+                               </div>
+     
+                               <ul className="ps-3">
+                                 {topicsToShow.map((topic, i) => (
+                                   <li key={i}>
+                                     <h6>{topic}</h6>
+                                   </li>
+                                 ))}
+                                 {remainingCount > 0 && (
+                                   <li className="text-muted">
+                                     +{remainingCount} more topics...
+                                   </li>
+                                 )}
+                               </ul>
+                             </div>
+     
+                             <hr className="m-0" />
+     
+                             {/* Footer */}
+                             <div className="text-center p-3">
+                               {!purchased && (
+                                 <p
+                                   className="mt-3 fw-bold"
+                                   style={{ color: "#20ba5c" }}
+                                 >
+                                   ⚡ Prices Starting at just ₹
+                                   {subject.starting_price || 0}
+                                 </p>
+                               )}
+     
+                               {purchased ? (
+                                 <>
+                                   <Button
+                                     name="View/Attempt Test"
+                                     className="btn-dark fs-6 form-control mb-2"
+                                      onClick={() => goTo(`/dashboard/my-courses/plan/${subject.subject_id}`)}
+                                   />
+     
+                                   <button
+                                     className="btn btn-link w-100 details-hover"
+                                     style={{
+                                       color: "black",
+                                       fontWeight: "500",
+                                     }}
+                                      onClick={() => goTo(`/plans/enroll_now/${subject.subject_id}`)}
+                                   >
+                                     Extend Subscription
+                                   </button>
+                                 </>
+                               ) : (
+                                 <>
+                                   <Button
+                                     name="Enroll Now"
+                                     className="btn-dark fs-6 form-control mb-2 subscribe-button"
+                                     onClick={() => goTo(`/plans/enroll_now/${subject.subject_id}`)}
+                                   />
+     
+                                   <button
+                                     className="btn btn-link w-100 details-hover"
+                                     style={{
+                                       color: "black",
+                                       fontWeight: "500",
+                                     }}
+                                     onClick={() => goTo(`/dashboard/my-courses/plan/${subject.subject_id}`)}
+                                   >
+                                     Take Demo MockTest
+                                   </button>
+                                 </>
+                               )}
+                             </div>
+     
+                           </div>
+                         </div>
+                       );
+                     })}
+                   </div>
+                 </Carousel.Item>
+               ))}
+             </Carousel>
+           </div>
 
       <div
         className="start-exploring mt-5 py-5 text-center rounded-3"

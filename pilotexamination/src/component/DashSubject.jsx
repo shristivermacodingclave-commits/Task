@@ -504,7 +504,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                                 </div>
                                                 <div className="col-md-6 text-end">
                                                     <Link
-                                                        to={paths.viewDetailPath}
+                                                      to={`/dashboard/my-courses/plan/${subject.subject_id}`}
                                                         style={{ color: 'black', fontWeight: 'bold' }}
                                                         className="details-hover"
                                                     >
@@ -550,7 +550,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                                     <button
                                                         className="btn btn-link w-100 details-hover"
                                                         style={{ color: "black", fontWeight: "500" }}
-                                                         onClick={() => goToPlans(paths.enrollplanPath)}
+                                                         onClick={() => goToPlans(`/plans/enroll_now/${subject.subject_id}`)}
                                                     >
                                                         Extend Subscription
                                                     </button>
@@ -560,7 +560,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                                     <Button
                                                         name="Enroll Now"
                                                         className="btn-dark fs-6 form-control mb-2 subscribe-button"
-                                                        onClick={() => goToPlans(paths.enrollplanPath)}
+                                                        onClick={() => goToPlans(`/plans/enroll_now/${subject.subject_id}`)}
                                                     />
 
                                                     <button

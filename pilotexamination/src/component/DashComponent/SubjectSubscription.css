@@ -1,0 +1,92 @@
+/* PLAN CARD */
+.plan-card {
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  transition: all 0.3s ease;
+  min-height: 130px;
+}
+
+.plan-card:hover {
+  border-color: #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.plan-card.active {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.short-card {
+  min-height: 100px !important;
+}
+
+/* RADIO */
+.plan-radio {
+  width: 20px;
+  height: 20px;
+  accent-color: #000;
+}
+
+/* WRAPPER */
+.plan-wrapper {
+  position: relative;
+}
+
+/* RECOMMENDED BADGE */
+.recommended-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid black;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  z-index: 1;
+  background-color: #ffffff;
+}
+
+/* COUPON CARD HOVER */
+.coupon-card:hover {
+  transition: 0.5s;
+  box-shadow: 0px 2px 21px #E8E8E8;
+}
+
+/* COUPON ROW — FIXED */
+.coupon-row {
+  display: flex;
+  flex-wrap: wrap; /* required for md and sm screens */
+  width: 100%;
+}
+
+/* INPUT + BUTTON */
+.coupon-input {
+  border: 1px solid #000 !important;
+  padding: 0.7rem !important;
+}
+
+.coupon-btn {
+  padding: 0.8rem !important;
+}
+
+/* ERROR TEXT FIX */
+.invalid-text {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* Only Mobile */
+@media (max-width: 576px) {
+  .coupon-input {
+    font-size: 0.9rem;
+  }
+
+  .coupon-btn {
+    padding: 0.8rem !important;
+  }
+
+  .invalid-text {
+    font-size: 0.8rem !important;
+  }
+}

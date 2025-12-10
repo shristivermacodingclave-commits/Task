@@ -487,17 +487,6 @@ function RecentPurchases({ onData }) {
                       <h6>{subject.topics_covered_text}</h6>
                     </div>
 
-                    {/* <div className="col-md-6 text-end">
-              <Link
-                to={`/dashboard/my-courses/plan/${subject.subject_id}`}
-                className="details-hover"
-                style={{ color: "black", fontWeight: "bold" }}
-              >
-                {subject.view_details_button}
-              </Link>
-            </div> */}
-
-
                     <div className="col-md-6 text-end">
                       <Link
                         to={`/dashboard/my-courses/plan/${subject.subject_id}`}

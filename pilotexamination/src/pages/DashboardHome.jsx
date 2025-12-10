@@ -300,7 +300,6 @@ const getItemsPerSlide = (width) => {
 function DashboardHome() {
   const navigate = useNavigate();
   const BASE_URL = "http://development.pilotexaminations.com/";
-
   const [subjects, setSubjects] = useState([]);
   const [comboSubjects, setComboSubjects] = useState([]);
   const [purchasedSubjects, setPurchasedSubjects] = useState([]);
@@ -416,7 +415,7 @@ function DashboardHome() {
                 {group.map((subject) => {
                   const paths =
                     subjectPaths[subject.subject_name] || {
-                      enrollplanPath: "/plans",
+                      enrollplanPath: `/plans/enroll_now/${subject.subject_id}`,
                       viewDetailPath: "/dashboard/my-courses",
                     };
 
@@ -530,7 +529,7 @@ function DashboardHome() {
                                   color: "black",
                                   fontWeight: "500",
                                 }}
-                                 onClick={() => goTo(paths.enrollplanPath)}
+                                 onClick={() => goTo(`/plans/enroll_now/${subject.subject_id}`)}
                               >
                                 Extend Subscription
                               </button>
@@ -540,7 +539,7 @@ function DashboardHome() {
                               <Button
                                 name="Enroll Now"
                                 className="btn-dark fs-6 form-control mb-2 subscribe-button"
-                                onClick={() => goTo(paths.enrollplanPath)}
+                                onClick={() => goTo(`/plans/enroll_now/${subject.subject_id}`)}
                               />
 
                               <button
