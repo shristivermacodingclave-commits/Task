@@ -21,8 +21,8 @@
 
 //     const BASE_URL = 'http://development.pilotexaminations.com/';
 
-   
-   
+
+
 
 //     const goToPlans = (path) => navigate(path);
 
@@ -389,7 +389,8 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
 
     const BASE_URL = 'http://development.pilotexaminations.com/';
 
-    const goToPlans = (path) => navigate(path);
+    const goToPlans = (path, state = {}) => navigate(path, { state });
+
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -450,7 +451,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                 <div className={`${withSpacing ? 'container py-5' : 'container-fluid p-0'}`}>
                     <div className="row">
                         {subjects.map((subject) => {
-                            
+
                             const paths =
                                 subjectPaths[subject.subject_name] || {
                                     enrollplanPath: "/plans",
@@ -503,13 +504,23 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                                     <h6>Topics Covered</h6>
                                                 </div>
                                                 <div className="col-md-6 text-end">
+                                                    {/* <Link
+                                                      to={`/dashboard/my-courses/plan/${subject.subject_id}`, state={{ from: "details" }} }
+                                                        style={{ color: 'black', fontWeight: 'bold' }}
+                                                        className="details-hover"
+                                                    >
+                                                        View Details
+                                                    </Link> */}
+
                                                     <Link
-                                                      to={`/dashboard/my-courses/plan/${subject.subject_id}`}
+                                                        to={`/dashboard/my-courses/plan/${subject.subject_id}`}
+                                                        state={{ from: "details" }}
                                                         style={{ color: 'black', fontWeight: 'bold' }}
                                                         className="details-hover"
                                                     >
                                                         View Details
                                                     </Link>
+
                                                 </div>
                                             </div>
 
@@ -544,13 +555,17 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                                     <Button
                                                         name="View / Attempt Test"
                                                         className="btn-dark fs-6 form-control mb-2 subscribe-button"
-                                                        onClick={() => goToPlans(`/dashboard/my-courses/plan/${subject.subject_id}`)}
-                                                    />
 
+                                                        onClick={() =>
+                                                            navigate(`/dashboard/my-courses/plan/${subject.subject_id}`, {
+                                                                state: { from: "test" }
+                                                            })
+                                                        }
+                                                    />
                                                     <button
                                                         className="btn btn-link w-100 details-hover"
                                                         style={{ color: "black", fontWeight: "500" }}
-                                                         onClick={() => goToPlans(`/plans/enroll_now/${subject.subject_id}`)}
+                                                        onClick={() => goToPlans(`/plans/enroll_now/${subject.subject_id}`)}
                                                     >
                                                         Extend Subscription
                                                     </button>

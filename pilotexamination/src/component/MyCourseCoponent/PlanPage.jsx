@@ -948,7 +948,7 @@ export default function PlanPage() {
                                                     name="View Result"
                                                     className="btn-dark w-100"
                                                     onClick={() =>
-                                                        navigate(`/dashboard/mocktest/result/${subject.subject_id}`)
+                                                        navigate(`/dashboard/results/index`)
                                                     }
                                                 />
                                             ) : (
@@ -977,9 +977,8 @@ export default function PlanPage() {
                     {tabItems.map((t, i) => (
                         <div key={i} className="d-flex align-items-center me-2">
                             <button
-                                className={`btn btn-link px-0 text-decoration-none ${
-                                    i === activeTab ? "fw-semibold text-dark" : "text-dark"
-                                }`}
+                                className={`btn btn-link px-0 text-decoration-none ${i === activeTab ? "fw-semibold text-dark" : "text-dark"
+                                    }`}
                                 onClick={() => setActiveTab(i)}
                             >
                                 {t}
@@ -1043,14 +1042,15 @@ export default function PlanPage() {
                                             <img src={lock} alt="locked" />
                                         )
                                     ) : (
-                                        <button
-                                            className="btn btn-outline-dark rounded-3 px-4 py-2"
+                                        <span
+                                            className=""
+                                            style={{ cursor: "pointer" , textDecoration: "none" , color:"black"}}
                                             onClick={() =>
                                                 handleAttemptForFree(topic.topic_name, topic.topic_id)
                                             }
                                         >
-                                            Answer E-Test
-                                        </button>
+                                            Answer E-test ↗
+                                        </span>
                                     )}
 
                                 </div>

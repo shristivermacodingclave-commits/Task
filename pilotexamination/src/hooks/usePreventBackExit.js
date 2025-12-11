@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 export default function usePreventBackExit(onTrigger) {
   useEffect(() => {
+    console.log("usePreventBackExit initialized");
     const handleBack = (e) => {
       e.preventDefault();
       onTrigger(); // Show modal

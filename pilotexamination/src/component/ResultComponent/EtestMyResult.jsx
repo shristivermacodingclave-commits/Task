@@ -518,28 +518,548 @@
 // }
 
 
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import "./EtestMyResult.css";
+// import Button from "../../component/Button";
+// import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
+
+// export default function EtestMyResult() {
+//   const [searchParams] = useSearchParams();
+//   const navigate = useNavigate();
+//   const location = useLocation();
+
+//   // ⭐ Coming from attempt page (etest OR practice-test)
+//   const testMeta = location.state || {};
+//   const type = testMeta.type || "etest";
+
+//   // ⭐ E-TEST
+//   const attemptId =
+//     searchParams.get("attempt_id") ||
+//     testMeta.attempt_id ||
+//     localStorage.getItem("attempt_id");
+
+//   // ⭐ PRACTICE TEST
+//   const testId =
+//     searchParams.get("test_id") ||
+//     testMeta.test_id ||
+//     localStorage.getItem("practice_test_id");
+
+//   const [loading, setLoading] = useState(true);
+//   const [data, setData] = useState(null);
+
+//   // ------------------------------
+//   // ⭐ UNIVERSAL RE-ATTEMPT BUTTON
+//   // ------------------------------
+//   const handleReAttempt = () => {
+//     if (type === "practice-test") {
+//       // PRACTICE re-attempt
+//       navigate(`/dashboard/my-courses/e-test/${testMeta.subjectId || 1}`, {
+//         state: {
+//           type: "practice-test",
+//           miniSubjectId: testMeta.miniSubjectId || 1,
+//           subject: data.subject_name || "Practice Test",
+//           topic: "Practice Test",
+//           testType: "Practice Test",
+//           planPath: testMeta.planPath,
+//         },
+//       });
+//     } else {
+//       // NORMAL E-TEST re-attempt
+//       navigate(`/dashboard/my-courses/e-test/${data.topic_id}`, {
+//         state: {
+//           subjectId: data.subject_id,
+//           topicId: data.topic_id,
+//           subject: data.subject_name,
+//           topic: data.topic_name,
+//           testType: "E-Test",
+//           userId: data.user_id,
+//           planPath: `/dashboard/my-courses/plan/${data.subject_id}`,
+//         },
+//       });
+//     }
+//   };
+
+//   // ------------------------------
+//   // ⭐ FETCH RESULT (E-TEST OR PRACTICE)
+//   // ------------------------------
+//   useEffect(() => {
+//     async function fetchResult() {
+//       try {
+//         let res;
+
+//         if (type === "practice-test") {
+//           // ⭐ PRACTICE RESULT API
+//           res = await axios.post(
+//             "https://development.pilotexaminations.com/api/practice/submit",
+//             { test_id: testId }
+//           );
+//         } else {
+//           // ⭐ E-TEST RESULT API
+//           res = await axios.post(
+//             "https://development.pilotexaminations.com/api/etest/result",
+//             { attempt_id: attemptId }
+//           );
+//         }
+
+//         if (!res.data.error) {
+//           setData(res.data);
+//         }
+//       } catch (err) {
+//         console.error("Result fetch failed", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     }
+
+//     if (attemptId || testId) fetchResult();
+//   }, [attemptId, testId, type]);
+
+//   // ------------------------------
+//   // LOADING UI
+//   // ------------------------------
+//   if (loading) {
+//     return (
+//       <div className="etest-result-container mt-4">
+//         <p>Loading Result...</p>
+//       </div>
+//     );
+//   }
+
+//   if (!data) {
+//     return (
+//       <div className="etest-result-container mt-4">
+//         <p>Failed to load result.</p>
+//       </div>
+//     );
+//   }
+
+//   // ------------------------------
+//   // NORMALIZED FIELDS
+//   // ------------------------------
+//   const {
+//     subject_name = "Practice Test",
+//     topic_name = "Practice Test",
+//     result,
+//     percentage,
+//     correct,
+//     incorrect,
+//     unanswered,
+//     passing_criteria = "N/A",
+//     date = "",
+//     message = "",
+//   } = data;
+
+//   const isPass = result?.toLowerCase() === "pass";
+
+//   return (
+//     <div className="etest-result-container mt-4">
+
+//       {/* HEADER */}
+//       <div className="etest-result-header">
+//         <div className="etest-result-left">
+//           <p className="etest-result-subject">{subject_name}</p>
+//           <h2 className="etest-result-topic">
+//             {type === "practice-test" ? "Practice Test Result" : topic_name}
+//           </h2>
+//         </div>
+
+//         <div className="etest-result-right">
+//           <button className="etest-reattempt-btn" onClick={handleReAttempt}>
+//             Re-attempt
+//           </button>
+//           {date && <p className="etest-result-date">{date}</p>}
+//         </div>
+//       </div>
+
+//       {/* SUMMARY BOX */}
+//       <div className="etest-summary-box">
+//         <div className="etest-summary-left">
+//           <h3 className="etest-result-heading">Result</h3>
+
+//           <h2 className={isPass ? "etest-result-pass" : "etest-result-fail"}>
+//             {result}
+//           </h2>
+
+//           <p className="etest-result-message">{message}</p>
+//         </div>
+
+//         <div className="etest-summary-right">
+//           <h4 className="etest-percentage-label">Percentage</h4>
+//           <h2 className="etest-percentage-value">{percentage}%</h2>
+
+//           {type !== "practice-test" && (
+//             <p className="etest-passing-info">
+//               Passing Criteria : {passing_criteria}
+//             </p>
+//           )}
+
+//           <div className="etest-sad-icon">
+//             {isPass ? "😊" : "☹️"}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* STATS BOX */}
+//       <div className="etest-stats-wrapper">
+//         <div className="etest-stats-card">
+//           <p className="etest-stats-title">Correct</p>
+//           <p className="etest-stats-green">{correct}</p>
+//         </div>
+
+//         <div className="etest-stats-card">
+//           <p className="etest-stats-title">Incorrect</p>
+//           <p className="etest-stats-red">{incorrect}</p>
+//         </div>
+
+//         <div className="etest-stats-card">
+//           <p className="etest-stats-title">Unanswered</p>
+//           <p className="etest-stats-orange">{unanswered}</p>
+//         </div>
+
+//         <Button name="View Solution" className="btn-dark fs-6 px-5" />
+//       </div>
+
+//       <hr className="etest-divider" />
+
+//       {/* REVIEW SECTION */}
+//       <div className="etest-review-box">
+//         <h3 className="etest-review-heading">How was your test experience?</h3>
+//         <p className="etest-review-subtext">
+//           Your feedback will help us improve your test experience
+//         </p>
+
+//         <textarea
+//           className="etest-review-input"
+//           placeholder="Write Your Review"
+//         ></textarea>
+
+//         <div className="etest-rating-stars">★★★★★</div>
+
+//         <Button name="Send Review" className="btn-dark fs-6" />
+//       </div>
+
+//     </div>
+//   );
+// }
+
+
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import "./EtestMyResult.css";
+// import Button from "../../component/Button";
+// import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
+
+// export default function EtestMyResult() {
+//   const [searchParams] = useSearchParams();
+//   const navigate = useNavigate();
+//   const location = useLocation();
+
+//   // Coming from attempt page (ETest or Practice)
+//   const testMeta = location.state || {};
+//   const type = testMeta.type || "etest";
+
+//   // Attempt IDs
+//   const attemptId =
+//     searchParams.get("attempt_id") ||
+//     testMeta.attempt_id ||
+//     localStorage.getItem("attempt_id");
+
+//   const testId =
+//     searchParams.get("test_id") ||
+//     testMeta.test_id ||
+//     localStorage.getItem("practice_test_id");
+
+//   const [loading, setLoading] = useState(true);
+//   const [data, setData] = useState(null);
+
+//   const [review, setReview] = useState("");
+//   const [stars, setStars] = useState(5);
+//   const [feedbackMessage, setFeedbackMessage] = useState("");
+
+//   // ----------------------------------------
+//   // ⭐ RE-ATTEMPT
+//   // ----------------------------------------
+//   const handleReAttempt = () => {
+//     if (type === "practice-test") {
+//       navigate(`/dashboard/my-courses/practice/${testMeta.miniSubjectId || 1}`, {
+//         state: {
+//           type: "practice-test",
+//           miniSubjectId: testMeta.miniSubjectId || 1,
+//           subject: data.subject_name,
+//           topic: "Practice Test",
+//           testType: "Practice Test",
+//           planPath: testMeta.planPath,
+//         },
+//       });
+//     } else {
+//       navigate(`/dashboard/my-courses/e-test/${data.topic_id}`, {
+//         state: {
+//           subjectId: data.subject_id,
+//           topicId: data.topic_id,
+//           subject: data.subject_name,
+//           topic: data.topic_name,
+//           testType: "E-Test",
+//           userId: data.user_id,
+//           planPath: `/dashboard/my-courses/plan/${data.subject_id}`,
+//         },
+//       });
+//     }
+//   };
+
+//   // ----------------------------------------
+//   // ⭐ FETCH RESULT (E-TEST OR PRACTICE)
+//   // ----------------------------------------
+//   useEffect(() => {
+//     async function fetchResult() {
+//       try {
+//         let res;
+
+//         if (type === "practice-test") {
+//           res = await axios.post(
+//             "https://development.pilotexaminations.com/api/practice/submit",
+//             { test_id: testId }
+//           );
+//         } else {
+//           res = await axios.post(
+//             "https://development.pilotexaminations.com/api/etest/result",
+//             { attempt_id: attemptId }
+//           );
+//         }
+
+//         if (!res.data.error) setData(res.data);
+//       } catch (err) {
+//         console.error("Result fetch failed", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     }
+
+//     if (attemptId || testId) fetchResult();
+//   }, [attemptId, testId, type]);
+
+//   if (loading)
+//     return (
+//       <div className="etest-result-container mt-4">
+//         <p>Loading Result...</p>
+//       </div>
+//     );
+
+//   if (!data)
+//     return (
+//       <div className="etest-result-container mt-4">
+//         <p>Failed to load result.</p>
+//       </div>
+//     );
+
+//   // ----------------------------------------
+//   // ⭐ NORMALIZED FIELDS
+//   // ----------------------------------------
+
+//   const subjectName =
+//     type === "practice-test"
+//       ? data.subject_name || data.mini_subject_name || "Practice Test"
+//       : data.subject_name;
+
+//   const topicName =
+//     type === "practice-test"
+//       ? "Practice Test"
+//       : data.topic_name;
+
+//   const result_message =
+//     type === "practice-test"
+//       ? data.result_message
+//       : data.message;
+
+//   const {
+//     result,
+//     percentage,
+//     correct,
+//     incorrect,
+//     unanswered,
+//     passing_criteria = "N/A",
+//     date = "",
+//   } = data;
+
+//   const isPass = result?.toLowerCase() === "pass";
+
+//   // ----------------------------------------
+//   // ⭐ VIEW SOLUTION
+//   // ----------------------------------------
+//   const handleViewSolution = () => {
+//     if (type === "practice-test") {
+//       navigate(`/dashboard/results/practice-detail`, {
+//         state: { ...data, test_id: testId },
+//       });
+//     } else {
+//       navigate(`/dashboard/results/etest-detail`, {
+//         state: { ...data, attempt_id: attemptId },
+//       });
+//     }
+//   };
+
+//   // ----------------------------------------
+//   // ⭐ SUBMIT REVIEW
+//   // ----------------------------------------
+//   const submitReview = async () => {
+//     try {
+//       const body = {
+//         user_id: data.user_id,
+//         test_id: testId || attemptId,
+//         star: stars,
+//         review_message: review,
+//       };
+
+//       const res = await axios.post(
+//         "https://development.pilotexaminations.com/api/submit-feedback",
+//         body
+//       );
+
+//       if (!res.data.error) {
+//         setFeedbackMessage(res.data.message);
+//         setReview("");
+//         setStars(5);
+//       }
+//     } catch (error) {
+//       console.error("Feedback submit error:", error);
+//     }
+//   };
+
+//   // ----------------------------------------
+//   // RENDER
+//   // ----------------------------------------
+//   return (
+//     <div className="etest-result-container mt-4">
+
+//       {/* HEADER */}
+//       <div className="etest-result-header">
+//         <div className="etest-result-left">
+//           <p className="etest-result-subject">{subjectName}</p>
+//           <h2 className="etest-result-topic">{topicName}</h2>
+//         </div>
+
+//         <div className="etest-result-right">
+//           <button className="etest-reattempt-btn" onClick={handleReAttempt}>
+//             Re-attempt
+//           </button>
+//           {date && <p className="etest-result-date">{date}</p>}
+//         </div>
+//       </div>
+
+//       {/* SUMMARY BOX */}
+//       <div className="etest-summary-box">
+//         <div className="etest-summary-left">
+//           <h3 className="etest-result-heading">Result</h3>
+
+//           <h2 className={isPass ? "etest-result-pass" : "etest-result-fail"}>
+//             {result}
+//           </h2>
+
+//           <p className="etest-result-message">{result_message}</p>
+//         </div>
+
+//         <div className="etest-summary-right">
+//           <h4 className="etest-percentage-label">Percentage</h4>
+//           <h2 className="etest-percentage-value">{percentage}%</h2>
+
+//           {type !== "practice-test" && (
+//             <p className="etest-passing-info">
+//               Passing Criteria : {passing_criteria}
+//             </p>
+//           )}
+
+//           <div className="etest-sad-icon">{isPass ? "😊" : "☹️"}</div>
+//         </div>
+//       </div>
+
+//       {/* STATS */}
+//       <div className="etest-stats-wrapper">
+//         <div className="etest-stats-card">
+//           <p className="etest-stats-title">Correct</p>
+//           <p className="etest-stats-green">{correct}</p>
+//         </div>
+
+//         <div className="etest-stats-card">
+//           <p className="etest-stats-title">Incorrect</p>
+//           <p className="etest-stats-red">{incorrect}</p>
+//         </div>
+
+//         <div className="etest-stats-card">
+//           <p className="etest-stats-title">Unanswered</p>
+//           <p className="etest-stats-orange">{unanswered}</p>
+//         </div>
+
+//         <Button
+//           name="View Solution"
+//           className="btn-dark fs-6 px-5"
+//           onClick={handleViewSolution}
+//         />
+//       </div>
+
+//       <hr className="etest-divider" />
+
+//       {/* REVIEW */}
+//       <div className="etest-review-box">
+//         <h3 className="etest-review-heading">How was your test experience?</h3>
+
+//         <textarea
+//           className="etest-review-input"
+//           placeholder="Write Your Review"
+//           value={review}
+//           onChange={(e) => setReview(e.target.value)}
+//         ></textarea>
+
+//         <div className="etest-rating-stars">
+//           {[1, 2, 3, 4, 5].map((star) => (
+//             <span
+//               key={star}
+//               style={{
+//                 cursor: "pointer",
+//                 fontSize: "22px",
+//                 color: star <= stars ? "#ffc107" : "#ccc",
+//               }}
+//               onClick={() => setStars(star)}
+//             >
+//               ★
+//             </span>
+//           ))}
+//         </div>
+
+//         <Button name="Send Review" className="btn-dark fs-6" onClick={submitReview} />
+
+//         {feedbackMessage && (
+//           <p className="text-success mt-3 fw-semibold">{feedbackMessage}</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./EtestMyResult.css";
 import Button from "../../component/Button";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function EtestMyResult() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ⭐ Coming from attempt page (etest OR practice-test)
   const testMeta = location.state || {};
   const type = testMeta.type || "etest";
 
-  // ⭐ E-TEST
+  const userId = localStorage.getItem("user_id");
+
   const attemptId =
     searchParams.get("attempt_id") ||
     testMeta.attempt_id ||
     localStorage.getItem("attempt_id");
 
-  // ⭐ PRACTICE TEST
   const testId =
     searchParams.get("test_id") ||
     testMeta.test_id ||
@@ -548,24 +1068,22 @@ export default function EtestMyResult() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
-  // ------------------------------
-  // ⭐ UNIVERSAL RE-ATTEMPT BUTTON
-  // ------------------------------
+  const [review, setReview] = useState("");
+  const [stars, setStars] = useState(5);
+
   const handleReAttempt = () => {
     if (type === "practice-test") {
-      // PRACTICE re-attempt
-      navigate(`/dashboard/my-courses/e-test/${testMeta.subjectId || 1}`, {
+      navigate(`/dashboard/my-courses/practice/${testMeta.miniSubjectId || 1}`, {
         state: {
           type: "practice-test",
           miniSubjectId: testMeta.miniSubjectId || 1,
-          subject: data.subject_name || "Practice Test",
+          subject: data.subject_name,
           topic: "Practice Test",
           testType: "Practice Test",
           planPath: testMeta.planPath,
         },
       });
     } else {
-      // NORMAL E-TEST re-attempt
       navigate(`/dashboard/my-courses/e-test/${data.topic_id}`, {
         state: {
           subjectId: data.subject_id,
@@ -580,31 +1098,24 @@ export default function EtestMyResult() {
     }
   };
 
-  // ------------------------------
-  // ⭐ FETCH RESULT (E-TEST OR PRACTICE)
-  // ------------------------------
   useEffect(() => {
     async function fetchResult() {
       try {
         let res;
 
         if (type === "practice-test") {
-          // ⭐ PRACTICE RESULT API
           res = await axios.post(
             "https://development.pilotexaminations.com/api/practice/submit",
             { test_id: testId }
           );
         } else {
-          // ⭐ E-TEST RESULT API
           res = await axios.post(
             "https://development.pilotexaminations.com/api/etest/result",
             { attempt_id: attemptId }
           );
         }
 
-        if (!res.data.error) {
-          setData(res.data);
-        }
+        if (!res.data.error) setData(res.data);
       } catch (err) {
         console.error("Result fetch failed", err);
       } finally {
@@ -615,73 +1126,114 @@ export default function EtestMyResult() {
     if (attemptId || testId) fetchResult();
   }, [attemptId, testId, type]);
 
-  // ------------------------------
-  // LOADING UI
-  // ------------------------------
-  if (loading) {
+  if (loading)
     return (
       <div className="etest-result-container mt-4">
         <p>Loading Result...</p>
       </div>
     );
-  }
 
-  if (!data) {
+  if (!data)
     return (
       <div className="etest-result-container mt-4">
         <p>Failed to load result.</p>
       </div>
     );
-  }
 
-  // ------------------------------
-  // NORMALIZED FIELDS
-  // ------------------------------
+  const subjectName =
+    type === "practice-test"
+      ? data.subject_name || data.mini_subject_name || "Practice Test"
+      : data.subject_name;
+
+  const topicName =
+    type === "practice-test" ? "Practice Test" : data.topic_name;
+
+  const resultMessage =
+    type === "practice-test" ? data.result_message : data.message;
+
+  const resultStatus = data.result || "N/A";
+
   const {
-    subject_name = "Practice Test",
-    topic_name = "Practice Test",
-    result,
     percentage,
     correct,
     incorrect,
     unanswered,
     passing_criteria = "N/A",
     date = "",
-    message = "",
   } = data;
 
-  const isPass = result?.toLowerCase() === "pass";
+  const finalDate = date || "—";
+
+  const isPass = resultStatus.toLowerCase() === "pass";
+
+  const handleViewSolution = () => {
+    if (type === "practice-test") {
+      navigate(`/dashboard/results/practice-detail`, {
+        state: { ...data, test_id: testId },
+      });
+    } else {
+      navigate(`/dashboard/results/etest-detail`, {
+        state: { ...data, attempt_id: attemptId },
+      });
+    }
+  };
+
+  const submitReview = async () => {
+    if (review.trim() === "") {
+      toast.error("Please enter your review.");
+      return;
+    }
+
+    try {
+      const body = {
+        user_id: userId,
+        test_id: testId || attemptId,
+        star: stars,
+        review_message: review,
+      };
+
+      const res = await axios.post(
+        "https://development.pilotexaminations.com/api/submit-feedback",
+        body
+      );
+
+      if (!res.data.error) {
+        toast.success("Thank you for submitting your review.");
+        setReview("");
+        setStars(5);
+      }
+    } catch (error) {
+      toast.error("Failed to submit review.");
+    }
+  };
 
   return (
     <div className="etest-result-container mt-4">
+      <ToastContainer position="top-center" autoClose={1500} />
 
-      {/* HEADER */}
       <div className="etest-result-header">
         <div className="etest-result-left">
-          <p className="etest-result-subject">{subject_name}</p>
-          <h2 className="etest-result-topic">
-            {type === "practice-test" ? "Practice Test Result" : topic_name}
-          </h2>
+          <p className="etest-result-subject">{subjectName}</p>
+          <h2 className="etest-result-topic">{topicName}</h2>
         </div>
 
         <div className="etest-result-right">
           <button className="etest-reattempt-btn" onClick={handleReAttempt}>
             Re-attempt
           </button>
-          {date && <p className="etest-result-date">{date}</p>}
+          <p className="etest-result-date">{finalDate}</p>
         </div>
       </div>
 
-      {/* SUMMARY BOX */}
       <div className="etest-summary-box">
         <div className="etest-summary-left">
           <h3 className="etest-result-heading">Result</h3>
 
           <h2 className={isPass ? "etest-result-pass" : "etest-result-fail"}>
-            {result}
+            {resultStatus}
           </h2>
 
-          <p className="etest-result-message">{message}</p>
+          <p className="etest-result-message">{resultMessage}</p>
         </div>
 
         <div className="etest-summary-right">
@@ -694,13 +1246,10 @@ export default function EtestMyResult() {
             </p>
           )}
 
-          <div className="etest-sad-icon">
-            {isPass ? "😊" : "☹️"}
-          </div>
+          <div className="etest-sad-icon">{isPass ? "😊" : "☹️"}</div>
         </div>
       </div>
 
-      {/* STATS BOX */}
       <div className="etest-stats-wrapper">
         <div className="etest-stats-card">
           <p className="etest-stats-title">Correct</p>
@@ -717,28 +1266,47 @@ export default function EtestMyResult() {
           <p className="etest-stats-orange">{unanswered}</p>
         </div>
 
-        <Button name="View Solution" className="btn-dark fs-6 px-5" />
+        <Button
+          name="View Solution"
+          className="btn-dark fs-6 px-5"
+          onClick={handleViewSolution}
+        />
       </div>
 
       <hr className="etest-divider" />
 
-      {/* REVIEW SECTION */}
       <div className="etest-review-box">
         <h3 className="etest-review-heading">How was your test experience?</h3>
-        <p className="etest-review-subtext">
-          Your feedback will help us improve your test experience
-        </p>
 
         <textarea
           className="etest-review-input"
           placeholder="Write Your Review"
+          value={review}
+          onChange={(e) => setReview(e.target.value)}
         ></textarea>
 
-        <div className="etest-rating-stars">★★★★★</div>
+        <div className="etest-rating-stars">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <span
+              key={star}
+              style={{
+                cursor: "pointer",
+                fontSize: "22px",
+                color: star <= stars ? "#ffc107" : "#ccc",
+              }}
+              onClick={() => setStars(star)}
+            >
+              ★
+            </span>
+          ))}
+        </div>
 
-        <Button name="Send Review" className="btn-dark fs-6" />
+        <Button
+          name="Send Review"
+          className="btn-dark fs-6 mt-3"
+          onClick={submitReview}
+        />
       </div>
-
     </div>
   );
 }

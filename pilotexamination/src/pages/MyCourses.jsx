@@ -668,6 +668,7 @@ function MyCourses() {
                                  <div className="col-6 text-end">
                                    <Link
                                      to={`/dashboard/my-courses/plan/${subject.subject_id}`}
+                                     state={{ from: "details" }}
                                      style={{ color: "black", fontWeight: "bold" }}
                                      className="details-hover"
                                    >
@@ -709,7 +710,7 @@ function MyCourses() {
                                    <Button
                                      name="View/Attempt Test"
                                      className="btn-dark fs-6 form-control mb-2"
-                                      onClick={() => goTo(`/dashboard/my-courses/plan/${subject.subject_id}`)}
+                                      onClick={() => navigate(`/dashboard/my-courses/plan/${subject.subject_id}`,{state:{from:"test"}})}
                                    />
      
                                    <button

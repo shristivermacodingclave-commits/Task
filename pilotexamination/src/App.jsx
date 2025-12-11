@@ -12,11 +12,6 @@ import ReportedQuestion from './pages/ReportedQuestion';
 import DashboardLayout from './layouts/DashboardLayout.jsx';
 import Account from './pages/Account.jsx';
 import PlanPage from './component/MyCourseCoponent/PlanPage.jsx';
-import MeteorologySubscription from './component/DashComponent/MeterologySubscription.jsx';
-import RegulationSubscription from './component/DashComponent/RegulationSubscription.jsx';
-import NavigationSubscription from './component/DashComponent/NavigationSubscription.jsx';
-import AtgSubscription from './component/DashComponent/AtgSubscription.jsx';
-import AtsSubscription from './component/DashComponent/AtsSubscription.jsx';
 import ComboSubjectSuscription from './component/DashComponent/ComboSubjectSuscription.jsx';
 import MainLayout from './layouts/MainLayout.jsx';
 import MyCourseLayout from './layouts/MyCourseLayout.jsx';
@@ -35,7 +30,8 @@ import PlanMocktest from './pages/PlanMocktest.jsx';
 import MockTestAttempt from './pages/MockTestAttempt.jsx';
 import PlanPracticeTest from './pages/PlanPracticeTest.jsx';
 import Review from './pages/Review.jsx';
-
+import PracticeResultDetail from './pages/PracticeResultDetail.jsx';
+import PracticeMyresult from './component/ResultComponent/PracticeMyresult.jsx';
 
 
 // Loader files
@@ -120,6 +116,7 @@ function App() {
               <Route path="mock-test" element={<MockTest />} />
               <Route path="etest-detail" element={<EtestResultDetail />} />
               <Route path="mocktest-detail" element={<MockResultDetail />} />
+                <Route path="practice-detail" element={<PracticeResultDetail />} />
               <Route path="solution" element={<ResultSolution />} />
               <Route path="mocktest-solution" element={<MockResultSolution />} />
             </Route>

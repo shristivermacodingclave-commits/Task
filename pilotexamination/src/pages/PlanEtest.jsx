@@ -258,6 +258,7 @@ export default function PlanEtest() {
       navigate(
         `/test_question?quest_no=1&attempt_id=${attempt_id}`,
         {
+          replace: true,
           state: {
             subject,
             topic,

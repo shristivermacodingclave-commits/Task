@@ -94,6 +94,7 @@ export default function PlanPracticeTest() {
             navigate(
                 `/test_question?quest_no=1&test_id=${testId}`, // test_id (NOT attempt_id)
                 {
+                    replace:true,
                     state: {
                         testId,
                         questions: res.data.questions,
@@ -171,7 +172,7 @@ export default function PlanPracticeTest() {
                     disabled={!isConfirmed}
                     onClick={handleStartPractice}
                 >
-                    Start Practice Test →
+                    Start Practice Test→
                 </button>
             </div>
         </div>

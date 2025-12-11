@@ -133,21 +133,67 @@ const DashboardHeader = () => {
 
   let displayItems = filteredItems;
 
-  // ---------------------------------------------------------
-  // ✅ NEW FIXED LOGIC FOR /dashboard/test_result
-  // ---------------------------------------------------------
-  const isTestResultPage = location.pathname === "/dashboard/test_result";
+//   // ---------------------------------------------------------
+// // ⭐ ADD THIS — PRACTICE TEST RESULT BREADCRUMB
+// // ---------------------------------------------------------
+// const isPracticeResultPage =
+//   location.pathname === "/dashboard/test_result" &&
+//   locationState?.type === "practice-test";
 
-  if (isTestResultPage) {
-    const subject = locationState.subject || "Air Meteorology";
-    const topic = locationState.topic || "Atmosphere";
 
-    displayItems = [
-      { name: topic, path: null },
-      { name: "E-Test", path: null },
-      { name: "My Results", path: null },
-    ];
-  }
+// if (isPracticeResultPage) {
+//   displayItems = [
+//     { name: "Practice Test", path: null },
+//     { name: "My Results", path: null }
+//   ];
+// }
+
+
+//   // ---------------------------------------------------------
+//   // ✅ NEW FIXED LOGIC FOR /dashboard/test_result
+//   // ---------------------------------------------------------
+//   const isTestResultPage = location.pathname === "/dashboard/test_result";
+
+//   if (isTestResultPage) {
+//     const subject = locationState.subject || "Air Meteorology";
+//     const topic = locationState.topic || "Atmosphere";
+
+//     displayItems = [
+//       { name: topic, path: null },
+//       { name: "E-Test", path: null },
+//       { name: "My Results", path: null },
+//     ];
+//   }
+
+
+// ⭐ PRACTICE TEST RESULT
+const isPracticeResultPage =
+  location.pathname === "/dashboard/test_result" &&
+  locationState?.type === "practice-test";
+
+if (isPracticeResultPage) {
+  displayItems = [
+    { name: "Practice Test", path: null },
+    { name: "My Results", path: null }
+  ];
+}
+
+// ⭐ E-TEST RESULT (RUN ONLY IF NOT PRACTICE TEST)
+const isTestResultPage =
+  location.pathname === "/dashboard/test_result" &&
+  locationState?.type !== "practice-test";
+
+if (isTestResultPage) {
+  const subject = locationState.subject || "Air Meteorology";
+  const topic = locationState.topic || "Atmosphere";
+
+  displayItems = [
+    { name: topic, path: null },
+    { name: "E-Test", path: null },
+    { name: "My Results", path: null }
+  ];
+}
+
 
   // ---------------------------------------------------------
   // Existing custom logic for E-Test detail pages (unchanged)

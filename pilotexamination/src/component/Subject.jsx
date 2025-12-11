@@ -136,6 +136,165 @@
 
 
 
+// import React, { useEffect, useState } from 'react';
+// import './Subject.css';
+// import axios from 'axios';
+// import RegisterModal from './RegisterModal';
+// import LoginModal from './LoginModal';
+// import Button from '../component/Button';
+// import { useNavigate } from 'react-router-dom';
+// import Loader from './Loader';
+
+// function Subject({ title, subtitle, showDescription = true, withSpacing = true }) {
+
+//     const [showLogin, setShowLogin] = useState(false);
+//     const [showRegister, setShowRegister] = useState(false);
+//     const [subjects, setSubjects] = useState([]);
+//     const [loading, setLoading] = useState(true);
+//     const [error, setError] = useState(null);
+
+//     const navigate = useNavigate();
+//     const toggleModal = () => setShowRegister(!showRegister);
+
+//     const BASE_URL = 'http://development.pilotexaminations.com/';
+
+//     useEffect(() => {
+//         // ---- GET USER ID FROM LOCAL STORAGE ----
+//         const stored = localStorage.getItem("user");
+//         let userId = null;
+
+//         if (stored) {
+//             try {
+//                 const parsed = JSON.parse(stored);
+//                 userId = parsed?.id || parsed?.user_id || parsed?.data?.id;
+//             } catch {
+//                 console.warn("Invalid user data in localStorage");
+//             }
+//         }
+
+//         if (!userId) {
+//             console.warn("User ID not found in localStorage");
+//             setError("User not logged in");
+//             setLoading(false);
+//             return;
+//         }
+
+//         // ---- API CALL: POST METHOD ----
+//         axios
+//             .post(`${BASE_URL}api/subjects` ,{})
+//             .then((response) => {
+//                 console.log("Subjects API Response:", response.data);
+
+//                 if (!response.data.error) {
+//                    setSubjects(response.data.subjects || []);
+
+//                 } else {
+//                     setError("Error fetching subjects");
+//                 }
+//             })
+//             .catch((err) => {
+//                 console.error(err);
+//                 setError("Failed to load subjects");
+//             })
+//             .finally(() => setLoading(false));
+
+//     }, []);
+
+//     if (loading) return <Loader message="Loading....." />;
+//     if (error) return <p className="text-center text-danger py-5">{error}</p>;
+
+//     return (
+//         <>
+//             <div className={`${withSpacing ? "container subject-section " : "container-fluid subject-section mt-0 pt-0"}`}>
+//                 {title && showDescription && <h1 className='main-title'>{title}</h1>}
+//                 {showDescription && <p className="sub-title">{subtitle}</p>}
+
+//                 <div className={`${withSpacing ? " container py-5 " : "container-fluid p-0"}`}>
+//                     <div className="row">
+
+//                         {subjects.map((subject) => {
+//                           const topics = Array.isArray(subject.topics) ? subject.topics : [];
+//                             const topicsToShow = topics.slice(0, 3);
+//                             const remainingCount = topics.length > 3 ? topics.length - 3 : 0;
+
+//                             return (
+//                                 <div className="col-md-4 mb-3" key={subject.subject_id}>
+//                                     <div className="subject-card d-flex flex-column h-100">
+
+//                                         {/* Header */}
+//                                         <div
+//                                             className="subject-header py-4"
+//                                             style={{ backgroundColor: subject.title_color || '#f9f9f9' }}
+//                                         >
+//                                             <h4 className="subject-title" style={{fontSize: "1.5rem", fontWeight:"normal", color:"black"}}>
+//                                                 {subject.subject_name}
+//                                             </h4>
+
+//                                             <img
+//                                                 src={subject.icon}
+//                                                 alt={subject.subject_name}
+//                                                 onError={(e) => (e.target.style.display = 'none')}
+//                                                 style={{ height:"50px", width:"50px" }}
+//                                             />
+//                                         </div>
+
+//                                         {/* Topics */}
+//                                         <div className="subject-topics flex-grow-1">
+//                                             <ul>
+//                                                 {topicsToShow.map((topic, index) => (
+//                                                     <li key={index}><h6 style={{fontWeight:"normal"}}>{topic}</h6></li>
+//                                                 ))}
+
+//                                                 {remainingCount > 0 && (
+//                                                     <p className="text-muted">
+//                                                         +{remainingCount} more topics...
+//                                                     </p>
+//                                                 )}
+//                                             </ul>
+//                                         </div>
+
+//                                         <hr />
+
+//                                         {/* Footer */}
+//                                         <div className='text-center mt-auto' style={{ padding: "0.5rem 1.5rem" }}>
+//                                             <p className=" mt-3 fw-semibold" style={{color:"#20ba5c"}}>
+//                                                 ⚡ Prices Starting at just ₹{subject.starting_price || 0}
+//                                             </p>
+
+//                                             <Button
+//                                                 name="Enroll Now"
+//                                                 className='btn-dark fs-6 form-control mb-2 subscribe-button'
+//                                                 onClick={() => setShowRegister(true)}
+//                                             />
+
+//                                             <button
+//                                                 className="btn btn-link w-100 details-hover"
+//                                                 onClick={() => setShowLogin(true)}
+//                                                 style={{ color: "black", fontWeight: "500" }}
+//                                             >
+//                                                View Demo
+//                                             </button>
+//                                         </div>
+
+//                                     </div>
+//                                 </div>
+//                             );
+//                         })}
+
+//                     </div>
+//                 </div>
+//             </div>
+
+//             {/* Modals */}
+//             <RegisterModal show={showRegister} handleClose={toggleModal} />
+//             <LoginModal show={showLogin} handleClose={() => setShowLogin(false)} />
+//         </>
+//     );
+// }
+
+// export default Subject;
+
+
 import React, { useEffect, useState } from 'react';
 import './Subject.css';
 import axios from 'axios';
@@ -156,44 +315,27 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
     const navigate = useNavigate();
     const toggleModal = () => setShowRegister(!showRegister);
 
-    const BASE_URL = 'http://development.pilotexaminations.com/';
+    // ⭐ FIXED — USE HTTPS
+    const BASE_URL = 'https://development.pilotexaminations.com/';
 
     useEffect(() => {
-        // ---- GET USER ID FROM LOCAL STORAGE ----
-        const stored = localStorage.getItem("user");
-        let userId = null;
+        
+        setError(null); // clear errors
 
-        if (stored) {
-            try {
-                const parsed = JSON.parse(stored);
-                userId = parsed?.id || parsed?.user_id || parsed?.data?.id;
-            } catch {
-                console.warn("Invalid user data in localStorage");
-            }
-        }
-
-        if (!userId) {
-            console.warn("User ID not found in localStorage");
-            setError("User not logged in");
-            setLoading(false);
-            return;
-        }
-
-        // ---- API CALL: POST METHOD ----
+        // ⭐ SUBJECT API DOES NOT REQUIRE USER ID
         axios
-            .post(`${BASE_URL}api/subjects`, { user_id: userId })
+            .post(`${BASE_URL}api/subjects`, {})
             .then((response) => {
                 console.log("Subjects API Response:", response.data);
 
                 if (!response.data.error) {
-                   setSubjects(response.data.subjects || []);
-
+                    setSubjects(response.data.subjects || []);
                 } else {
                     setError("Error fetching subjects");
                 }
             })
             .catch((err) => {
-                console.error(err);
+                console.error("Subject API Error:", err);
                 setError("Failed to load subjects");
             })
             .finally(() => setLoading(false));
@@ -205,15 +347,16 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
 
     return (
         <>
-            <div className={`${withSpacing ? "container subject-section " : "container-fluid subject-section mt-0 pt-0"}`}>
+            <div className={`${withSpacing ? "container subject-section" : "container-fluid subject-section mt-0 pt-0"}`}>
+                
                 {title && showDescription && <h1 className='main-title'>{title}</h1>}
                 {showDescription && <p className="sub-title">{subtitle}</p>}
 
-                <div className={`${withSpacing ? " container py-5 " : "container-fluid p-0"}`}>
+                <div className={`${withSpacing ? "container py-5" : "container-fluid p-0"}`}>
                     <div className="row">
 
                         {subjects.map((subject) => {
-                          const topics = Array.isArray(subject.topics) ? subject.topics : [];
+                            const topics = Array.isArray(subject.topics) ? subject.topics : [];
                             const topicsToShow = topics.slice(0, 3);
                             const remainingCount = topics.length > 3 ? topics.length - 3 : 0;
 
@@ -221,12 +364,12 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                 <div className="col-md-4 mb-3" key={subject.subject_id}>
                                     <div className="subject-card d-flex flex-column h-100">
 
-                                        {/* Header */}
+                                        {/* HEADER */}
                                         <div
                                             className="subject-header py-4"
                                             style={{ backgroundColor: subject.title_color || '#f9f9f9' }}
                                         >
-                                            <h4 className="subject-title" style={{fontSize: "1.5rem", fontWeight:"normal", color:"black"}}>
+                                            <h4 className="subject-title" style={{ fontSize: "1.5rem", fontWeight: "normal", color: "black" }}>
                                                 {subject.subject_name}
                                             </h4>
 
@@ -234,30 +377,30 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                                 src={subject.icon}
                                                 alt={subject.subject_name}
                                                 onError={(e) => (e.target.style.display = 'none')}
-                                                style={{ height:"50px", width:"50px" }}
+                                                style={{ height: "50px", width: "50px" }}
                                             />
                                         </div>
 
-                                        {/* Topics */}
+                                        {/* TOPICS */}
                                         <div className="subject-topics flex-grow-1">
                                             <ul>
                                                 {topicsToShow.map((topic, index) => (
-                                                    <li key={index}><h6 style={{fontWeight:"normal"}}>{topic}</h6></li>
+                                                    <li key={index}>
+                                                        <h6 style={{ fontWeight: "normal" }}>{topic}</h6>
+                                                    </li>
                                                 ))}
 
                                                 {remainingCount > 0 && (
-                                                    <p className="text-muted">
-                                                        +{remainingCount} more topics...
-                                                    </p>
+                                                    <p className="text-muted">+{remainingCount} more topics...</p>
                                                 )}
                                             </ul>
                                         </div>
 
                                         <hr />
 
-                                        {/* Footer */}
+                                        {/* FOOTER */}
                                         <div className='text-center mt-auto' style={{ padding: "0.5rem 1.5rem" }}>
-                                            <p className=" mt-3 fw-semibold" style={{color:"#20ba5c"}}>
+                                            <p className="mt-3 fw-semibold" style={{ color: "#20ba5c" }}>
                                                 ⚡ Prices Starting at just ₹{subject.starting_price || 0}
                                             </p>
 
@@ -272,7 +415,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                                                 onClick={() => setShowLogin(true)}
                                                 style={{ color: "black", fontWeight: "500" }}
                                             >
-                                               View Demo
+                                                View Demo
                                             </button>
                                         </div>
 
@@ -285,7 +428,7 @@ function Subject({ title, subtitle, showDescription = true, withSpacing = true }
                 </div>
             </div>
 
-            {/* Modals */}
+            {/* MODALS */}
             <RegisterModal show={showRegister} handleClose={toggleModal} />
             <LoginModal show={showLogin} handleClose={() => setShowLogin(false)} />
         </>
